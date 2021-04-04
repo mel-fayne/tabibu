@@ -3,6 +3,8 @@ import 'package:Tabibu/app/auth/forgotpassword.dart';
 import 'package:Tabibu/app/auth/patientdetails.dart';
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/auth/signup.dart';
+import 'package:Tabibu/app/doctors/doctordashboard.dart';
+import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
         SignUp.routeName: (ctx) => SignUp(),
         DoctorDetails.routeName: (ctx) => DoctorDetails(),
         PatientDetails.routeName: (ctx) => PatientDetails(),
+        DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
+        PatientDashboard.routeName: (ctx) => PatientDashboard(),
       },
       home: SignIn(),
     );

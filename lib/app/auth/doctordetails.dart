@@ -1,4 +1,5 @@
 import 'package:Tabibu/app/auth/signin.dart';
+import 'package:Tabibu/app/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -72,7 +73,9 @@ class DoctorDetails extends StatelessWidget {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+                  },
                   color: kPrimaryGreen,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
