@@ -1,14 +1,14 @@
 import 'package:Tabibu/app/auth/signin.dart';
-import 'package:Tabibu/app/screens/medicalhistory.dart';
-import 'package:Tabibu/app/screens/medicalupdate.dart';
-import 'package:Tabibu/app/screens/mydoctors.dart';
+import 'package:Tabibu/app/screens/doctors/mypatients.dart';
+import 'package:Tabibu/app/screens/doctors/myupdates.dart';
+import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/profile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class PatientDashboard extends StatelessWidget {
-  static const routeName = "/patientdashboard";
+class DoctorDashboard extends StatelessWidget {
+  static const routeName = "/doctordashboard";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +44,7 @@ class PatientDashboard extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.only(left: 22),
-                              child: Text('John Doe',
+                              child: Text('Dr. Jules Rue',
                                   style: TextStyle(
                                       color: kPrimaryGreen,
                                       fontFamily: 'Source Sans',
@@ -117,7 +117,7 @@ class PatientDashboard extends StatelessWidget {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child: Text('Welcome to Tabibu John Doe',
+                    child: Text('Welcome to Tabibu Dr.Jules Rue',
                         style: TextStyle(
                             fontSize: 26,
                             fontFamily: 'Source Sans',
@@ -164,17 +164,17 @@ class PatientDashboard extends StatelessWidget {
                     children: [
                       Row(children: [
                         dashcard(
-                            redirect: MedicalHistory.routeName,
-                            path: MyCustomIcons.history_clock_button,
-                            label: "View Medical History"),
+                            redirect: MyPatients.routeName,
+                            path: MyCustomIcons.user_list,
+                            label: "View Patients"),
                         dashcard(
-                            redirect: MedicalUpdate.routeName,
-                            path: MyCustomIcons.email,
-                            label: "Send Medical Update"),
+                            redirect: NewRecord.routeName,
+                            path: Icons.person_add_alt_1_outlined,
+                            label: "Add patient"),
                         dashcard(
-                            redirect: MyDoctors.routeName,
+                            redirect: MyUpdates.routeName,
                             path: MyCustomIcons.calendar,
-                            label: "Book Appointment"),
+                            label: "Check Updates"),
                       ]),
                       Container(
                           color: kPrimaryAccent,
@@ -189,9 +189,9 @@ class PatientDashboard extends StatelessWidget {
                                   navredirect: null,
                                 ),
                                 navitem(
-                                  navlabel: "My Doctors",
+                                  navlabel: "My Patients",
                                   navpath: MyCustomIcons.doctor,
-                                  navredirect: MyDoctors.routeName,
+                                  navredirect: MyPatients.routeName,
                                 ),
                                 navitem(
                                   navlabel: "Profile",
