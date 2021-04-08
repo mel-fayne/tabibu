@@ -46,6 +46,7 @@ class NewRecord extends StatelessWidget {
               ),
               Form(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       'Diagnosis Details',
@@ -75,7 +76,7 @@ class NewRecord extends StatelessWidget {
                               color: kFieldTextColor,
                               fontSize: 14,
                               fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -146,7 +147,7 @@ class NewRecord extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,

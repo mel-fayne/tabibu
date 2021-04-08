@@ -26,9 +26,10 @@ class _SingleUpdateState extends State<SingleUpdate> {
         ),
         body: Container(
             padding: EdgeInsets.only(top: 20, left: 20),
-            child: Column(children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                'More Updates Deatails',
+                'More Updates Details',
                 style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'PT Serif',
@@ -36,86 +37,79 @@ class _SingleUpdateState extends State<SingleUpdate> {
                     fontWeight: FontWeight.w700),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      """ Update Date: 15/03/2021\nUpdate ID: U002/2\n
-                              How have you been feeling: 🤕I feel pain\n
-                              Which part of your body aches? Chest\n
-                              Rate the amount of pain you feel: 2 out of 5\n
-                              Any New Symptoms: I've developed a rush on my neck\n
-                              Have you taken the medicine as prescribed? No I skipped a day last week\n
-                              Any Treatment Side Effects: None\n
-                              Additional Info: My breathing rate has improved and I feel less anxious.""",
-                      style: TextStyle(
-                        color: kFieldTextColor,
-                        fontSize: 14,
-                        fontFamily: 'Source Sans',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 3),
-                        child: Icon(
-                          Icons.details,
-                          color: kPrimaryYellow,
-                          size: 26,
-                        ))
-                  ],
-                ),
-              ),
-              Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: Column(children: [
-                    Text(
-                      'Actions:',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Source Sans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: ListTile(
+                      title: Text('Update Date: 15/03/2021\nUpdate ID: U002/2',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Source Sans',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black)),
+                      subtitle: Text(
+                          "How have you been feeling: 🤕I feel pain\nWhich part of your body aches? Chest\nRate the amount of pain you feel: 2 out of 5\nAny New Symptoms: I've developed a rush on my neck\nHave you taken the medicine as prescribed? No I skipped a day last week\nAny Treatment Side Effects: None\nAdditional Info: My breathing rate has improved and I feel less anxious.",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Source Sans',
+                              fontWeight: FontWeight.w600,
+                              color: kFieldTextColor)),
+                      trailing: Icon(
+                        Icons.update,
+                        color: kPrimaryGreen,
+                        size: 46,
+                      ))),
+              Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          child: MaterialButton(
-                            minWidth: 100,
-                            height: 40,
-                            onPressed: () {},
-                            color: kPrimaryGreen,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Mark as Seen",
-                                style: TextStyle(
-                                    color: kPrimaryYellow,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)),
-                          ),
+                        Text(
+                          'Actions:',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Source Sans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
                         ),
-                        Container(
-                          child: MaterialButton(
-                            minWidth: 100,
-                            height: 40,
-                            onPressed: () {},
-                            color: kPrimaryGreen,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Make an Appointment",
-                                style: TextStyle(
-                                    color: kPrimaryYellow,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)),
-                          ),
-                        ),
-                      ],
-                    )
-                  ])),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              child: MaterialButton(
+                                minWidth: 100,
+                                height: 40,
+                                onPressed: () {},
+                                color: kPrimaryGreen,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text("Mark as Seen",
+                                    style: TextStyle(
+                                        color: kPrimaryYellow,
+                                        fontFamily: 'PT Serif',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ),
+                            Container(
+                              child: MaterialButton(
+                                minWidth: 100,
+                                height: 40,
+                                onPressed: () {},
+                                color: kPrimaryGreen,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text("Make an Appointment",
+                                    style: TextStyle(
+                                        color: kPrimaryYellow,
+                                        fontFamily: 'PT Serif',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ),
+                          ],
+                        )
+                      ])),
             ])));
   }
 }

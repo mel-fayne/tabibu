@@ -22,7 +22,7 @@ class MyDoctors extends StatelessWidget {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 10, left: 20),
+        padding: EdgeInsets.only(left: 20),
         child: Column(children: [
           Padding(
               padding: EdgeInsets.only(bottom: 15, left: 15, right: 35),

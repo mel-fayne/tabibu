@@ -22,6 +22,7 @@ class SingleDiagnosis extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.only(top: 20, left: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'More Diagnosis Deatails',
@@ -34,6 +35,7 @@ class SingleDiagnosis extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -50,18 +52,18 @@ class SingleDiagnosis extends StatelessWidget {
                           padding: EdgeInsets.only(left: 3),
                           child: Icon(
                             Icons.details,
-                            color: kPrimaryYellow,
+                            color: kPrimaryGreen,
                             size: 16,
                           ))
                     ],
                   ),
                   Text(
-                    'Diagnosis ID: M003/1  Date: 10/03/2021\nDoctor Name: Dr.Jules Rue  Doctor ID: D002/2\nDiagnosis: Depression\nTreatment: Anti-depressants\nVitals: Body Temperature: 36 C\nBlood Pressure: 68mmHg\nBreathing Rate: 25 breaths per min\nBody Weight: 56kg',
+                    'Diagnosis ID: M003/1  Date: 10/03/2021\nDoctor Name: Dr.Jules Rue  Doctor ID: D002/2\nDiagnosis: Depression\nTreatment: Anti-depressants\nVitals:\nBody Temperature: 36 C\nBlood Pressure: 68mmHg\nBreathing Rate: 25 breaths per min\nBody Weight: 56kg',
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -70,6 +72,7 @@ class SingleDiagnosis extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -86,7 +89,7 @@ class SingleDiagnosis extends StatelessWidget {
                           padding: EdgeInsets.only(left: 3),
                           child: Icon(
                             Icons.sick,
-                            color: kPrimaryYellow,
+                            color: kPrimaryGreen,
                             size: 16,
                           ))
                     ],
@@ -97,7 +100,7 @@ class SingleDiagnosis extends StatelessWidget {
                       color: kFieldTextColor,
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -106,6 +109,7 @@ class SingleDiagnosis extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -122,7 +126,7 @@ class SingleDiagnosis extends StatelessWidget {
                           padding: EdgeInsets.only(left: 3),
                           child: Icon(
                             Icons.description,
-                            color: kPrimaryYellow,
+                            color: kPrimaryGreen,
                             size: 16,
                           ))
                     ],
@@ -133,7 +137,7 @@ class SingleDiagnosis extends StatelessWidget {
                       color: kFieldTextColor,
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -142,6 +146,7 @@ class SingleDiagnosis extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -158,7 +163,7 @@ class SingleDiagnosis extends StatelessWidget {
                           padding: EdgeInsets.only(left: 3),
                           child: Icon(
                             MyCustomIcons.pill,
-                            color: kPrimaryYellow,
+                            color: kPrimaryGreen,
                             size: 16,
                           ))
                     ],
@@ -169,7 +174,7 @@ class SingleDiagnosis extends StatelessWidget {
                       color: kFieldTextColor,
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

@@ -52,6 +52,7 @@ class _NewUpdateState extends State<NewUpdate> {
               ),
               Form(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       'Update Details',
@@ -65,6 +66,7 @@ class _NewUpdateState extends State<NewUpdate> {
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             'Update ID: U03/3\nDate: 09/04/2021',
@@ -81,12 +83,13 @@ class _NewUpdateState extends State<NewUpdate> {
                               color: kFieldTextColor,
                               fontSize: 14,
                               fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
                     ),
+                    Container(padding: EdgeInsets.only(top: 10)),
                     makeInput(
                         label: "How have you been feeling *",
                         required: true,
@@ -123,7 +126,7 @@ class _NewUpdateState extends State<NewUpdate> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,

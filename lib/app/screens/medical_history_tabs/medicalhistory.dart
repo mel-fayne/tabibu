@@ -29,7 +29,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
               },
             ),
             title: Padding(
-              padding: EdgeInsets.only(top: 8.0),
+              padding: EdgeInsets.only(top: 20.0),
               child: Row(children: [
                 Icon(MyCustomIcons.profile_user,
                     size: 30, color: kPrimaryGreen),

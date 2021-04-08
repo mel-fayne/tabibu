@@ -35,7 +35,7 @@ class _OverviewTabState extends State<OverviewTab> {
                       ListTile(
                         leading: Icon(
                           Icons.healing,
-                          color: Colors.red,
+                          color: Colors.purple,
                           size: 55,
                         ),
                         title: Text('Diagnosis: Depression',
@@ -50,11 +50,6 @@ class _OverviewTabState extends State<OverviewTab> {
                                 fontFamily: 'Source Sans',
                                 fontWeight: FontWeight.w600,
                                 color: kFieldTextColor)),
-                        trailing: Icon(
-                          Icons.keyboard_arrow_right_outlined,
-                          color: kPrimaryGreen,
-                          size: 34,
-                        ),
                       ),
                       ListTile(
                         leading: Icon(
@@ -74,11 +69,6 @@ class _OverviewTabState extends State<OverviewTab> {
                                 fontFamily: 'Source Sans',
                                 fontWeight: FontWeight.w600,
                                 color: kFieldTextColor)),
-                        trailing: Icon(
-                          Icons.keyboard_arrow_right_outlined,
-                          color: kPrimaryGreen,
-                          size: 34,
-                        ),
                       ),
                     ],
                   ),
