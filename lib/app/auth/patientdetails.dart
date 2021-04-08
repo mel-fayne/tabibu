@@ -67,7 +67,7 @@ class PatientDetails extends StatelessWidget {
                     makeInput(
                         label: "Avg. Temperature", fieldName: "temperature"),
                     makeInput(
-                        label: "Avg. Blood Presuure",
+                        label: "Avg. Blood Pressure",
                         fieldName: "blood_pressure"),
                     makeInput(label: "Blood Type", fieldName: "blood_type"),
                     makeInput(

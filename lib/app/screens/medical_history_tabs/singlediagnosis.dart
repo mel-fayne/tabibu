@@ -1,4 +1,5 @@
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 class SingleDiagnosis extends StatelessWidget {
@@ -31,17 +32,28 @@ class SingleDiagnosis extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
-                    'Diagnosis Details',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Diagnosis Details',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(
+                            Icons.details,
+                            color: kPrimaryYellow,
+                            size: 16,
+                          ))
+                    ],
                   ),
                   Text(
                     'Diagnosis ID: \nDoctor ID: \nDate: \nDiagnosis: Depression\nTreatment: Anti-depressants\nVitals: Body Temperature: 36 C\nBlood Pressure: 68mmHg\nBreathing Rate: 25 breaths per min\nBody Weight: 56kg',
@@ -56,17 +68,28 @@ class SingleDiagnosis extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
-                    'Diagnosis Symptoms',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Diagnosis Symptoms',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(
+                            Icons.sick,
+                            color: kPrimaryYellow,
+                            size: 16,
+                          ))
+                    ],
                   ),
                   Text(
                     'Shortness of Breath\nLoss of Appetitie\nDizziness',
@@ -81,20 +104,67 @@ class SingleDiagnosis extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
-                    'Diagnosis Description',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Diagnosis Description',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(
+                            Icons.description,
+                            color: kPrimaryYellow,
+                            size: 16,
+                          ))
+                    ],
                   ),
                   Text(
                     "We noted an improvement in John's drinking habits. He has a more postive outlook and the treatment is taking effect as expected",
+                    style: TextStyle(
+                      color: kFieldTextColor,
+                      fontSize: 14,
+                      fontFamily: 'Source Sans',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Diagnosis Treatment',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(
+                            MyCustomIcons.pill,
+                            color: kPrimaryYellow,
+                            size: 16,
+                          ))
+                    ],
+                  ),
+                  Text(
+                    "Medicine: Antidepressants\nPrescription: 1x3\nAdditional Treatment Info: Take after a balanced meal",
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,
