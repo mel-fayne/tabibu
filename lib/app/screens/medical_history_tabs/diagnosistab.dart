@@ -51,8 +51,7 @@ class _DiagnosisTabState extends State<DiagnosisTab> {
                   child: Column(children: [
                     GestureDetector(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(SingleDiagnosis.routeName);
+                          Navigator.of(context).pushNamed(SingleDiagnosis.routeName);
                         },
                         child: ListTile(
                           leading: Icon(
