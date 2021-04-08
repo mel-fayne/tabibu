@@ -221,7 +221,7 @@ class PatientDashboard extends StatelessWidget {
                                           path: MyCustomIcons.calendar,
                                           label: "Book Appointment"))))),
                       Container(
-                        padding: EdgeInsets.only(bottom: 170),
+                        padding: EdgeInsets.only(bottom: 130),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,

@@ -8,6 +8,7 @@ import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
+import 'package:Tabibu/app/screens/doctors/singleappointment.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/diagnosistab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         NewUpdate.routeName: (ctx) => NewUpdate(),
         SingleDoctor.routeName: (ctx) => SingleDoctor(),
         BookAppointment.routeName: (ctx) => BookAppointment(),
+        SingleAppointment.routeName: (ctx) => SingleAppointment(),
       },
       home: SignIn(),
     );

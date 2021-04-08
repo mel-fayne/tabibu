@@ -58,30 +58,36 @@ class NewRecord extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         children: [
                           Text(
                             'Diagnosis ID: R02/3\nDate: 10/03/2021',
                             style: TextStyle(
-                              color: kFieldTextColor,
+                              color: Colors.black,
                               fontSize: 14,
                               fontFamily: 'Source Sans',
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text(
-                            'Doctor ID: D012/2  Doctor Name: Dr.Jules Rue\nPatient ID: P003/2',
-                            style: TextStyle(
-                              color: kFieldTextColor,
-                              fontSize: 14,
-                              fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(
+                                'Doctor ID: D012/2\nDoctor Name: Dr.Jules Rue',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontFamily: 'Source Sans',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
                         ],
                       ),
                     ),
+                    makeInput(
+                        label: "Patient ID *",
+                        required: true,
+                        fieldName: "patient_id"),
                     makeInput(
                         label: "Disease *",
                         required: true,

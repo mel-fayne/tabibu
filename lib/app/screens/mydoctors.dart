@@ -25,6 +25,19 @@ class MyDoctors extends StatelessWidget {
         padding: EdgeInsets.only(left: 20),
         child: Column(children: [
           Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Your Doctors",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontFamily: 'PT Serif',
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black),
+                ),
+              )),
+          Padding(
               padding: EdgeInsets.only(bottom: 15, left: 15, right: 35),
               child: Container(
                   padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),

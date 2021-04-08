@@ -12,6 +12,7 @@ class _SingleUpdateState extends State<SingleUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 56,
