@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MedicalUpdate extends StatelessWidget {
-  static const routeName = "/medicalupdate";
+class SendUpdate extends StatelessWidget {
+  static const routeName = "/sendupdate";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

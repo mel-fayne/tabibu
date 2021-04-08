@@ -1,6 +1,6 @@
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
-import 'package:Tabibu/app/screens/doctors/myupdates.dart';
+import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/profile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
@@ -172,7 +172,7 @@ class DoctorDashboard extends StatelessWidget {
                             path: Icons.person_add_alt_1_outlined,
                             label: "Add patient"),
                         dashcard(
-                            redirect: MyUpdates.routeName,
+                            redirect: PatientUpdates.routeName,
                             path: MyCustomIcons.calendar,
                             label: "Check Updates"),
                       ]),

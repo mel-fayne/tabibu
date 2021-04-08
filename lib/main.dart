@@ -5,10 +5,14 @@ import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/auth/signup.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
-import 'package:Tabibu/app/screens/doctors/myupdates.dart';
+import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
-import 'package:Tabibu/app/screens/medicalhistory.dart';
-import 'package:Tabibu/app/screens/medicalupdate.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/diagnosistab.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/overviewtab.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
+import 'package:Tabibu/app/screens/sendupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/screens/profile.dart';
@@ -36,12 +40,16 @@ class MyApp extends StatelessWidget {
         DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
         PatientDashboard.routeName: (ctx) => PatientDashboard(),
         MedicalHistory.routeName: (ctx) => MedicalHistory(),
-        MedicalUpdate.routeName: (ctx) => MedicalUpdate(),
+        SendUpdate.routeName: (ctx) => SendUpdate(),
         MyDoctors.routeName: (ctx) => MyDoctors(),
         Profile.routeName: (ctx) => Profile(),
         MyPatients.routeName: (ctx) => MyPatients(),
         NewRecord.routeName: (ctx) => NewRecord(),
-        MyUpdates.routeName: (ctx) => MyUpdates(),
+        PatientUpdates.routeName: (ctx) => PatientUpdates(),
+        OverviewTab.routeName: (ctx) => OverviewTab(),
+        DiagnosisTab.routeName: (ctx) => DiagnosisTab(),
+        TreatmentTab.routeName: (ctx) => TreatmentTab(),
+        MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(),
       },
       home: SignIn(),
     );

@@ -1,6 +1,6 @@
 import 'package:Tabibu/app/auth/signin.dart';
-import 'package:Tabibu/app/screens/medicalhistory.dart';
-import 'package:Tabibu/app/screens/medicalupdate.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
+import 'package:Tabibu/app/screens/sendupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/profile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
@@ -163,41 +163,104 @@ class PatientDashboard extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(children: [
-                        dashcard(
-                            redirect: MedicalHistory.routeName,
-                            path: MyCustomIcons.history_clock_button,
-                            label: "View Medical History"),
-                        dashcard(
-                            redirect: MedicalUpdate.routeName,
-                            path: MyCustomIcons.email,
-                            label: "Send Medical Update"),
-                        dashcard(
-                            redirect: MyDoctors.routeName,
-                            path: MyCustomIcons.calendar,
-                            label: "Book Appointment"),
+                        Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, left: 20, bottom: 20),
+                            child: Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                color: Colors.white,
+                                child: Material(
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              MedicalHistory.routeName);
+                                        },
+                                        child: dashcard(
+                                            path: MyCustomIcons
+                                                .history_clock_button,
+                                            label: "View Medical History"))))),
+                        Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, left: 20, bottom: 20),
+                            child: Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                color: Colors.white,
+                                child: Material(
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .pushNamed(SendUpdate.routeName);
+                                        },
+                                        child: dashcard(
+                                            path: MyCustomIcons.email,
+                                            label: "Send Medical Update"))))),
                       ]),
+                      Padding(
+                          padding:
+                              EdgeInsets.only(top: 10, left: 20, bottom: 20),
+                          child: Card(
+                              elevation: 6,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.white,
+                              child: Material(
+                                  child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushNamed(MyDoctors.routeName);
+                                      },
+                                      child: dashcard(
+                                          path: MyCustomIcons.calendar,
+                                          label: "Book Appointment"))))),
                       Container(
-                          color: kPrimaryAccent,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                        padding: EdgeInsets.only(bottom: 170),
+                      ),
+                      Container(
+                          alignment: FractionalOffset.bottomCenter,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: kPrimaryAccent,
+                          ),
                           child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                navitem(
-                                  navlabel: "Home",
-                                  navpath: MyCustomIcons.home,
-                                  navredirect: null,
-                                ),
-                                navitem(
-                                  navlabel: "My Doctors",
-                                  navpath: MyCustomIcons.doctor,
-                                  navredirect: MyDoctors.routeName,
-                                ),
-                                navitem(
-                                  navlabel: "Profile",
-                                  navpath: MyCustomIcons.profile_user,
-                                  navredirect: Profile.routeName,
-                                ),
+                                Material(
+                                    color: kPrimaryAccent,
+                                    child: InkWell(
+                                        onTap: () {},
+                                        child: navitem(
+                                          navlabel: "Home",
+                                          navpath: MyCustomIcons.home,
+                                        ))),
+                                Material(
+                                    color: kPrimaryAccent,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .pushNamed(MyDoctors.routeName);
+                                        },
+                                        child: navitem(
+                                          navlabel: "My Doctors",
+                                          navpath: MyCustomIcons.doctor,
+                                        ))),
+                                Material(
+                                    color: kPrimaryAccent,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .pushNamed(Profile.routeName);
+                                        },
+                                        child: navitem(
+                                          navlabel: "Profile",
+                                          navpath: MyCustomIcons.profile_user,
+                                        ))),
                               ]))
                     ],
                   ),
@@ -207,73 +270,56 @@ class PatientDashboard extends StatelessWidget {
   }
 }
 
-Widget dashcard({label, path, redirect}) {
-  return Card(
-    elevation: 6,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    color: Colors.white,
-    child: Material(
-        child: InkWell(
-            onTap: () {
-              BuildContext context;
-              Navigator.of(context).pushNamed(redirect);
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Icon(
-                      path,
-                      size: 35,
-                      color: kPrimaryGreen,
-                    )), // icon
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                        fontFamily: 'PT Serif',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
-                        color: Colors.black.withOpacity(1.0)),
-                  ),
-                ), // text
-              ],
-            ))),
-  );
+Widget dashcard({label, path}) {
+  return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Icon(
+                path,
+                size: 35,
+                color: kPrimaryGreen,
+              )), // icon
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(
+              label,
+              style: TextStyle(
+                  fontFamily: 'PT Serif',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                  color: Colors.black.withOpacity(1.0)),
+            ),
+          ), // text
+        ],
+      ));
 }
 
-Widget navitem({navlabel, navpath, navredirect}) {
+Widget navitem({navlabel, navpath}) {
   bool isSelected = false;
-  return Material(
-      child: InkWell(
-          onTap: () {
-            BuildContext context;
-            Navigator.of(context).pushNamed(navredirect);
-          },
-          child: Column(
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Icon(
-                    navpath,
-                    size: 35,
-                    color: isSelected ? kPrimaryGreen : Colors.black,
-                  )),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Text(
-                    navlabel,
-                    style: TextStyle(
-                      fontFamily: 'PT Serif',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: isSelected ? kPrimaryGreen : Colors.black,
-                    ),
-                  ))
-            ],
-          )));
+  return Column(
+    children: [
+      Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Icon(
+            navpath,
+            size: 25,
+            color: isSelected ? kPrimaryGreen : Colors.black,
+          )),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+          child: Text(
+            navlabel,
+            style: TextStyle(
+              fontFamily: 'PT Serif',
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: isSelected ? kPrimaryGreen : Colors.black,
+            ),
+          ))
+    ],
+  );
 }
