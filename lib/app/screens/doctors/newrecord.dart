@@ -70,7 +70,7 @@ class NewRecord extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Doctor ID: D012/2\nPatient ID: P003/2',
+                            'Doctor ID: D012/2  Doctor Name: Dr.Jules Rue\nPatient ID: P003/2',
                             style: TextStyle(
                               color: kFieldTextColor,
                               fontSize: 14,

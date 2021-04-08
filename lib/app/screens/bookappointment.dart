@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SendUpdate extends StatelessWidget {
-  static const routeName = "/sendupdate";
+class BookAppointment extends StatefulWidget {
+  static const routeName = "/bookappointment";
+
+  @override
+  _BookAppointmentState createState() => _BookAppointmentState();
+}
+
+class _BookAppointmentState extends State<BookAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

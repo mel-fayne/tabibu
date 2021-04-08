@@ -30,7 +30,19 @@ class _MedicalHistoryState extends State<MedicalHistory> {
             ),
             title: Padding(
               padding: EdgeInsets.only(top: 8.0),
-              child: Row(),
+              child: Row(children: [
+                Icon(MyCustomIcons.profile_user,
+                    size: 30, color: kPrimaryGreen),
+                Padding(
+                    padding: EdgeInsets.only(left: 15),
+                    child: Text('Patient Name: John Doe\nPatient ID: P002/3',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'PT Serif',
+                        )))
+              ]),
             ),
             bottom: TabBar(
               indicatorColor: kPrimaryGreen,

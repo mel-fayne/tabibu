@@ -1,6 +1,6 @@
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
-import 'package:Tabibu/app/screens/sendupdate.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/profile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
@@ -196,7 +196,7 @@ class PatientDashboard extends StatelessWidget {
                                     child: InkWell(
                                         onTap: () {
                                           Navigator.of(context)
-                                              .pushNamed(SendUpdate.routeName);
+                                              .pushNamed(NewUpdate.routeName);
                                         },
                                         child: dashcard(
                                             path: MyCustomIcons.email,

@@ -56,7 +56,7 @@ class SingleDiagnosis extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Diagnosis ID: \nDoctor ID: \nDate: \nDiagnosis: Depression\nTreatment: Anti-depressants\nVitals: Body Temperature: 36 C\nBlood Pressure: 68mmHg\nBreathing Rate: 25 breaths per min\nBody Weight: 56kg',
+                    'Diagnosis ID: M003/1  Date: 10/03/2021\nDoctor Name: Dr.Jules Rue  Doctor ID: D002/2\nDiagnosis: Depression\nTreatment: Anti-depressants\nVitals: Body Temperature: 36 C\nBlood Pressure: 68mmHg\nBreathing Rate: 25 breaths per min\nBody Weight: 56kg',
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,

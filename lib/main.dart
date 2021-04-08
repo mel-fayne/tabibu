@@ -3,6 +3,7 @@ import 'package:Tabibu/app/auth/forgotpassword.dart';
 import 'package:Tabibu/app/auth/patientdetails.dart';
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/auth/signup.dart';
+import 'package:Tabibu/app/screens/bookappointment.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
@@ -15,8 +16,8 @@ import 'package:Tabibu/app/screens/medical_history_tabs/singlediagnosis.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/singleupdate.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
-import 'package:Tabibu/app/screens/sendupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
+import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/screens/profile.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,6 @@ class MyApp extends StatelessWidget {
         DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
         PatientDashboard.routeName: (ctx) => PatientDashboard(),
         MedicalHistory.routeName: (ctx) => MedicalHistory(),
-        SendUpdate.routeName: (ctx) => SendUpdate(),
         MyDoctors.routeName: (ctx) => MyDoctors(),
         Profile.routeName: (ctx) => Profile(),
         MyPatients.routeName: (ctx) => MyPatients(),
@@ -56,6 +56,8 @@ class MyApp extends StatelessWidget {
         SingleDiagnosis.routeName: (ctx) => SingleDiagnosis(),
         SingleUpdate.routeName: (ctx) => SingleUpdate(),
         NewUpdate.routeName: (ctx) => NewUpdate(),
+        SingleDoctor.routeName: (ctx) => SingleDoctor(),
+        BookAppointment.routeName: (ctx) => BookAppointment(),
       },
       home: SignIn(),
     );
