@@ -142,11 +142,12 @@ class PatientDashboard extends StatelessWidget {
                               ),
                               Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text('',
+                                  child: Text(
+                                      'Oh no!😨Not a third wave🤒Let us adhere to\nMOH guidelines and we will overcome this.\nWear your mask😷 and remember to sanitise👏',
                                       style: TextStyle(
                                           fontFamily: 'Source Sans',
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white)))
+                                          color: Colors.black)))
                             ],
                           ),
                         ))),

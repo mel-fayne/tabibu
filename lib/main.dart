@@ -10,6 +10,7 @@ import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/diagnosistab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/overviewtab.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/singlediagnosis.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
 import 'package:Tabibu/app/screens/sendupdate.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         DiagnosisTab.routeName: (ctx) => DiagnosisTab(),
         TreatmentTab.routeName: (ctx) => TreatmentTab(),
         MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(),
+        SingleDiagnosis.routeName: (ctx) => SingleDiagnosis(),
       },
       home: SignIn(),
     );

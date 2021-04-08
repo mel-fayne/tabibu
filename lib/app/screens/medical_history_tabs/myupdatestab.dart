@@ -10,16 +10,8 @@ class MyUpdatesTab extends StatefulWidget {
 class _MyUpdatesTabState extends State<MyUpdatesTab> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )),
-        body: Container());
+    return Scaffold(body: Container(
+      
+    ));
   }
 }
