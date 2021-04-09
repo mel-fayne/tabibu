@@ -18,6 +18,7 @@ import 'package:Tabibu/app/screens/medical_history_tabs/singleupdate.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
+import 'package:Tabibu/app/screens/notifications.dart';
 import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/screens/profile.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         SingleDoctor.routeName: (ctx) => SingleDoctor(),
         BookAppointment.routeName: (ctx) => BookAppointment(),
         SingleAppointment.routeName: (ctx) => SingleAppointment(),
+        Notifications.routeName: (ctx) => Notifications(),
       },
       home: SignIn(),
     );
