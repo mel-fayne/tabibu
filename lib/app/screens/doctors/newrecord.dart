@@ -1,8 +1,43 @@
+import 'package:Tabibu/app/models/diagnosis.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:Tabibu/app/utils/database_helper.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class NewRecord extends StatelessWidget {
+class NewRecord extends StatefulWidget {
   static const routeName = "/newrecord";
+
+  final Diagnosis diagnosis;
+
+  NewRecord(this.diagnosis);
+
+  @override
+  State<StatefulWidget> createState() {
+    return NewRecordState(this.diagnosis);
+  }
+}
+
+class NewRecordState extends State<NewRecord> {
+  DatabaseHelper helper = DatabaseHelper();
+
+  Diagnosis diagnosis;
+
+  TextEditingController patientidController = TextEditingController();
+  TextEditingController diseaseController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+  TextEditingController temperatureController = TextEditingController();
+  TextEditingController pulserateController = TextEditingController();
+  TextEditingController bloodpressureController = TextEditingController();
+  TextEditingController symptomsController = TextEditingController();
+  TextEditingController medicineController = TextEditingController();
+  TextEditingController prescriptionController = TextEditingController();
+  TextEditingController additionaltreatmentinfoController =
+      TextEditingController();
+
+  NewRecordState(this.diagnosis);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,13 +120,15 @@ class NewRecord extends StatelessWidget {
                       ),
                     ),
                     makeInput(
-                        label: "Patient ID *",
-                        required: true,
-                        fieldName: "patient_id"),
+                      label: "Patient ID *",
+                      controller: patientidController,
+                      required: true,
+                    ),
                     makeInput(
-                        label: "Disease *",
-                        required: true,
-                        fieldName: "disease"),
+                      label: "Disease *",
+                      controller: diseaseController,
+                      required: true,
+                    ),
                     Text(
                       'Vitals',
                       style: TextStyle(
@@ -103,30 +140,30 @@ class NewRecord extends StatelessWidget {
                     ),
                     makeInput(
                       label: "Avg. Weight *",
-                      fieldName: "weight",
+                      controller: weightController,
                       required: true,
                     ),
                     makeInput(
                       label: "Avg. Temperature *",
-                      fieldName: "temperature",
+                      controller: temperatureController,
                       required: true,
                     ),
                     makeInput(
                         label: "Avg. Blood Pressure *",
-                        fieldName: "blood_pressure"),
+                        controller: bloodpressureController),
                     makeInput(
                       label: "Pulse Rate *",
-                      fieldName: "pulse_rate",
+                      controller: pulserateController,
                       required: true,
                     ),
                     makeInput(
                       label: "Diagnosis Symptoms*",
-                      fieldName: "symptoms",
+                      controller: symptomsController,
                       required: true,
                     ),
                     makeInput(
                       label: "Diagnosis Description *",
-                      fieldName: "symptoms",
+                      controller: descriptionController,
                       required: true,
                     ),
                     Text(
@@ -141,14 +178,14 @@ class NewRecord extends StatelessWidget {
                     makeInput(
                         label: "Medicine *",
                         required: true,
-                        fieldName: "medicine"),
+                        controller: medicineController),
                     makeInput(
                         label: "Prescription *",
                         required: true,
-                        fieldName: "prescription"),
+                        controller: prescriptionController),
                     makeInput(
                         label: "Additional Treatment Information",
-                        fieldName: "additional_info"),
+                        controller: additionaltreatmentinfoController),
                   ],
                 ),
               ),
@@ -157,7 +194,12 @@ class NewRecord extends StatelessWidget {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      debugPrint("Save record button clicked");
+                      _save();
+                    });
+                  },
                   color: kPrimaryGreen,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -176,31 +218,76 @@ class NewRecord extends StatelessWidget {
       ),
     );
   }
+
+// Insert the diagnosis object
+  void updateDisease() {
+    diagnosis.disease = diseaseController.text;
+  }
+
+  // Save data to database
+  void _save() async {
+    Navigator.pop(context, true);
+
+    diagnosis.diagnosisdate = DateFormat.yMMMd().format(DateTime.now());
+    int result;
+    if (diagnosis.diagnosisid != null) {
+      // Case 1: Update operation
+      result = await helper.updateDiagnosis(diagnosis);
+    } else {
+      // Case 2: Insert Operation
+      result = await helper.insertDiagnosis(diagnosis);
+    }
+
+    if (result != 0) {
+      // Success
+      showflushbar(message: 'Medical Record saved');
+    } else {
+      // Failure
+      showflushbar(
+          message:
+              'Error encountered when saving record!\nTry again after a few moments');
+    }
+  }
+
+  void showflushbar({message}) {
+    Flushbar(
+      icon: Icon(Icons.error, size: 28, color: Colors.white),
+      message: message,
+      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+      borderRadius: 10,
+      backgroundColor: kPrimaryYellow,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  }
 }
 
 Widget makeInput({
+  controller,
   label,
+  insert,
   required: false,
-  fieldName,
 }) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'Source Sans',
-            fontWeight: FontWeight.w400,
-            color: kFieldTextColor),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextFormField(onSaved: (value) {}),
-      SizedBox(
-        height: 10,
-      ),
-    ],
+  return Padding(
+    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+    child: TextField(
+      controller: controller,
+      style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Source Sans',
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
+      onChanged: (value) {
+        debugPrint('something changed in this feld');
+      },
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Source Sans',
+              fontWeight: FontWeight.w400,
+              color: kFieldTextColor),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+    ),
   );
 }

@@ -1,5 +1,4 @@
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatelessWidget {

@@ -1,9 +1,32 @@
+import 'package:Tabibu/app/models/diagnosis.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
+import 'package:Tabibu/app/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
-class SingleDiagnosis extends StatelessWidget {
+class SingleDiagnosis extends StatefulWidget {
   static const routeName = "/singlediagnosis";
+
+  final Diagnosis diagnosis;
+
+  SingleDiagnosis(this.diagnosis);
+
+  @override
+  State<StatefulWidget> createState() {
+    return SingleDiagnosisState(this.diagnosis);
+  }
+}
+
+class SingleDiagnosisState extends State<SingleDiagnosis> {
+  DatabaseHelper helper = DatabaseHelper();
+
+  Diagnosis diagnosis;
+
+//	TextEditingController titleController = TextEditingController();
+//	TextEditingController descriptionController = TextEditingController();
+
+  SingleDiagnosisState(this.diagnosis);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

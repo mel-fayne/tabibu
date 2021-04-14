@@ -109,7 +109,7 @@ class DoctorDashboard extends StatelessWidget {
             ],
           ),
         ),
-        body: Container(
+        body: SingleChildScrollView(
           padding: EdgeInsets.all(15),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
