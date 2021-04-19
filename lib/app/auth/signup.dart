@@ -32,7 +32,7 @@ class _SignUpState extends State<SignUp> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          height: MediaQuery.of(context).size.height - 70,
+          // height: MediaQuery.of(context).size.height - 70,
           width: double.infinity,
           child: Column(
             children: <Widget>[
@@ -135,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                     ],
                   )),
               Container(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 10, bottom: 20),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(SignIn.routeName);

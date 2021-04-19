@@ -119,15 +119,53 @@ class NewRecordState extends State<NewRecord> {
                         ],
                       ),
                     ),
-                    makeInput(
-                      label: "Patient ID *",
-                      controller: patientidController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: patientidController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.patientid = patientidController.text as int;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Patient ID *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
-                    makeInput(
-                      label: "Disease *",
-                      controller: diseaseController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: diseaseController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.disease = diseaseController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Disease *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
                     Text(
                       'Vitals',
@@ -138,33 +176,151 @@ class NewRecordState extends State<NewRecord> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    makeInput(
-                      label: "Avg. Weight *",
-                      controller: weightController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: weightController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.weight = weightController.text as int;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Avg. Weight(in Kilograms) *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
-                    makeInput(
-                      label: "Avg. Temperature *",
-                      controller: temperatureController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: temperatureController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.temperature =
+                              temperatureController.text as int;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Avg. Temperature(in degrees Celcius) *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
-                    makeInput(
-                        label: "Avg. Blood Pressure *",
-                        controller: bloodpressureController),
-                    makeInput(
-                      label: "Pulse Rate *",
-                      controller: pulserateController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: bloodpressureController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.bloodpressure =
+                              bloodpressureController.text as int;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Avg. Blood Pressure(in mmHg) *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
-                    makeInput(
-                      label: "Diagnosis Symptoms*",
-                      controller: symptomsController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: pulserateController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.pulserate = pulserateController.text as int;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Avg. Pulse Rate(in beats per minute) *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
-                    makeInput(
-                      label: "Diagnosis Description *",
-                      controller: descriptionController,
-                      required: true,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: symptomsController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.symptoms = symptomsController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Diagnosis Symptoms *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: descriptionController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.description = descriptionController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Diagnosis Description *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
                     ),
                     Text(
                       'Treatment',
@@ -175,17 +331,79 @@ class NewRecordState extends State<NewRecord> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    makeInput(
-                        label: "Medicine *",
-                        required: true,
-                        controller: medicineController),
-                    makeInput(
-                        label: "Prescription *",
-                        required: true,
-                        controller: prescriptionController),
-                    makeInput(
-                        label: "Additional Treatment Information",
-                        controller: additionaltreatmentinfoController),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: medicineController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.medicine = medicineController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Medicine *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: prescriptionController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.prescription = prescriptionController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Prescription *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: TextField(
+                        controller: additionaltreatmentinfoController,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                        onChanged: (value) {
+                          debugPrint('something changed in this feld');
+                          diagnosis.additionaltreatmentinfo =
+                              additionaltreatmentinfoController.text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Additional Treatment Information *',
+                            labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: kFieldTextColor),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -227,19 +445,18 @@ class NewRecordState extends State<NewRecord> {
   // Save data to database
   void _save() async {
     Navigator.pop(context, true);
-
-    diagnosis.diagnosisdate = DateFormat.yMMMd().format(DateTime.now());
+    // diagnosis.diagnosisdate = DateFormat.yMMMd().format(DateTime.now());
     int result;
-    if (diagnosis.diagnosisid != null) {
+    /*  if (diagnosis.diagnosisid != null) {
       // Case 1: Update operation
       result = await helper.updateDiagnosis(diagnosis);
-    } else {
-      // Case 2: Insert Operation
-      result = await helper.insertDiagnosis(diagnosis);
-    }
-
+    } else { */
+    // Case 2: Insert Operation
+    result = await helper.insertDiagnosis(diagnosis);
+    // }
     if (result != 0) {
       // Success
+      debugPrint("New record added");
       showflushbar(message: 'Medical Record saved');
     } else {
       // Failure
@@ -249,6 +466,7 @@ class NewRecordState extends State<NewRecord> {
     }
   }
 
+  //Show error message
   void showflushbar({message}) {
     Flushbar(
       icon: Icon(Icons.error, size: 28, color: Colors.white),
@@ -262,10 +480,9 @@ class NewRecordState extends State<NewRecord> {
   }
 }
 
-Widget makeInput({
+/* Widget makeInput({
   controller,
   label,
-  insert,
   required: false,
 }) {
   return Padding(
@@ -290,4 +507,4 @@ Widget makeInput({
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
+} */

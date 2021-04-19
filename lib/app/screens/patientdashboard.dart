@@ -135,7 +135,8 @@ class PatientDashboard extends StatelessWidget {
                         ),
                         color: kPrimaryYellow,
                         child: Container(
-                          padding: EdgeInsets.all(20),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 15, horizontal: 7),
                           child: Row(
                             children: [
                               Image(
@@ -144,7 +145,7 @@ class PatientDashboard extends StatelessWidget {
                                 height: 55,
                               ),
                               Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
                                   child: Text(
                                       'Oh no!😨Not a third wave🤒Let us adhere to\nMOH guidelines and we will overcome this.\nWear your mask😷 and remember to sanitise👏',
                                       style: TextStyle(
@@ -224,7 +225,7 @@ class PatientDashboard extends StatelessWidget {
                                           path: MyCustomIcons.calendar,
                                           label: "Book Appointment"))))),
                       Container(
-                        padding: EdgeInsets.only(bottom: 130),
+                        padding: EdgeInsets.only(bottom: 60),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,
