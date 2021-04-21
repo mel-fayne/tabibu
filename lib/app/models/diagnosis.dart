@@ -1,33 +1,21 @@
+//shows how the data of a diagnosis object should be modelled...
+
 class Diagnosis {
-  int _diagnosisid;
-  int _patientid;
-  String _disease;
-  String _description;
-  String _diagnosisdate;
-  int _weight;
-  int _temperature;
-  int _pulserate;
-  int _bloodpressure;
-  String _symptoms;
-  String _medicine;
-  String _prescription;
-  String _additionaltreatmentinfo;
+  final int _diagnosisid;
+  final int _patientid;
+  final String _disease;
+  final String _description;
+  final String _diagnosisdate;
+  final double _weight;
+  final double _temperature;
+  final double _pulserate;
+  final double _bloodpressure;
+  final String _symptoms;
+  final String _medicine;
+  final String _prescription;
+  final String _additionaltreatmentinfo;
 
   Diagnosis(
-      this._patientid,
-      this._disease,
-      this._description,
-      this._diagnosisdate,
-      this._weight,
-      this._temperature,
-      this._pulserate,
-      this._bloodpressure,
-      this._symptoms,
-      this._medicine,
-      this._prescription,
-      this._additionaltreatmentinfo);
-
-  Diagnosis.withId(
       this._diagnosisid,
       this._patientid,
       this._disease,
@@ -40,8 +28,11 @@ class Diagnosis {
       this._symptoms,
       this._medicine,
       this._prescription,
-      this._additionaltreatmentinfo);
-
+      this._additionaltreatmentinfo,
+      {additionaltreatmentinfo,
+      description});
+}
+/*
   int get diagnosisid => _diagnosisid;
   int get patientid => _patientid;
   String get disease => _disease;
@@ -144,3 +135,4 @@ class Diagnosis {
     this._additionaltreatmentinfo = map['additionaltreatmentinfo'];
   }
 }
+ */

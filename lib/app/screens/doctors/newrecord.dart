@@ -1,28 +1,16 @@
-import 'package:Tabibu/app/models/diagnosis.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/utils/database_helper.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class NewRecord extends StatefulWidget {
   static const routeName = "/newrecord";
-
-  final Diagnosis diagnosis;
-
-  NewRecord(this.diagnosis);
-
   @override
   State<StatefulWidget> createState() {
-    return NewRecordState(this.diagnosis);
+    return NewRecordState();
   }
 }
 
 class NewRecordState extends State<NewRecord> {
-  DatabaseHelper helper = DatabaseHelper();
-
-  Diagnosis diagnosis;
-
   TextEditingController patientidController = TextEditingController();
   TextEditingController diseaseController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -36,7 +24,7 @@ class NewRecordState extends State<NewRecord> {
   TextEditingController additionaltreatmentinfoController =
       TextEditingController();
 
-  NewRecordState(this.diagnosis);
+  NewRecordState();
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +110,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: patientidController,
                         style: TextStyle(
                             fontSize: 14,
@@ -130,7 +119,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.patientid = patientidController.text as int;
+                          //  diagnosis.patientid = patientidController.text as int;
                         },
                         decoration: InputDecoration(
                             labelText: 'Patient ID *',
@@ -146,6 +135,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: diseaseController,
                         style: TextStyle(
                             fontSize: 14,
@@ -154,7 +144,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.disease = diseaseController.text;
+                          //   diagnosis.disease = diseaseController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Disease *',
@@ -179,6 +169,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: weightController,
                         style: TextStyle(
                             fontSize: 14,
@@ -187,7 +178,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.weight = weightController.text as int;
+                          //  diagnosis.weight = weightController.text as int;
                         },
                         decoration: InputDecoration(
                             labelText: 'Avg. Weight(in Kilograms) *',
@@ -203,6 +194,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: temperatureController,
                         style: TextStyle(
                             fontSize: 14,
@@ -211,8 +203,8 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.temperature =
-                              temperatureController.text as int;
+                          //  diagnosis.temperature =
+                          temperatureController.text as int;
                         },
                         decoration: InputDecoration(
                             labelText: 'Avg. Temperature(in degrees Celcius) *',
@@ -228,6 +220,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: bloodpressureController,
                         style: TextStyle(
                             fontSize: 14,
@@ -236,8 +229,8 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.bloodpressure =
-                              bloodpressureController.text as int;
+                          //  diagnosis.bloodpressure =
+                          bloodpressureController.text as int;
                         },
                         decoration: InputDecoration(
                             labelText: 'Avg. Blood Pressure(in mmHg) *',
@@ -253,6 +246,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: pulserateController,
                         style: TextStyle(
                             fontSize: 14,
@@ -261,7 +255,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.pulserate = pulserateController.text as int;
+                          //   diagnosis.pulserate = pulserateController.text as int;
                         },
                         decoration: InputDecoration(
                             labelText: 'Avg. Pulse Rate(in beats per minute) *',
@@ -277,6 +271,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: symptomsController,
                         style: TextStyle(
                             fontSize: 14,
@@ -285,7 +280,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.symptoms = symptomsController.text;
+                          // diagnosis.symptoms = symptomsController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Diagnosis Symptoms *',
@@ -301,6 +296,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: descriptionController,
                         style: TextStyle(
                             fontSize: 14,
@@ -309,7 +305,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.description = descriptionController.text;
+                          //  diagnosis.description = descriptionController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Diagnosis Description *',
@@ -334,6 +330,7 @@ class NewRecordState extends State<NewRecord> {
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
+                        cursorColor: kPrimaryGreen,
                         controller: medicineController,
                         style: TextStyle(
                             fontSize: 14,
@@ -342,7 +339,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.medicine = medicineController.text;
+                          //  diagnosis.medicine = medicineController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Medicine *',
@@ -359,6 +356,7 @@ class NewRecordState extends State<NewRecord> {
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
                         controller: prescriptionController,
+                        cursorColor: kPrimaryGreen,
                         style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Source Sans',
@@ -366,7 +364,7 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.prescription = prescriptionController.text;
+                          //  diagnosis.prescription = prescriptionController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Prescription *',
@@ -383,6 +381,7 @@ class NewRecordState extends State<NewRecord> {
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: TextField(
                         controller: additionaltreatmentinfoController,
+                        cursorColor: kPrimaryGreen,
                         style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Source Sans',
@@ -390,8 +389,8 @@ class NewRecordState extends State<NewRecord> {
                             color: Colors.black),
                         onChanged: (value) {
                           debugPrint('something changed in this feld');
-                          diagnosis.additionaltreatmentinfo =
-                              additionaltreatmentinfoController.text;
+                          //  diagnosis.additionaltreatmentinfo =
+                          additionaltreatmentinfoController.text;
                         },
                         decoration: InputDecoration(
                             labelText: 'Additional Treatment Information *',
@@ -437,11 +436,6 @@ class NewRecordState extends State<NewRecord> {
     );
   }
 
-// Insert the diagnosis object
-  void updateDisease() {
-    diagnosis.disease = diseaseController.text;
-  }
-
   // Save data to database
   void _save() async {
     Navigator.pop(context, true);
@@ -452,7 +446,7 @@ class NewRecordState extends State<NewRecord> {
       result = await helper.updateDiagnosis(diagnosis);
     } else { */
     // Case 2: Insert Operation
-    result = await helper.insertDiagnosis(diagnosis);
+    //  result = await helper.insertDiagnosis(diagnosis);
     // }
     if (result != 0) {
       // Success
@@ -479,32 +473,3 @@ class NewRecordState extends State<NewRecord> {
     )..show(context);
   }
 }
-
-/* Widget makeInput({
-  controller,
-  label,
-  required: false,
-}) {
-  return Padding(
-    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
-      controller: controller,
-      style: TextStyle(
-          fontSize: 14,
-          fontFamily: 'Source Sans',
-          fontWeight: FontWeight.w400,
-          color: Colors.black),
-      onChanged: (value) {
-        debugPrint('something changed in this feld');
-      },
-      decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(
-              fontSize: 14,
-              fontFamily: 'Source Sans',
-              fontWeight: FontWeight.w400,
-              color: kFieldTextColor),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-    ),
-  );
-} */

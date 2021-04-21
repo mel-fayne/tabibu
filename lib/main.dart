@@ -3,7 +3,6 @@ import 'package:Tabibu/app/auth/forgotpassword.dart';
 import 'package:Tabibu/app/auth/patientdetails.dart';
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/auth/signup.dart';
-import 'package:Tabibu/app/models/diagnosis.dart';
 import 'package:Tabibu/app/screens/bookappointment.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
@@ -29,14 +28,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Diagnosis get diagnosis => null;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
@@ -51,7 +48,7 @@ class MyApp extends StatelessWidget {
         MyDoctors.routeName: (ctx) => MyDoctors(),
         Profile.routeName: (ctx) => Profile(),
         MyPatients.routeName: (ctx) => MyPatients(),
-        NewRecord.routeName: (ctx) => NewRecord(this.diagnosis),
+        NewRecord.routeName: (ctx) => NewRecord(),
         PatientUpdates.routeName: (ctx) => PatientUpdates(),
         OverviewTab.routeName: (ctx) => OverviewTab(),
         DiagnosisTab.routeName: (ctx) => DiagnosisTab(),
