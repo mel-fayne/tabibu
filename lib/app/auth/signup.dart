@@ -7,6 +7,7 @@ import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,9 +21,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   String _myRole;
+  // int _mobilenumber;
 
-  TextEditingController namectrl, emailctrl, mobilectrl, countyctrl, passctrl;
-
+  TextEditingController namectrl, emailctrl, countyctrl, passctrl;
+// mobilectrl
   bool processing = false;
 
   @override
@@ -31,7 +33,7 @@ class _SignUpState extends State<SignUp> {
     super.initState();
     namectrl = new TextEditingController();
     emailctrl = new TextEditingController();
-    mobilectrl = new TextEditingController();
+//    mobilectrl = new TextEditingController();
     countyctrl = new TextEditingController();
     passctrl = new TextEditingController();
   }
@@ -92,11 +94,11 @@ class _SignUpState extends State<SignUp> {
                       controller: emailctrl,
                       type: TextInputType.emailAddress,
                     ),
-                    makeInput(
+                    /* makeInput(
                       label: "Mobile Number *",
                       controller: mobilectrl,
                       type: TextInputType.number,
-                    ),
+                    ), */
                     makeInput(
                       label: "Residence County *",
                       controller: countyctrl,
@@ -194,6 +196,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void registerUser() async {
+    //  _mobilenumber = int.parse(mobilectrl.text);
     setState(() {
       processing = true;
     });
@@ -201,7 +204,7 @@ class _SignUpState extends State<SignUp> {
     var data = {
       "name": namectrl.text,
       "email": emailctrl.text,
-      "mobilenumber": int.parse(mobilectrl.text),
+      //  "mobilenumber": _mobilenumber,
       "county": countyctrl.text,
       "pass": passctrl.text,
       "role": _myRole
@@ -218,11 +221,6 @@ class _SignUpState extends State<SignUp> {
         showFlushbar(
           message: "Account Succesfuly Created!\nWelcome to Tabibu",
         );
-        if (_myRole == "patient") {
-          Navigator.of(context).pushNamed(PatientDashboard.routeName);
-        } else {
-          Navigator.of(context).pushNamed(DoctorDashboard.routeName);
-        }
       } else {
         showFlushbar(
           message: "An error occured!",
@@ -231,35 +229,11 @@ class _SignUpState extends State<SignUp> {
     }
     setState(() {
       processing = false;
-    });
-  }
-
-  void userSignIn() async {
-    setState(() {
-      processing = true;
-    });
-    var url = "";
-    var data = {
-      "email": emailctrl.text,
-      "pass": passctrl.text,
-    };
-
-    var res = await http.post(url, body: data);
-
-    if (jsonDecode(res.body) == "dont have an account") {
-      showFlushbar(
-          message:
-              "The account doesn't exist!\nSign up to create a Tabibu account");
-    } else {
-      if (jsonDecode(res.body) == "false") {
-        showFlushbar(message: "Incorrect Password!");
+      if (_myRole == "patient") {
+        Navigator.of(context).pushNamed(PatientDashboard.routeName);
       } else {
-        print(jsonDecode(res.body));
+        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
       }
-    }
-
-    setState(() {
-      processing = false;
     });
   }
 }
