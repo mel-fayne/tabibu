@@ -18,7 +18,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       liscencectrl,
       practiceyearsctrl,
       specialtyctrl,
-      loadlimitctrl;
+      aboutctrl,
+      loadlimitctrl,
+      daysctrl,
+      timectrl;
 
   @override
   void initState() {
@@ -27,7 +30,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     hospitalctrl = new TextEditingController();
     liscencectrl = new TextEditingController();
     loadlimitctrl = new TextEditingController();
+    aboutctrl = new TextEditingController();
     specialtyctrl = new TextEditingController();
+    daysctrl = new TextEditingController();
+    timectrl = new TextEditingController();
   }
 
   @override
@@ -87,9 +93,25 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     makeInput(
                         label: "Years of Medical Practise *",
                         controller: practiceyearsctrl),
+                    makeInput(label: "About Me *", controller: aboutctrl),
+                    Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          'Availability Stats',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Source Sans',
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        )),
                     makeInput(
                         label: "Patient Load Limit *",
                         controller: loadlimitctrl),
+                    makeInput(
+                        label: "Days of the week when available: *",
+                        controller: daysctrl),
+                    makeInput(
+                        label: "Appointment Times *", controller: timectrl),
                   ],
                 ),
               ),
@@ -105,7 +127,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text("FINISH SET UP",
+                  child: Text("SAVE MY DETAILS",
                       style: TextStyle(
                           color: kPrimaryYellow,
                           fontFamily: 'PT Serif',

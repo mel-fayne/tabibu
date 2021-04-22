@@ -1,14 +1,42 @@
 import 'package:Tabibu/app/auth/signin.dart';
+import 'package:Tabibu/app/screens/doctors/doctorprofile.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
-import 'package:Tabibu/app/screens/profile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class DoctorDashboard extends StatelessWidget {
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
+class DoctorDashboard extends StatefulWidget {
   static const routeName = "/doctordashboard";
+
+  @override
+  _DoctorDashboardState createState() => _DoctorDashboardState();
+}
+
+class _DoctorDashboardState extends State<DoctorDashboard> {
+  Map data;
+  List diagnosisData;
+
+  Future getData() async {
+    http.Response response = await http
+        .get("http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php");
+    data = json.decode(response.body);
+    setState(() {
+      diagnosisData = data["   "];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +145,7 @@ class DoctorDashboard extends StatelessWidget {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child: Text('Welcome to Tabibu Dr.Jules Rue',
+                    child: Text('Welcome to Tabibu Dr.{}',
                         style: TextStyle(
                             fontSize: 26,
                             fontFamily: 'Source Sans',
@@ -256,8 +284,8 @@ class DoctorDashboard extends StatelessWidget {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(Profile.routeName);
+                                          Navigator.of(context).pushNamed(
+                                              DoctorProfile.routeName);
                                         },
                                         child: navitem(
                                           navlabel: "Profile",

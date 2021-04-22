@@ -33,7 +33,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'More Diagnosis Deatails',
+              'More Diagnosis Details',
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'PT Serif',

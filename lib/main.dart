@@ -5,6 +5,7 @@ import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/auth/signup.dart';
 import 'package:Tabibu/app/screens/bookappointment.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
+import 'package:Tabibu/app/screens/doctors/doctorprofile.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
@@ -20,7 +21,7 @@ import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/notifications.dart';
 import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
-import 'package:Tabibu/app/screens/profile.dart';
+import 'package:Tabibu/app/screens/patientprofile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
         PatientDashboard.routeName: (ctx) => PatientDashboard(),
         MedicalHistory.routeName: (ctx) => MedicalHistory(),
         MyDoctors.routeName: (ctx) => MyDoctors(),
-        Profile.routeName: (ctx) => Profile(),
+        PatientProfile.routeName: (ctx) => PatientProfile(),
+        DoctorProfile.routeName: (ctx) => DoctorProfile(),
         MyPatients.routeName: (ctx) => MyPatients(),
         NewRecord.routeName: (ctx) => NewRecord(),
         PatientUpdates.routeName: (ctx) => PatientUpdates(),

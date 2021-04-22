@@ -17,6 +17,7 @@ class _SingleDoctorState extends State<SingleDoctor> {
       backgroundColor: Colors.white,
       appBar: AppBar(
           elevation: 0,
+          brightness: Brightness.light,
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -25,7 +26,7 @@ class _SingleDoctorState extends State<SingleDoctor> {
               Navigator.of(context).pop();
             },
           )),
-      body: Container(
+      body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 5),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -83,7 +84,7 @@ class _SingleDoctorState extends State<SingleDoctor> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Stats',
+                          /* Text('Stats',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'Source Sans',
@@ -112,14 +113,14 @@ class _SingleDoctorState extends State<SingleDoctor> {
                                               size: 66,
                                             ),
                                             Text(
-                                                '1. Helathy Patients\n2. Diagnosed Patients\n 3. Patients on Treatment',
+                                                '1. Healthy Patients\n2. Diagnosed Patients\n 3. Patients on Treatment',
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontFamily: 'Source Sans',
                                                     fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.w600)),
-                                          ])))),
+                                          ])))), */
                           Text('About',
                               style: TextStyle(
                                   color: Colors.black,

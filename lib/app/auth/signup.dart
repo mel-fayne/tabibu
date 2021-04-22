@@ -21,10 +21,9 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   String _myRole;
-  // int _mobilenumber;
 
-  TextEditingController namectrl, emailctrl, countyctrl, passctrl;
-// mobilectrl
+  TextEditingController namectrl, emailctrl, mobilectrl, countyctrl, passctrl;
+
   bool processing = false;
 
   @override
@@ -33,7 +32,7 @@ class _SignUpState extends State<SignUp> {
     super.initState();
     namectrl = new TextEditingController();
     emailctrl = new TextEditingController();
-//    mobilectrl = new TextEditingController();
+    mobilectrl = new TextEditingController();
     countyctrl = new TextEditingController();
     passctrl = new TextEditingController();
   }
@@ -94,11 +93,11 @@ class _SignUpState extends State<SignUp> {
                       controller: emailctrl,
                       type: TextInputType.emailAddress,
                     ),
-                    /* makeInput(
+                    makeInput(
                       label: "Mobile Number *",
                       controller: mobilectrl,
-                      type: TextInputType.number,
-                    ), */
+                      // type: TextInputType.number,
+                    ),
                     makeInput(
                       label: "Residence County *",
                       controller: countyctrl,
@@ -204,7 +203,7 @@ class _SignUpState extends State<SignUp> {
     var data = {
       "name": namectrl.text,
       "email": emailctrl.text,
-      //  "mobilenumber": _mobilenumber,
+      "mobilenumber": mobilectrl.text,
       "county": countyctrl.text,
       "pass": passctrl.text,
       "role": _myRole

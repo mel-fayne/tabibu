@@ -3,8 +3,23 @@ import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class MyDoctors extends StatelessWidget {
+class MyDoctors extends StatefulWidget {
   static const routeName = "/mydoctors";
+
+  @override
+  _MyDoctorsState createState() => _MyDoctorsState();
+}
+
+class _MyDoctorsState extends State<MyDoctors> {
+  TextEditingController searchctrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    searchctrl = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +36,8 @@ class MyDoctors extends StatelessWidget {
           },
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 20),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 15),
         child: Column(children: [
           Padding(
               padding: EdgeInsets.only(top: 10),
@@ -38,23 +53,30 @@ class MyDoctors extends StatelessWidget {
                 ),
               )),
           Padding(
-              padding: EdgeInsets.only(bottom: 15, left: 15, right: 35),
-              child: Container(
-                  padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                  decoration: BoxDecoration(
-                    color: kGreyBackground,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: TextField(
-                      decoration: InputDecoration(
-                    hintText: 'Search doctors',
-                    hintStyle: TextStyle(
-                      color: Colors.black,
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+            child: TextField(
+              cursorColor: kPrimaryGreen,
+              controller: searchctrl,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+              onChanged: (value) {
+                debugPrint('something changed in this feld');
+                //  diagnosis.patientid = patientidController.text as int;
+              },
+              decoration: InputDecoration(
+                  labelText: "Search Doctors",
+                  labelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )))),
+                      fontWeight: FontWeight.w400,
+                      color: kFieldTextColor),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0))),
+            ),
+          ),
           GestureDetector(
               onTap: () {
                 Navigator.of(context).pushNamed(SingleDoctor.routeName);

@@ -3,7 +3,7 @@ import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/notifications.dart';
-import 'package:Tabibu/app/screens/profile.dart';
+import 'package:Tabibu/app/screens/patientprofile.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
@@ -259,8 +259,8 @@ class PatientDashboard extends StatelessWidget {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(Profile.routeName);
+                                          Navigator.of(context).pushNamed(
+                                              PatientProfile.routeName);
                                         },
                                         child: navitem(
                                           navlabel: "Profile",

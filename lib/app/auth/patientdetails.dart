@@ -1,5 +1,6 @@
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,8 @@ class PatientDetails extends StatefulWidget {
 }
 
 class _PatientDetailsState extends State<PatientDetails> {
+  String _myPayment;
+  String _myBloodType;
   bool processing = false;
 
   TextEditingController dobctrl,
@@ -87,9 +90,72 @@ class _PatientDetailsState extends State<PatientDetails> {
                         label: "Name of Condition *",
                         controller: conditionnamectrl),
                     makeInput(label: "Blood Type", controller: bloodtypectrl),
-                    makeInput(
-                        label: "Mode of Medical Payments *",
-                        controller: paymentmodectrl),
+                    DropDownFormField(
+                      titleText: 'Blood Type',
+                      hintText: 'Please choose your blood type',
+                      value: _myBloodType,
+                      onSaved: (value) {
+                        setState(() {
+                          _myBloodType = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _myBloodType = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "Type A",
+                          "value": "A",
+                        },
+                        {
+                          "display": "Type B",
+                          "value": "B",
+                        },
+                        {
+                          "display": "Type AB",
+                          "value": "AB",
+                        },
+                        {
+                          "display": "Type O",
+                          "value": "O",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                    DropDownFormField(
+                      titleText: 'Mode of Medical Payments',
+                      hintText: 'Please choose mode of payment',
+                      value: _myPayment,
+                      onSaved: (value) {
+                        setState(() {
+                          _myPayment = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _myPayment = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "NHIF",
+                          "value": "nhif",
+                        },
+                        {
+                          "display": "Cash",
+                          "value": "cash",
+                        },
+                        {
+                          "display": "Other",
+                          "value": "other",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
                   ],
                 ),
               ),
