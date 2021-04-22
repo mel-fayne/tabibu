@@ -109,9 +109,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         controller: loadlimitctrl),
                     makeInput(
                         label: "Days of the week when available: *",
+                        hint: "E,g. Monday to Friday or Monday & Wednesday",
                         controller: daysctrl),
                     makeInput(
-                        label: "Appointment Times *", controller: timectrl),
+                        label: "Appointment Times *",
+                        hint: "E.g. 8am to 12noon or 10:30am to 2pm",
+                        controller: timectrl),
                   ],
                 ),
               ),
@@ -144,7 +147,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 }
 
 Widget makeInput(
-    {label, obscureText = false, required: true, controller, type}) {
+    {label, hint, obscureText = false, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
     child: TextField(
@@ -163,6 +166,7 @@ Widget makeInput(
       },
       decoration: InputDecoration(
           labelText: label,
+          hintText: hint,
           labelStyle: TextStyle(
               fontSize: 14,
               fontFamily: 'Source Sans',

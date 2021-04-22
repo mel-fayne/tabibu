@@ -139,23 +139,23 @@ class _NewUpdateState extends State<NewUpdate> {
                       dataSource: [
                         {
                           "display": "One",
-                          "value": "one",
+                          "value": "1",
                         },
                         {
                           "display": "Two",
-                          "value": "two",
+                          "value": "2",
                         },
                         {
                           "display": "Three",
-                          "value": "three",
+                          "value": "3",
                         },
                         {
                           "display": "Four",
-                          "value": "four",
+                          "value": "4",
                         },
                         {
                           "display": "Five",
-                          "value": "five",
+                          "value": "5",
                         }
                       ],
                       textField: 'display',
