@@ -20,7 +20,7 @@ class _TreatmentTabState extends State<TreatmentTab> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Text(
-                  'Treatments (1)',
+                  'Treatments',
                   style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'PT Serif',
@@ -37,15 +37,14 @@ class _TreatmentTabState extends State<TreatmentTab> {
                         color: kPrimaryGreen,
                         size: 55,
                       ),
-                      title: Text(
-                          'Diagnosis: Depression\nMedicine: Anti-Depressants',
+                      title: Text('Diagnosis: ...\nMedicine: ...',
                           style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Source Sans',
                               fontWeight: FontWeight.w600,
                               color: Colors.black)),
                       subtitle: Text(
-                          "Date: 10/03/2021\n Prescription: 1x3\n Additional Info: Take after a balanced meal",
+                          "Date: ...\n Prescription: ...\n Additional Info: ...",
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Source Sans',
