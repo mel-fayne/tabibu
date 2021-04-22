@@ -1,10 +1,35 @@
-import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
-class PatientDetails extends StatelessWidget {
+class PatientDetails extends StatefulWidget {
   static const routeName = "/patientdetails";
+
+  @override
+  _PatientDetailsState createState() => _PatientDetailsState();
+}
+
+class _PatientDetailsState extends State<PatientDetails> {
+  bool processing = false;
+
+  TextEditingController dobctrl,
+      conditiontypectrl,
+      conditionnamectrl,
+      bloodtypectrl,
+      paymentmodectrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dobctrl = new TextEditingController();
+    conditiontypectrl = new TextEditingController();
+    conditiontypectrl = new TextEditingController();
+    bloodtypectrl = new TextEditingController();
+    paymentmodectrl = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +60,7 @@ class PatientDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Create Tabibu Account",
+                          "Finish Setting up Tabibu Account ...",
                           style: TextStyle(
                               fontSize: 25,
                               fontFamily: 'Source Sans',
@@ -53,20 +78,18 @@ class PatientDetails extends StatelessWidget {
                   children: <Widget>[
                     makeInput(
                         label: "Date of Birth *",
-                        required: true,
-                        fieldName: "dob"),
-                    /* Note: Some of these details should have drop down menus for easier data collection...also consider measurements of the vitals*/
-
+                        controller: dobctrl,
+                        type: TextInputType.datetime),
                     makeInput(
                         label: "Type of Condition *",
-                        fieldName: "condition_type"),
+                        controller: conditiontypectrl),
                     makeInput(
                         label: "Name of Condition *",
-                        fieldName: "condition_name"),
-                    makeInput(label: "Blood Type", fieldName: "blood_type"),
+                        controller: conditionnamectrl),
+                    makeInput(label: "Blood Type", controller: bloodtypectrl),
                     makeInput(
                         label: "Mode of Medical Payments *",
-                        fieldName: "payment_mode"),
+                        controller: paymentmodectrl),
                   ],
                 ),
               ),
@@ -82,7 +105,7 @@ class PatientDetails extends StatelessWidget {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text("REGISTER",
+                  child: Text("FINISH SETUP",
                       style: TextStyle(
                           color: kPrimaryYellow,
                           fontFamily: 'PT Serif',
@@ -90,32 +113,6 @@ class PatientDetails extends StatelessWidget {
                           fontWeight: FontWeight.w700)),
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(top: 10, bottom: 20),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(SignIn.routeName);
-                      },
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: 'Already have a Tabibu Account? ',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w400,
-                              color: kTextColor),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Sign In',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Source Sans',
-                                    fontWeight: FontWeight.w700,
-                                    color: kPrimaryYellow)),
-                          ],
-                        ),
-                      ))),
             ],
           ),
         ),
@@ -125,71 +122,45 @@ class PatientDetails extends StatelessWidget {
 }
 
 Widget makeInput(
-    {label,
-    obscureText = false,
-    toggle = false,
-    required: false,
-    fieldName,
-    validator}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Source Sans',
-            fontWeight: FontWeight.w400,
-            color: kFieldTextColor),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextFormField(
-        onSaved: (value) {
-          /*    if (fieldName != null) {
-                newUser[fieldName] = value;
-              }
-            },
-            validator: (value) {
-              var res = null;
-// Check if any custom validators included and if required
-              if (validator != null) {
-                var cvalidator = validator(value);
-                if (cvalidator != null) return cvalidator;
-              }
-
-// Check if required or not
-              if (required && (value == null || value == '')) {
-                res = "This field may not be blank.";
-              }
-
-// check if any errors available (From the server)
-              if (erros.containsKey(fieldName)) {
-                res = erros[fieldName];
-              }
-              return res; */
-        },
-        obscureText: obscureText,
-        /*  decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                suffix: toggle == true
-                    ? InkWell(
-                        onTap: () {
-                          setState(() {
-                            obscureText = true;
-                          });
-                        },
-                        child: Icon(
-                          obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: kFieldTextColor,
-                        ))
-                    : null) */
-      ),
-      SizedBox(
-        height: 10,
-      ),
-    ],
+    {label, obscureText = false, required: true, controller, type}) {
+  return Padding(
+    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+    child: TextField(
+      cursorColor: kPrimaryGreen,
+      obscureText: obscureText,
+      controller: controller,
+      keyboardType: type,
+      style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Source Sans',
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
+      onChanged: (value) {
+        debugPrint('something changed in this feld');
+        //  diagnosis.patientid = patientidController.text as int;
+      },
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Source Sans',
+              fontWeight: FontWeight.w400,
+              color: kFieldTextColor),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+    ),
   );
+}
+
+Widget showFlushbar({message}) {
+  return Builder(builder: (BuildContext context) {
+    return Flushbar(
+      icon: Icon(Icons.error, size: 28, color: Colors.white),
+      message: message,
+      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+      borderRadius: 10,
+      backgroundColor: kPrimaryYellow,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  });
 }

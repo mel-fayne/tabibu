@@ -20,7 +20,6 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   String _myRole;
-  bool signin = true;
 
   TextEditingController namectrl, emailctrl, mobilectrl, countyctrl, passctrl;
 
@@ -161,60 +160,6 @@ class _SignUpState extends State<SignUp> {
                           fontWeight: FontWeight.w700)),
                 ),
               ),
-              /* Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Choose your Role:',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Source Sans',
-                        fontWeight: FontWeight.w400,
-                        color: kFieldTextColor),
-                  )),
-              Container(
-                  padding: EdgeInsets.only(left: 50, top: 10),
-                  child: Row(
-                    children: [
-                      MaterialButton(
-                        minWidth: 120,
-                        height: 40,
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(DoctorDetails.routeName);
-                        },
-                        color: kPrimaryGreen,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text("Doctor",
-                            style: TextStyle(
-                                color: kPrimaryYellow,
-                                fontFamily: 'PT Serif',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600)),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: MaterialButton(
-                            minWidth: 120,
-                            height: 40,
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(PatientDetails.routeName);
-                            },
-                            color: kPrimaryGreen,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Patient",
-                                style: TextStyle(
-                                    color: kPrimaryYellow,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                          )),
-                    ],
-                  )), */
               Container(
                   padding: EdgeInsets.only(top: 10, bottom: 20),
                   child: GestureDetector(

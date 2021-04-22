@@ -1,7 +1,11 @@
 import 'package:Tabibu/app/auth/forgotpassword.dart';
 import 'package:Tabibu/app/auth/signup.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignIn extends StatefulWidget {
   static const routeName = "/signin";
@@ -12,6 +16,17 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool _isHidden = true;
+  bool processing = false;
+
+  TextEditingController passctrl, emailctrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailctrl = new TextEditingController();
+    passctrl = new TextEditingController();
+  }
 
   void _togglePasswordView() {
     setState(() {
@@ -19,6 +34,7 @@ class _SignInState extends State<SignIn> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -59,20 +75,17 @@ class _SignInState extends State<SignIn> {
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       child: Column(
                         children: <Widget>[
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Email Address *',
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Invalid email!';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
+                          makeInput(
+                            label: "Email Address *",
+                            controller: emailctrl,
+                            type: TextInputType.emailAddress,
                           ),
-                          TextFormField(
+                          makeInput(
+                            label: "Password *",
+                            controller: passctrl,
+                            obscureText: true,
+                          ),
+                          /* TextFormField(
                             decoration: InputDecoration(
                                 labelText: 'Password *',
                                 suffix: InkWell(
@@ -93,7 +106,7 @@ class _SignInState extends State<SignIn> {
                               return null;
                             },
                             onSaved: (value) {},
-                          ),
+                          ), */
                         ],
                       ),
                     ),
@@ -113,7 +126,9 @@ class _SignInState extends State<SignIn> {
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 50,
-                          onPressed: () {},
+                          onPressed: () {
+                            userSignIn();
+                          },
                           color: kPrimaryGreen,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -127,7 +142,7 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                    Container(
+                    /* Container(
                         padding: EdgeInsets.only(top: 15),
                         child: GestureDetector(
                             onTap: () {
@@ -144,7 +159,7 @@ class _SignInState extends State<SignIn> {
                                     fontWeight: FontWeight.w700,
                                     color: kPrimaryGreen),
                               ),
-                            ))),
+                            ))), */
                     Container(
                         padding: EdgeInsets.only(top: 10),
                         child: GestureDetector(
@@ -180,4 +195,77 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+
+  void userSignIn() async {
+    setState(() {
+      processing = true;
+    });
+    var url = "";
+    var data = {
+      "email": emailctrl.text,
+      "pass": passctrl.text,
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "dont have an account") {
+      showFlushbar(
+          message:
+              "The account doesn't exist!\nSign up to create a Tabibu account");
+    } else {
+      if (jsonDecode(res.body) == "false") {
+        showFlushbar(message: "Incorrect Password!");
+      } else {
+        print(jsonDecode(res.body));
+      }
+    }
+
+    setState(() {
+      processing = false;
+    });
+  }
+}
+
+Widget makeInput(
+    {label, obscureText = false, required: true, controller, type}) {
+  return Padding(
+    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+    child: TextField(
+      cursorColor: kPrimaryGreen,
+      obscureText: obscureText,
+      controller: controller,
+      keyboardType: type,
+      style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Source Sans',
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
+      onChanged: (value) {
+        debugPrint('something changed in this feld');
+        //  diagnosis.patientid = patientidController.text as int;
+      },
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Source Sans',
+              fontWeight: FontWeight.w400,
+              color: kFieldTextColor),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+    ),
+  );
+}
+
+Widget showFlushbar({message}) {
+  return Builder(builder: (BuildContext context) {
+    return Flushbar(
+      icon: Icon(Icons.error, size: 28, color: Colors.white),
+      message: message,
+      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+      borderRadius: 10,
+      backgroundColor: kPrimaryYellow,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  });
 }
