@@ -1,6 +1,7 @@
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class DoctorDetails extends StatefulWidget {
