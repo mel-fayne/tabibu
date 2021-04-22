@@ -1,8 +1,8 @@
 import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/doctors/doctorprofile.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
-import 'package:Tabibu/app/screens/doctors/patientupdates.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
+import 'package:Tabibu/app/screens/doctors/schedulelist.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
@@ -242,8 +242,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                               child: Material(
                                   child: InkWell(
                                       onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            PatientUpdates.routeName);
+                                        Navigator.of(context)
+                                            .pushNamed(ScheduleList.routeName);
                                       },
                                       child: dashcard(
                                           path: MyCustomIcons.calendar,

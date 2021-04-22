@@ -43,6 +43,17 @@ Future<void> _selectDate(BuildContext context) async {
 }
 
 class _BookAppointmentState extends State<BookAppointment> {
+  TextEditingController reasonctrl;
+
+  bool processing = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    reasonctrl = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,8 +177,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                 padding: EdgeInsets.only(right: 20),
                 child: makeInput(
                   label: "Reason for Appointment *",
-                  fieldName: "appt_reason",
-                  required: true,
+                  controller: reasonctrl,
                 )),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -192,29 +202,29 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 }
 
-Widget makeInput({
-  label,
-  required: false,
-  fieldName,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'Source Sans',
-            fontWeight: FontWeight.w400,
-            color: kFieldTextColor),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextFormField(onSaved: (value) {}),
-      SizedBox(
-        height: 10,
-      ),
-    ],
+Widget makeInput({label, required: true, controller}) {
+  return Padding(
+    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+    child: TextField(
+      cursorColor: kPrimaryGreen,
+      controller: controller,
+      style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Source Sans',
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
+      onChanged: (value) {
+        debugPrint('something changed in this feld');
+        //  diagnosis.patientid = patientidController.text as int;
+      },
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Source Sans',
+              fontWeight: FontWeight.w400,
+              color: kFieldTextColor),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+    ),
   );
 }

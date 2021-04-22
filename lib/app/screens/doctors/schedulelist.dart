@@ -1,11 +1,8 @@
-import 'package:Tabibu/app/screens/doctors/singleappointment.dart';
-import 'package:Tabibu/app/screens/medical_history_tabs/singleupdate.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class PatientUpdates extends StatelessWidget {
-  static const routeName = "/patientupdates";
+class ScheduleList extends StatelessWidget {
+  static const routeName = "/schedulelist";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +26,7 @@ class PatientUpdates extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Your Patient Updates & Schedule",
+                  "View Patient Updates & Appointments",
                   style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'PT Serif',
@@ -37,7 +34,43 @@ class PatientUpdates extends StatelessWidget {
                       color: Colors.black),
                 ),
               )),
-          GestureDetector(
+          ListTile(
+            leading: Icon(
+              Icons.schedule,
+              color: kPrimaryGreen,
+              size: 35,
+            ),
+            title: Text(
+                "Patient Name: ...\nLocation: ...  Date: ...  Time: ...",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            subtitle: Text("Appointment Reason: ...",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: kFieldTextColor)),
+            trailing: Icon(
+              Icons.keyboard_arrow_right_outlined,
+              color: kPrimaryGreen,
+              size: 34,
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              //  navigateToDetail(this.diagnosisList[position]);
+            },
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+/*
+GestureDetector(
               onTap: () {
                 Navigator.of(context).pushNamed(SingleAppointment.routeName);
               },
@@ -87,8 +120,4 @@ class PatientUpdates extends StatelessWidget {
                   size: 34,
                 ),
               )),
-        ]),
-      ),
-    );
-  }
-}
+*/

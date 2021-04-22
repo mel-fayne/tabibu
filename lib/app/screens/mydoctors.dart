@@ -1,6 +1,4 @@
-import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 class MyDoctors extends StatefulWidget {
@@ -44,7 +42,7 @@ class _MyDoctorsState extends State<MyDoctors> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Your Doctors",
+                  "View Doctors",
                   style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'PT Serif',
@@ -77,7 +75,112 @@ class _MyDoctorsState extends State<MyDoctors> {
                       borderRadius: BorderRadius.circular(5.0))),
             ),
           ),
-          GestureDetector(
+          Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'My Doctors',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: AssetImage("imagepath"),
+            ),
+            title: Text("Doctor Name: ...",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            subtitle: Column(
+              children: [
+                Text("Specialty: ...   Base Hospital: ...",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black)),
+                Padding(
+                    padding: EdgeInsets.only(top: 7),
+                    child: Text("Status: Available",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w600,
+                            color: kFieldTextColor))),
+              ],
+            ),
+            trailing: Icon(
+              Icons.keyboard_arrow_right_outlined,
+              color: kPrimaryGreen,
+              size: 34,
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              //  navigateToDetail(this.diagnosisList[position]);
+            },
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'More Doctors...',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: AssetImage("imagepath"),
+            ),
+            title: Text("Doctor Name: ...",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            subtitle: Column(
+              children: [
+                Text("Specialty: ...   Base Hospital: ...",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black)),
+                Padding(
+                    padding: EdgeInsets.only(top: 7),
+                    child: Text("Status: Available",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w600,
+                            color: kFieldTextColor))),
+              ],
+            ),
+            trailing: Icon(
+              Icons.keyboard_arrow_right_outlined,
+              color: kPrimaryGreen,
+              size: 34,
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              //  navigateToDetail(this.diagnosisList[position]);
+            },
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+/*
+GestureDetector(
               onTap: () {
                 Navigator.of(context).pushNamed(SingleDoctor.routeName);
               },
@@ -151,8 +254,4 @@ class _MyDoctorsState extends State<MyDoctors> {
                   size: 34,
                 ),
               )),
-        ]),
-      ),
-    );
-  }
-}
+*/

@@ -14,6 +14,7 @@ class PatientDetails extends StatefulWidget {
 class _PatientDetailsState extends State<PatientDetails> {
   String _myPayment;
   String _myBloodType;
+  String _myStatus;
   bool processing = false;
 
   TextEditingController dobctrl,
@@ -92,7 +93,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                     makeInput(label: "Blood Type", controller: bloodtypectrl),
                     DropDownFormField(
                       titleText: 'Blood Type',
-                      hintText: 'Please choose your blood type',
+                      hintText: 'Choose your blood type',
                       value: _myBloodType,
                       onSaved: (value) {
                         setState(() {
@@ -127,7 +128,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                     ),
                     DropDownFormField(
                       titleText: 'Mode of Medical Payments',
-                      hintText: 'Please choose mode of payment',
+                      hintText: 'Choose mode of payment',
                       value: _myPayment,
                       onSaved: (value) {
                         setState(() {
@@ -151,6 +152,37 @@ class _PatientDetailsState extends State<PatientDetails> {
                         {
                           "display": "Other",
                           "value": "other",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                    DropDownFormField(
+                      titleText: 'Medical Status',
+                      hintText: 'Choose your current medical status:',
+                      value: _myStatus,
+                      onSaved: (value) {
+                        setState(() {
+                          _myStatus = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _myStatus = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "On Treatment",
+                          "value": "treatment",
+                        },
+                        {
+                          "display": "Diagnosed",
+                          "value": "diagnosed",
+                        },
+                        {
+                          "display": "Undiagnosed",
+                          "value": "diagnosed",
                         }
                       ],
                       textField: 'display',

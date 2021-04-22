@@ -1,10 +1,23 @@
-import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class MyPatients extends StatelessWidget {
+class MyPatients extends StatefulWidget {
   static const routeName = "/mypatients";
+
+  @override
+  _MyPatientsState createState() => _MyPatientsState();
+}
+
+class _MyPatientsState extends State<MyPatients> {
+  TextEditingController searchctrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    searchctrl = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,37 +37,100 @@ class MyPatients extends StatelessWidget {
         padding: EdgeInsets.only(left: 20),
         child: Column(children: [
           Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Your Patients",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontFamily: 'PT Serif',
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black),
-                        ),
-                      )),
+              padding: EdgeInsets.only(top: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "View Patients",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontFamily: 'PT Serif',
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black),
+                ),
+              )),
           Padding(
-              padding: EdgeInsets.only(bottom: 15, left: 15, right: 35),
-              child: Container(
-                  padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                  decoration: BoxDecoration(
-                    color: kGreyBackground,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: TextField(
-                      decoration: InputDecoration(
-                    hintText: 'Search patients',
-                    hintStyle: TextStyle(
-                      color: Colors.black,
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+            child: TextField(
+              cursorColor: kPrimaryGreen,
+              controller: searchctrl,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+              onChanged: (value) {
+                debugPrint('something changed in this feld');
+                //  diagnosis.patientid = patientidController.text as int;
+              },
+              decoration: InputDecoration(
+                  labelText: "Search Doctors",
+                  labelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )))),
-          GestureDetector(
+                      fontWeight: FontWeight.w400,
+                      color: kFieldTextColor),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0))),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'My Patients',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: AssetImage("imagepath"),
+            ),
+            title: Text("Patient Name: ...",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            subtitle: Column(
+              children: [
+                Text("Name of Condition: ...",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black)),
+                Padding(
+                    padding: EdgeInsets.only(top: 7),
+                    child: Text("Status: ...",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w600,
+                            color: kFieldTextColor))),
+              ],
+            ),
+            trailing: Icon(
+              Icons.keyboard_arrow_right_outlined,
+              color: kPrimaryGreen,
+              size: 34,
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              //  navigateToDetail(this.diagnosisList[position]);
+            },
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+/*
+GestureDetector(
               onTap: () {
                 Navigator.of(context).pushNamed(MedicalHistory.routeName);
               },
@@ -128,8 +204,4 @@ class MyPatients extends StatelessWidget {
                   size: 34,
                 ),
               )),
-        ]),
-      ),
-    );
-  }
-}
+*/

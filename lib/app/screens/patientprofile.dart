@@ -100,7 +100,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     ],
                   ),
                   Text(
-                    'Date of Birth: ...\nType of Condition: ...\n Name of Condition: ...\nBlood Type: ...\nMode of Medical Payments: ...',
+                    'Date of Birth: ...\nType of Condition: ...\n Name of Condition: ...\nBlood Type: ...\nMode of Medical Payments: ...\nStatus: ...',
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,
