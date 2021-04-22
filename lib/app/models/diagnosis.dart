@@ -28,10 +28,9 @@ class Diagnosis {
       this._symptoms,
       this._medicine,
       this._prescription,
-      this._additionaltreatmentinfo,
-      {additionaltreatmentinfo,
-      description});
+      this._additionaltreatmentinfo);
 }
+
 /*
   int get diagnosisid => _diagnosisid;
   int get patientid => _patientid;

@@ -1,8 +1,15 @@
 import 'package:Tabibu/app/auth/doctordetails.dart';
 import 'package:Tabibu/app/auth/patientdetails.dart';
 import 'package:Tabibu/app/auth/signin.dart';
+import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
+import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUp extends StatefulWidget {
   static const routeName = "/signup";
@@ -12,6 +19,24 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  String _myRole;
+  bool signin = true;
+
+  TextEditingController namectrl, emailctrl, mobilectrl, countyctrl, passctrl;
+
+  bool processing = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    namectrl = new TextEditingController();
+    emailctrl = new TextEditingController();
+    mobilectrl = new TextEditingController();
+    countyctrl = new TextEditingController();
+    passctrl = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,27 +85,83 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: <Widget>[
                     makeInput(
-                        label: "Full Name *",
-                        required: true,
-                        fieldName: "full_name"),
-                    makeInput(label: "Email Address *", fieldName: "email"),
-                    makeInput(label: "Mobile Number *", fieldName: "phone"),
-                    makeInput(label: "Residence County *", fieldName: "county"),
+                      label: "Full Name *",
+                      controller: namectrl,
+                    ),
                     makeInput(
-                        label: "Password *",
-                        fieldName: "password",
-                        obscureText: true,
-                        toggle: true),
+                      label: "Email Address *",
+                      controller: emailctrl,
+                      type: TextInputType.emailAddress,
+                    ),
+                    makeInput(
+                      label: "Mobile Number *",
+                      controller: mobilectrl,
+                      type: TextInputType.number,
+                    ),
+                    makeInput(
+                      label: "Residence County *",
+                      controller: countyctrl,
+                    ),
+                    makeInput(
+                      label: "Password *",
+                      controller: passctrl,
+                      obscureText: true,
+                    ),
                     makeInput(
                         required: true,
                         label: "Confirm Password",
-                        fieldName: "confirm_password",
-                        obscureText: true,
-                        toggle: true)
+                        obscureText: true),
+                    DropDownFormField(
+                      titleText: 'Role',
+                      hintText: 'Please choose your category',
+                      value: _myRole,
+                      onSaved: (value) {
+                        setState(() {
+                          _myRole = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _myRole = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "Patient",
+                          "value": "patient",
+                        },
+                        {
+                          "display": "Doctor",
+                          "value": "doctor",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
                   ],
                 ),
               ),
-              Align(
+              Container(
+                padding: EdgeInsets.only(top: 15),
+                child: MaterialButton(
+                  minWidth: double.infinity,
+                  height: 40,
+                  onPressed: () {
+                    registerUser();
+                  },
+                  color: kPrimaryGreen,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text("REGISTER",
+                      style: TextStyle(
+                          color: kPrimaryYellow,
+                          fontFamily: 'PT Serif',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700)),
+                ),
+              ),
+              /* Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Choose your Role:',
@@ -133,7 +214,7 @@ class _SignUpState extends State<SignUp> {
                                     fontWeight: FontWeight.w600)),
                           )),
                     ],
-                  )),
+                  )), */
               Container(
                   padding: EdgeInsets.only(top: 10, bottom: 20),
                   child: GestureDetector(
@@ -166,74 +247,118 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
+
+  void registerUser() async {
+    setState(() {
+      processing = true;
+    });
+    var url = "http://192.168.0.15/tabibu/api/auth/signup.php";
+    var data = {
+      "name": namectrl.text,
+      "email": emailctrl.text,
+      "mobilenumber": int.parse(mobilectrl.text),
+      "county": countyctrl.text,
+      "pass": passctrl.text,
+      "role": _myRole
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "account already exists") {
+      showFlushbar(
+        message: "The user account already exists!\nConfirm your email",
+      );
+    } else {
+      if (jsonDecode(res.body) == "true") {
+        showFlushbar(
+          message: "Account Succesfuly Created!\nWelcome to Tabibu",
+        );
+        if (_myRole == "patient") {
+          Navigator.of(context).pushNamed(PatientDashboard.routeName);
+        } else {
+          Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+        }
+      } else {
+        showFlushbar(
+          message: "An error occured!",
+        );
+      }
+    }
+    setState(() {
+      processing = false;
+    });
+  }
+
+  void userSignIn() async {
+    setState(() {
+      processing = true;
+    });
+    var url = "";
+    var data = {
+      "email": emailctrl.text,
+      "pass": passctrl.text,
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "dont have an account") {
+      showFlushbar(
+          message:
+              "The account doesn't exist!\nSign up to create a Tabibu account");
+    } else {
+      if (jsonDecode(res.body) == "false") {
+        showFlushbar(message: "Incorrect Password!");
+      } else {
+        print(jsonDecode(res.body));
+      }
+    }
+
+    setState(() {
+      processing = false;
+    });
+  }
 }
 
 Widget makeInput(
-    {label,
-    obscureText = false,
-    toggle = false,
-    required: false,
-    fieldName,
-    validator}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Source Sans',
-            fontWeight: FontWeight.w400,
-            color: kFieldTextColor),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextFormField(
-        onSaved: (value) {
-          /*    if (fieldName != null) {
-                newUser[fieldName] = value;
-              }
-            },
-            validator: (value) {
-              var res = null;
-// Check if any custom validators included and if required
-              if (validator != null) {
-                var cvalidator = validator(value);
-                if (cvalidator != null) return cvalidator;
-              }
-
-// Check if required or not
-              if (required && (value == null || value == '')) {
-                res = "This field may not be blank.";
-              }
-
-// check if any errors available (From the server)
-              if (erros.containsKey(fieldName)) {
-                res = erros[fieldName];
-              }
-              return res; */
-        },
-        obscureText: obscureText,
-        /*  decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                suffix: toggle == true
-                    ? InkWell(
-                        onTap: () {
-                          setState(() {
-                            obscureText = true;
-                          });
-                        },
-                        child: Icon(
-                          obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: kFieldTextColor,
-                        ))
-                    : null) */
-      ),
-      SizedBox(
-        height: 10,
-      ),
-    ],
+    {label, obscureText = false, required: true, controller, type}) {
+  return Padding(
+    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+    child: TextField(
+      cursorColor: kPrimaryGreen,
+      obscureText: obscureText,
+      controller: controller,
+      keyboardType: type,
+      style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Source Sans',
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
+      onChanged: (value) {
+        debugPrint('something changed in this feld');
+        //  diagnosis.patientid = patientidController.text as int;
+      },
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Source Sans',
+              fontWeight: FontWeight.w400,
+              color: kFieldTextColor),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+    ),
   );
+}
+
+Widget showFlushbar({message}) {
+  return Builder(builder: (BuildContext context) {
+    return Flushbar(
+      icon: Icon(Icons.error, size: 28, color: Colors.white),
+      message: message,
+      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+      borderRadius: 10,
+      backgroundColor: kPrimaryYellow,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    )..show(context);
+  });
 }
