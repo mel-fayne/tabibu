@@ -40,14 +40,14 @@ class _SingleUpdateState extends State<SingleUpdate> {
               Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: ListTile(
-                      title: Text('Update Date: 15/03/2021\nUpdate ID: U002/2',
+                      title: Text('Date: ...\nDoctor ID: ...',
                           style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Source Sans',
                               fontWeight: FontWeight.w600,
                               color: Colors.black)),
                       subtitle: Text(
-                          "How have you been feeling: 🤕I feel pain\nWhich part of your body aches? Chest\nRate the amount of pain you feel: 2 out of 5\nAny New Symptoms: I've developed a rush on my neck\nHave you taken the medicine as prescribed? No I skipped a day last week\nAny Treatment Side Effects: None\nAdditional Info: My breathing rate has improved and I feel less anxious.",
+                          "How have you been feeling: ...\nWhich part of your body aches? ...\nRate the amount of pain you feel: ...\nAny New Symptoms: ...\nHave you taken the medicine as prescribed? ...\nAny Treatment Side Effects: ...\nAdditional Info: ...",
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Source Sans',

@@ -34,6 +34,17 @@ class ScheduleList extends StatelessWidget {
                       color: Colors.black),
                 ),
               )),
+          Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'Appointments',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
           ListTile(
             leading: Icon(
               Icons.schedule,
@@ -48,6 +59,45 @@ class ScheduleList extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Colors.black)),
             subtitle: Text("Appointment Reason: ...",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: kFieldTextColor)),
+            trailing: Icon(
+              Icons.keyboard_arrow_right_outlined,
+              color: kPrimaryGreen,
+              size: 34,
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              //  navigateToDetail(this.diagnosisList[position]);
+            },
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'Updates',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Source Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
+          ListTile(
+            leading: Icon(
+              Icons.update,
+              color: kPrimaryGreen,
+              size: 35,
+            ),
+            title: Text("Patient Name: ...\nCondition: ...",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Source Sans',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            subtitle: Text("Date: ...",
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: 'Source Sans',
