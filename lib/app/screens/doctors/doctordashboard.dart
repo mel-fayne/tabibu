@@ -229,7 +229,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                         child: dashcard(
                                             path:
                                                 Icons.person_add_alt_1_outlined,
-                                            label: "Add Patient"))))),
+                                            label: "Add Medical Record"))))),
                       ]),
                       Padding(
                           padding: EdgeInsets.only(top: 10, bottom: 20),

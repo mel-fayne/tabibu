@@ -21,7 +21,7 @@ class _OverviewTabState extends State<OverviewTab> {
                 Padding(
                     padding: EdgeInsets.only(left: 20, bottom: 20),
                     child: Text(
-                      'Assesments (2)',
+                      'Diagnosis:',
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'PT Serif',
@@ -30,28 +30,61 @@ class _OverviewTabState extends State<OverviewTab> {
                     )),
                 Padding(
                   padding: EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          Icons.healing,
-                          color: Colors.purple,
-                          size: 55,
-                        ),
-                        title: Text('Diagnosis: Depression',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Source Sans',
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black)),
-                        subtitle: Text('Current Status: On Treatment',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Source Sans',
-                                fontWeight: FontWeight.w600,
-                                color: kFieldTextColor)),
-                      ),
-                      ListTile(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.healing,
+                      color: Colors.purple,
+                      size: 55,
+                    ),
+                    title: Text('Ailment: ...',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
+                    subtitle: Text('Treatment: ...',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Source Sans',
+                            fontWeight: FontWeight.w600,
+                            color: kFieldTextColor)),
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.only(left: 20, bottom: 20),
+                    child: Text(
+                      'Assesments:',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'PT Serif',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22),
+                    )),
+                ListTile(
+                  leading: Icon(
+                    Icons.healing,
+                    color: Colors.purple,
+                    size: 55,
+                  ),
+                  title: Text('Diagnosis Date: ...',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black)),
+                  subtitle: Text('Diagnosis Description: ...',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                          color: kFieldTextColor)),
+                ),
+              ],
+            )));
+  }
+}
+/*
+ListTile(
                         leading: Icon(
                           Icons.healing,
                           color: Colors.purple,
@@ -70,20 +103,8 @@ class _OverviewTabState extends State<OverviewTab> {
                                 fontWeight: FontWeight.w600,
                                 color: kFieldTextColor)),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 20),
-                    child: Text(
-                      'Diagnosis (2)',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'PT Serif',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22),
-                    )),
-                Container(
+
+Container(
                     width: double.infinity,
                     //  padding: EdgeInsets.only(left: 10),
                     child: Column(children: [
@@ -139,7 +160,4 @@ class _OverviewTabState extends State<OverviewTab> {
                             )),
                       ),
                     ])),
-              ],
-            )));
-  }
-}
+*/

@@ -47,7 +47,7 @@ class _DiagnosisTabState extends State<DiagnosisTab> {
                 color: kPrimaryGreen,
                 size: 55,
               ),
-              title: Text("${diagnosisData[index]["disease"]}",
+              title: Text("Diagnosis: ...\nTreatment: ...",
                   style: TextStyle(
                       fontSize: 16,
                       fontFamily: 'Source Sans',
@@ -55,7 +55,7 @@ class _DiagnosisTabState extends State<DiagnosisTab> {
                       color: Colors.black)),
               subtitle: Column(
                 children: [
-                  Text("${diagnosisData[index]["decription"]}",
+                  Text("Description: ...",
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'Source Sans',
@@ -63,7 +63,7 @@ class _DiagnosisTabState extends State<DiagnosisTab> {
                           color: Colors.black)),
                   Padding(
                       padding: EdgeInsets.only(top: 10),
-                      child: Text("${diagnosisData[index]["diagnosisdate"]}",
+                      child: Text("Date: ...",
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Source Sans',
@@ -83,19 +83,6 @@ class _DiagnosisTabState extends State<DiagnosisTab> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kPrimaryGreen,
-        elevation: 4,
-        tooltip: 'Add New Medical Record',
-        onPressed: () {
-          Navigator.of(context).pushNamed(NewRecord.routeName);
-        },
-        child: Icon(
-          Icons.add,
-          size: 45,
-          color: kPrimaryYellow,
-        ),
       ),
     );
   }
