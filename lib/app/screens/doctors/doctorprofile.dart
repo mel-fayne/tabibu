@@ -63,7 +63,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     ],
                   ),
                   Text(
-                    'Name: ...  Email Adress: ....\nResidence County: ...  Mobile Number: ...\nDoctor ID: ...',
+                    'Name: ...  Email Adress: ....\nResidence County: ...  Mobile Number: ...\nUser ID: ...',
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,
@@ -100,7 +100,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     ],
                   ),
                   Text(
-                    'Base Hospital: ...\nSpecialty: ...\n Years of Medical Practice: ...\nAbout me: ...\nDoctor Liscence ID: ...\nDays Available: ...\nTime available: ...',
+                    'Doctor ID: ...\nBase Hospital: ...\nSpecialty: ...\n Years of Medical Practice: ...\nAbout me: ...\nDoctor Liscence ID: ...\nDays Available: ...\nTime available: ...',
                     style: TextStyle(
                       color: kFieldTextColor,
                       fontSize: 14,

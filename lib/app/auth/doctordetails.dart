@@ -1,8 +1,10 @@
-import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DoctorDetails extends StatefulWidget {
   static const routeName = "/doctordetails";
@@ -21,6 +23,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       aboutctrl,
       loadlimitctrl,
       daysctrl,
+      userctrl,
       timectrl;
 
   @override
@@ -29,10 +32,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     super.initState();
     hospitalctrl = new TextEditingController();
     liscencectrl = new TextEditingController();
+    practiceyearsctrl = new TextEditingController();
     loadlimitctrl = new TextEditingController();
     aboutctrl = new TextEditingController();
     specialtyctrl = new TextEditingController();
     daysctrl = new TextEditingController();
+    userctrl = new TextEditingController();
     timectrl = new TextEditingController();
   }
 
@@ -56,14 +61,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          height: MediaQuery.of(context).size.height - 70,
           width: double.infinity,
           child: Column(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: EdgeInsets.only(top: 20),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -82,7 +86,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               ),
               Form(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    makeInput(
+                      label: "User ID *",
+                      controller: userctrl,
+                      hint: "Please check your profile page for your user ID",
+                    ),
                     makeInput(
                         label: "Base Hospital Location *",
                         controller: hospitalctrl),
@@ -101,11 +111,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               color: Colors.black),
                         )),
                     makeInput(
                         label: "Patient Load Limit *",
+                        hint:
+                            "Enter number of patients you can manage on app e.g 20",
                         controller: loadlimitctrl),
                     makeInput(
                         label: "Days of the week when available: *",
@@ -119,11 +131,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,
                   onPressed: () {
+                    debugPrint("Save button clicked");
+                   // sendDetails();
                     Navigator.of(context).pushNamed(DoctorDashboard.routeName);
                   },
                   color: kPrimaryGreen,
@@ -143,6 +157,54 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         ),
       ),
     );
+  }
+
+  void sendDetails() async {
+    int userid;
+    userid = int.parse(userctrl.text);
+    setState(() {
+      processing = true;
+    });
+    var url = "http://localhost/tabibu/api/doctors/postdoctors.php";
+    var data = {
+      "hospital": hospitalctrl.text,
+      "liscence": liscencectrl.text,
+      "practiceyrs": practiceyearsctrl.text,
+      "specialty": specialtyctrl.text,
+      "about": aboutctrl.text,
+      "loadlimit": loadlimitctrl.text,
+      "days": daysctrl.text,
+      "userid": userid,
+      "time": timectrl
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "true") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.white),
+        message: "Details saved successfuly!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryYellow,
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+    } else {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.white),
+        message: "An error occured!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryYellow,
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+    }
+    setState(() {
+      processing = false;
+      Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+    });
   }
 }
 
