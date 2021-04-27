@@ -1,4 +1,4 @@
-import 'package:Tabibu/app/auth/forgotpassword.dart';
+//import 'package:Tabibu/app/auth/forgotpassword.dart';
 import 'package:Tabibu/app/auth/signup.dart';
 import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
@@ -28,6 +28,45 @@ class _SignInState extends State<SignIn> {
     super.initState();
     emailctrl = new TextEditingController();
     passctrl = new TextEditingController();
+  }
+
+  Future userSignIn() async {
+    /* setState(() {
+      processing = true;
+    }); */
+    var url = "http://192.168.0.15/tabibu/api/auth/signin.php";
+    var res = await http
+        .post(url, body: {"email": emailctrl.text, "pass": passctrl.text});
+
+    var data = json.decode(res.body);
+
+    if (data == "success") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Succesful sign in! Welcome to Tabibu",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("Yoooo! It worked!");
+      // Navigator.of(context).pushNamed(PatientDashboard.routeName);
+    } else {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Please confirm your credentials!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("wrong password");
+    }
+    setState(() {
+      processing = false;
+    });
   }
 
   void _togglePasswordView() {
@@ -197,32 +236,6 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-
-  void userSignIn() async {
-    setState(() {
-      processing = true;
-    });
-    var url = "http://192.168.0.15/tabibu/api/auth/signin.php";
-    var data = {"email": emailctrl.text, "pass": passctrl.text};
-
-    var res = await http.post(url, body: data);
-
-    if (jsonDecode(res.body) == "dont have an account") {
-      showFlushbar(
-          message:
-              "The account doesn't exist!\nSign up to create a Tabibu account");
-    } else {
-      if (jsonDecode(res.body) == "false") {
-        showFlushbar(message: "Incorrect Password!");
-      } else {
-        print(jsonDecode(res.body));
-      }
-    }
-
-    setState(() {
-      processing = false;
-    });
-  }
 }
 
 Widget makeInput(
@@ -253,18 +266,4 @@ Widget makeInput(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }
