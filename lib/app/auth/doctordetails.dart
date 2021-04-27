@@ -41,6 +41,54 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     timectrl = new TextEditingController();
   }
 
+  Future sendDetails() async {
+    int _userid;
+    _userid = int.parse(userctrl.text);
+    setState(() {
+      processing = true;
+    });
+    var url = "http://192.168.0.15/tabibu/api/doctors/postdoctors.php";
+    var data = {
+      "hospital": hospitalctrl.text,
+      "liscence": liscencectrl.text,
+      "practiceyrs": practiceyearsctrl.text,
+      "specialty": specialtyctrl.text,
+      "about": aboutctrl.text,
+      "loadlimit": loadlimitctrl.text,
+      "days": daysctrl.text,
+      "userid": _userid,
+      "time": timectrl
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "true") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Details saved successfuly!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+    } else {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "An error occured! Try again later",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+    }
+    setState(() {
+      processing = false;
+      Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,8 +185,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   height: 40,
                   onPressed: () {
                     debugPrint("Save button clicked");
-                   // sendDetails();
-                    Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+                    sendDetails();
                   },
                   color: kPrimaryGreen,
                   elevation: 0,
@@ -157,54 +204,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         ),
       ),
     );
-  }
-
-  void sendDetails() async {
-    int userid;
-    userid = int.parse(userctrl.text);
-    setState(() {
-      processing = true;
-    });
-    var url = "http://localhost/tabibu/api/doctors/postdoctors.php";
-    var data = {
-      "hospital": hospitalctrl.text,
-      "liscence": liscencectrl.text,
-      "practiceyrs": practiceyearsctrl.text,
-      "specialty": specialtyctrl.text,
-      "about": aboutctrl.text,
-      "loadlimit": loadlimitctrl.text,
-      "days": daysctrl.text,
-      "userid": userid,
-      "time": timectrl
-    };
-
-    var res = await http.post(url, body: data);
-
-    if (jsonDecode(res.body) == "true") {
-      Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.white),
-        message: "Details saved successfuly!",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryYellow,
-        duration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
-    } else {
-      Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.white),
-        message: "An error occured!",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryYellow,
-        duration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
-    }
-    setState(() {
-      processing = false;
-      Navigator.of(context).pushNamed(DoctorDashboard.routeName);
-    });
   }
 }
 
