@@ -18,7 +18,9 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool _isHidden = true;
-  bool processing = false;
+  int userid;
+  String fullname;
+  String role;
 
   TextEditingController passctrl, emailctrl;
 
@@ -31,28 +33,11 @@ class _SignInState extends State<SignIn> {
   }
 
   Future userSignIn() async {
-    /* setState(() {
-      processing = true;
-    }); */
     var url = "http://192.168.0.15/tabibu/api/auth/signin.php";
     var res = await http
         .post(url, body: {"email": emailctrl.text, "pass": passctrl.text});
-
     var data = json.decode(res.body);
-
-    if (data == "success") {
-      Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Succesful sign in! Welcome to Tabibu",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 4),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
-      print("Yoooo! It worked!");
-      // Navigator.of(context).pushNamed(PatientDashboard.routeName);
-    } else {
+    if (data == "error") {
       Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "Please confirm your credentials!",
@@ -63,10 +48,26 @@ class _SignInState extends State<SignIn> {
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
       print("wrong password");
+    } else {
+      print("Yoooo! It worked!");
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Succesful sign in! Welcome to Tabibu",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      userid = int.parse(data[0]);
+      fullname = data[1];
+      role = data[2];
+      if (role == 'doctor') {
+        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+      } else {
+        Navigator.of(context).pushNamed(PatientDashboard.routeName);
+      }
     }
-    setState(() {
-      processing = false;
-    });
   }
 
   void _togglePasswordView() {
