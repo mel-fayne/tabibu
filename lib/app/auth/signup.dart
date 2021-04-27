@@ -21,8 +21,70 @@ class _SignUpState extends State<SignUp> {
   String _myRole;
 
   TextEditingController namectrl, emailctrl, countyctrl, passctrl;
-
   bool processing = false;
+
+  Future registerUser() async {
+    //  _mobilenumber = int.parse(mobilectrl.text);
+    setState(() {
+      processing = true;
+    });
+    var url = "http://192.168.0.15/tabibu/api/auth/signup.php";
+    var data = {
+      "name": namectrl.text,
+      "email": emailctrl.text,
+      //  "mobilenumber": mobilectrl.text,
+      "county": countyctrl.text,
+      "pass": passctrl.text,
+      "role": _myRole
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "account already exists") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "The user account already exists!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("account already exists");
+    } else {
+      if (jsonDecode(res.body) == "true") {
+        Flushbar(
+          icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+          message: "Successful Sign up! Welcome to Tabibu!",
+          margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+          borderRadius: 10,
+          backgroundColor: kPrimaryGreen,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        )..show(context);
+        print("Yoooo! It worked!");
+      } else {
+        Flushbar(
+          icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+          message: "An error occured! Try again later",
+          margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+          borderRadius: 10,
+          backgroundColor: kPrimaryGreen,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        )..show(context);
+        print("error");
+      }
+    }
+    setState(() {
+      processing = false;
+      if (_myRole == "patient") {
+        Navigator.of(context).pushNamed(PatientDashboard.routeName);
+      } else {
+        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -191,48 +253,6 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-
-  void registerUser() async {
-    //  _mobilenumber = int.parse(mobilectrl.text);
-    setState(() {
-      processing = true;
-    });
-    var url = "http://192.168.0.15/tabibu/api/auth/signup.php";
-    var data = {
-      "name": namectrl.text,
-      "email": emailctrl.text,
-      //  "mobilenumber": mobilectrl.text,
-      "county": countyctrl.text,
-      "pass": passctrl.text,
-      "role": _myRole
-    };
-
-    var res = await http.post(url, body: data);
-
-    if (jsonDecode(res.body) == "account already exists") {
-      showFlushbar(
-        message: "The user account already exists!\nConfirm your email",
-      );
-    } else {
-      if (jsonDecode(res.body) == "true") {
-        showFlushbar(
-          message: "Account Succesfuly Created!\nWelcome to Tabibu",
-        );
-      } else {
-        showFlushbar(
-          message: "An error occured!",
-        );
-      }
-    }
-    setState(() {
-      processing = false;
-      if (_myRole == "patient") {
-        Navigator.of(context).pushNamed(PatientDashboard.routeName);
-      } else {
-        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
-      }
-    });
-  }
 }
 
 Widget makeInput(
@@ -263,18 +283,4 @@ Widget makeInput(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }
