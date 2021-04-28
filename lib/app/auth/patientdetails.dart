@@ -4,34 +4,93 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class PatientDetails extends StatefulWidget {
   static const routeName = "/patientdetails";
 
+  //accepting parameters from previous screen
+  final String userid;
+  final String fullname;
+  PatientDetails({@required this.userid, @required this.fullname});
   @override
-  _PatientDetailsState createState() => _PatientDetailsState();
+  State<StatefulWidget> createState() {
+    return PatientDetailsState(this.userid, this.fullname);
+  }
 }
 
-class _PatientDetailsState extends State<PatientDetails> {
+class PatientDetailsState extends State<PatientDetails> {
+  String userid;
+  String fullname;
+
+  PatientDetailsState(this.userid, this.fullname);
+
+  String _condtype;
   String _myPayment;
   String _myBloodType;
   String _myStatus;
-  bool processing = false;
 
-  TextEditingController dobctrl,
-      conditiontypectrl,
-      conditionnamectrl,
-      bloodtypectrl,
-      paymentmodectrl;
+  TextEditingController useridctrl, dobctrl, conditionnamectrl;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    useridctrl = new TextEditingController();
     dobctrl = new TextEditingController();
-    conditiontypectrl = new TextEditingController();
-    conditiontypectrl = new TextEditingController();
-    bloodtypectrl = new TextEditingController();
-    paymentmodectrl = new TextEditingController();
+    conditionnamectrl = new TextEditingController();
+  }
+
+  Future registerPatient() async {
+    setState(() {});
+    var url = "http://192.168.0.15/tabibu/api/patients/postpatients.php";
+    var data = {
+      "userid": useridctrl.text,
+      "dob": dobctrl.text,
+      "condition_type": _condtype,
+      "condition_name": conditionnamectrl.text,
+      "blood_type": _myBloodType,
+      "payment_mode": _myPayment,
+      "status": _myStatus
+    };
+
+    var res = await http.post(url, body: data);
+
+    if (jsonDecode(res.body) == "account already exists") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "The user account already exists!",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("account already exists");
+    } else {
+      if (jsonDecode(res.body) == "true") {
+        print("Yoooo! It worked!");
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PatientDashboard(fullname: fullname, userid: userid),
+            ));
+      } else {
+        Flushbar(
+          icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+          message: "An error occured! Try again later",
+          margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+          borderRadius: 10,
+          backgroundColor: kPrimaryGreen,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        )..show(context);
+        print("error");
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -64,7 +123,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Finish Setting up Tabibu Account ...",
+                          "Just one more step ...",
                           style: TextStyle(
                               fontSize: 25,
                               fontFamily: 'Source Sans',
@@ -81,16 +140,42 @@ class _PatientDetailsState extends State<PatientDetails> {
                 child: Column(
                   children: <Widget>[
                     makeInput(
-                        label: "Date of Birth *",
-                        controller: dobctrl,
-                        type: TextInputType.datetime),
-                    makeInput(
-                        label: "Type of Condition *",
-                        controller: conditiontypectrl),
+                      label: "User ID *",
+                      controller: useridctrl,
+                      hint:
+                          "Your user ID is $userid. Fill this id in this field",
+                    ),
+                    makeInput(label: "Date of Birth *", controller: dobctrl),
+                    DropDownFormField(
+                      titleText: 'Type of Condition',
+                      hintText: 'Choose your type of condition',
+                      value: _condtype,
+                      onSaved: (value) {
+                        setState(() {
+                          _condtype = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _condtype = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "Pre-existing",
+                          "value": "pre-existing",
+                        },
+                        {
+                          "display": "Subsequent",
+                          "value": "subsequent",
+                        }
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
                     makeInput(
                         label: "Name of Condition *",
                         controller: conditionnamectrl),
-                    makeInput(label: "Blood Type", controller: bloodtypectrl),
                     DropDownFormField(
                       titleText: 'Blood Type',
                       hintText: 'Choose your blood type',
@@ -220,7 +305,7 @@ class _PatientDetailsState extends State<PatientDetails> {
 }
 
 Widget makeInput(
-    {label, obscureText = false, required: true, controller, type}) {
+    {label, obscureText = false, hint, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
     child: TextField(
@@ -239,6 +324,7 @@ Widget makeInput(
       },
       decoration: InputDecoration(
           labelText: label,
+          hintText: hint,
           labelStyle: TextStyle(
               fontSize: 14,
               fontFamily: 'Source Sans',
@@ -247,18 +333,4 @@ Widget makeInput(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }

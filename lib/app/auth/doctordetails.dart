@@ -9,19 +9,26 @@ import 'dart:convert';
 class DoctorDetails extends StatefulWidget {
   static const routeName = "/doctordetails";
 
+  //accepting parameters from previous screen
+  final String userid;
+  final String fullname;
+  DoctorDetails({@required this.userid, @required this.fullname});
   @override
-  _DoctorDetailsState createState() => _DoctorDetailsState();
+  State<StatefulWidget> createState() {
+    return DoctorDetailsState(this.userid, this.fullname);
+  }
 }
 
-class _DoctorDetailsState extends State<DoctorDetails> {
-  bool processing = false;
+class DoctorDetailsState extends State<DoctorDetails> {
+  String userid;
+  String fullname;
+  DoctorDetailsState(this.userid, this.fullname);
 
   TextEditingController hospitalctrl,
-      liscencectrl,
-      practiceyearsctrl,
       specialtyctrl,
+      practiceyearsctrl,
       aboutctrl,
-      loadlimitctrl,
+      liscencectrl,
       daysctrl,
       userctrl,
       timectrl;
@@ -31,61 +38,65 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     // TODO: implement initState
     super.initState();
     hospitalctrl = new TextEditingController();
-    liscencectrl = new TextEditingController();
-    practiceyearsctrl = new TextEditingController();
-    loadlimitctrl = new TextEditingController();
-    aboutctrl = new TextEditingController();
     specialtyctrl = new TextEditingController();
+    practiceyearsctrl = new TextEditingController();
+    aboutctrl = new TextEditingController();
+    liscencectrl = new TextEditingController();
     daysctrl = new TextEditingController();
     userctrl = new TextEditingController();
     timectrl = new TextEditingController();
   }
 
-  Future sendDetails() async {
-    int _userid;
-    _userid = int.parse(userctrl.text);
-    setState(() {
-      processing = true;
-    });
+  Future registerDoctor() async {
     var url = "http://192.168.0.15/tabibu/api/doctors/postdoctors.php";
     var data = {
       "hospital": hospitalctrl.text,
-      "liscence": liscencectrl.text,
-      "practiceyrs": practiceyearsctrl.text,
       "specialty": specialtyctrl.text,
+      "practiceyrs": practiceyearsctrl.text,
       "about": aboutctrl.text,
-      "loadlimit": loadlimitctrl.text,
+      "liscence": liscencectrl.text,
       "days": daysctrl.text,
-      "userid": _userid,
-      "time": timectrl
+      "time": timectrl.text,
+      "userid": userid
     };
 
     var res = await http.post(url, body: data);
+    var doc = jsonDecode(res.body);
 
-    if (jsonDecode(res.body) == "true") {
+    if (doc == "doctor user exists") {
       Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Details saved successfuly!",
+        message: "The doctor account exists! Check your user id field",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
         borderRadius: 10,
         backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
+      print("doctor user exists");
     } else {
-      Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "An error occured! Try again later",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
+      if (doc == "success") {
+        print("Yoooo! It worked!");
+      } else {
+        Flushbar(
+          icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+          message: "An error occured! Try again later",
+          margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+          borderRadius: 10,
+          backgroundColor: kPrimaryGreen,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        )..show(context);
+        print("error");
+      }
     }
     setState(() {
-      processing = false;
-      Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                DoctorDashboard(fullname: fullname, userid: userid),
+          ));
     });
   }
 
@@ -119,7 +130,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Finish Setting up Tabibu Account...",
+                          "Just one more step ...",
                           style: TextStyle(
                               fontSize: 25,
                               fontFamily: 'Source Sans',
@@ -139,7 +150,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     makeInput(
                       label: "User ID *",
                       controller: userctrl,
-                      hint: "Please check your profile page for your user ID",
+                      hint:
+                          "Your user ID is $userid. Fill this id in this field",
                     ),
                     makeInput(
                         label: "Base Hospital Location *",
@@ -163,11 +175,6 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               color: Colors.black),
                         )),
                     makeInput(
-                        label: "Patient Load Limit *",
-                        hint:
-                            "Enter number of patients you can manage on app e.g 20",
-                        controller: loadlimitctrl),
-                    makeInput(
                         label: "Days of the week when available: *",
                         hint: "E,g. Monday to Friday or Monday & Wednesday",
                         controller: daysctrl),
@@ -185,7 +192,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   height: 40,
                   onPressed: () {
                     debugPrint("Save button clicked");
-                    sendDetails();
+                    registerDoctor();
                   },
                   color: kPrimaryGreen,
                   elevation: 0,
@@ -236,18 +243,4 @@ Widget makeInput(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }

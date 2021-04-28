@@ -13,7 +13,7 @@ class PatientDashboard extends StatefulWidget {
 
   //accepting parameters from previous screen
   final String fullname;
-  final int userid;
+  final String userid;
   PatientDashboard({@required this.fullname, @required this.userid});
   //reference it like this: widget.fullname e.t.c
   @override
@@ -24,7 +24,7 @@ class PatientDashboard extends StatefulWidget {
 
 class PatientDashboardState extends State<PatientDashboard> {
   String fullname;
-  int userid;
+  String userid;
   PatientDashboardState(this.fullname, this.userid);
   @override
   Widget build(BuildContext context) {
@@ -275,8 +275,13 @@ class PatientDashboardState extends State<PatientDashboard> {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              PatientProfile.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PatientProfile(
+                                                        userid: userid),
+                                              ));
                                         },
                                         child: navitem(
                                           navlabel: "Profile",

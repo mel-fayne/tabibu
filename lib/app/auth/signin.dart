@@ -18,7 +18,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool _isHidden = true;
-  int userid;
+  String userid;
   String fullname;
   String role;
 
@@ -59,7 +59,7 @@ class _SignInState extends State<SignIn> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      userid = int.parse(data[0]);
+      userid = data[0];
       fullname = data[1];
       role = data[2];
       print(data);

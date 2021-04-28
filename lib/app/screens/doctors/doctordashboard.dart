@@ -7,16 +7,12 @@ import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-
 class DoctorDashboard extends StatefulWidget {
   static const routeName = "/doctordashboard";
 
   //accepting parameters from previous screen
   final String fullname;
-  final int userid;
+  final String userid;
   DoctorDashboard({@required this.fullname, @required this.userid});
   //reference it like this: widget.fullname e.t.c
   @override
@@ -27,7 +23,7 @@ class DoctorDashboard extends StatefulWidget {
 
 class DoctorDashboardState extends State<DoctorDashboard> {
   String fullname;
-  int userid;
+  String userid;
   DoctorDashboardState(this.fullname, this.userid);
   @override
   Widget build(BuildContext context) {
@@ -276,8 +272,13 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              DoctorProfile.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DoctorProfile(
+                                                        userid: userid),
+                                              ));
                                         },
                                         child: navitem(
                                           navlabel: "Profile",

@@ -41,16 +41,24 @@ class MyApp extends StatelessWidget {
         SignIn.routeName: (ctx) => SignIn(),
         ForgotPassword.routeName: (ctx) => ForgotPassword(),
         SignUp.routeName: (ctx) => SignUp(),
-        DoctorDetails.routeName: (ctx) => DoctorDetails(),
-        PatientDetails.routeName: (ctx) => PatientDetails(),
+        DoctorDetails.routeName: (ctx) => DoctorDetails(
+              fullname: null,
+              userid: null,
+            ),
+        PatientDetails.routeName: (ctx) => PatientDetails(
+              fullname: null,
+              userid: null,
+            ),
         DoctorDashboard.routeName: (ctx) =>
             DoctorDashboard(fullname: null, userid: null),
         PatientDashboard.routeName: (ctx) =>
             PatientDashboard(fullname: null, userid: null),
         MedicalHistory.routeName: (ctx) => MedicalHistory(),
         MyDoctors.routeName: (ctx) => MyDoctors(),
-        PatientProfile.routeName: (ctx) => PatientProfile(),
-        DoctorProfile.routeName: (ctx) => DoctorProfile(),
+        PatientProfile.routeName: (ctx) => PatientProfile(
+              userid: null,
+            ),
+        DoctorProfile.routeName: (ctx) => DoctorProfile(userid: null),
         MyPatients.routeName: (ctx) => MyPatients(),
         NewRecord.routeName: (ctx) => NewRecord(),
         ScheduleList.routeName: (ctx) => ScheduleList(),

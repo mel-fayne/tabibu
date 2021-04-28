@@ -1,6 +1,6 @@
+import 'package:Tabibu/app/auth/doctordetails.dart';
+import 'package:Tabibu/app/auth/patientdetails.dart';
 import 'package:Tabibu/app/auth/signin.dart';
-import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
-import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -19,28 +19,26 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   String _myRole;
+  String userid;
+  String fullname;
 
   TextEditingController namectrl, emailctrl, countyctrl, passctrl;
-  bool processing = false;
 
   Future registerUser() async {
-    //  _mobilenumber = int.parse(mobilectrl.text);
-    setState(() {
-      processing = true;
-    });
+    setState(() {});
     var url = "http://192.168.0.15/tabibu/api/auth/signup.php";
     var data = {
       "name": namectrl.text,
       "email": emailctrl.text,
-      //  "mobilenumber": mobilectrl.text,
       "county": countyctrl.text,
       "pass": passctrl.text,
       "role": _myRole
     };
 
     var res = await http.post(url, body: data);
+    var user = json.decode(res.body);
 
-    if (jsonDecode(res.body) == "account already exists") {
+    if (user == "account already exists") {
       Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "The user account already exists!",
@@ -52,18 +50,7 @@ class _SignUpState extends State<SignUp> {
       )..show(context);
       print("account already exists");
     } else {
-      if (jsonDecode(res.body) == "true") {
-        Flushbar(
-          icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-          message: "Successful Sign up! Welcome to Tabibu!",
-          margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-          borderRadius: 10,
-          backgroundColor: kPrimaryGreen,
-          duration: Duration(seconds: 4),
-          flushbarPosition: FlushbarPosition.TOP,
-        )..show(context);
-        print("Yoooo! It worked!");
-      } else {
+      if (user == "error") {
         Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
@@ -74,16 +61,29 @@ class _SignUpState extends State<SignUp> {
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
         print("error");
+      } else {
+        print("Yoooo! It worked!");
+        userid = user[0];
+        fullname = user[1];
+        print(user);
+        if (_myRole == "patient") {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PatientDetails(userid: userid, fullname: fullname),
+              ));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    DoctorDetails(userid: userid, fullname: fullname),
+              ));
+        }
       }
     }
-    setState(() {
-      processing = false;
-      if (_myRole == "patient") {
-        Navigator.of(context).pushNamed(PatientDashboard.routeName);
-      } else {
-        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
-      }
-    });
+    setState(() {});
   }
 
   @override
@@ -153,11 +153,6 @@ class _SignUpState extends State<SignUp> {
                       controller: emailctrl,
                       type: TextInputType.emailAddress,
                     ),
-                    /*  makeInput(
-                      label: "Mobile Number *",
-                      controller: mobilectrl,
-                      // type: TextInputType.number,
-                    ), */
                     makeInput(
                       label: "Residence County *",
                       controller: countyctrl,

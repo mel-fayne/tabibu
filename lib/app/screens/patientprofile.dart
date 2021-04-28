@@ -5,11 +5,29 @@ import 'package:flutter/material.dart';
 class PatientProfile extends StatefulWidget {
   static const routeName = "/patientprofile";
 
+//accepting parameters from previous screen
+  final String userid;
+  PatientProfile({@required this.userid});
   @override
-  _PatientProfileState createState() => _PatientProfileState();
+  State<StatefulWidget> createState() {
+    return PatientProfileState(this.userid);
+  }
 }
 
-class _PatientProfileState extends State<PatientProfile> {
+class PatientProfileState extends State<PatientProfile> {
+  String userid;
+  PatientProfileState(this.userid);
+
+  String fullname;
+  String email;
+  String county;
+  //patient details
+  int patientid;
+  String condtype;
+  String condname;
+  String bloodtype;
+  String paymode;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,31 +125,7 @@ class _PatientProfileState extends State<PatientProfile> {
                       fontFamily: 'Source Sans',
                       fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 40,
-                      onPressed: () {
-                        setState(() {
-                          debugPrint("Button clicked..");
-                        });
-                        Navigator.of(context)
-                            .pushNamed(PatientDetails.routeName);
-                      },
-                      color: kPrimaryGreen,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Text("FINISH ACCOUNT SETUP",
-                          style: TextStyle(
-                              color: kPrimaryYellow,
-                              fontFamily: 'PT Serif',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700)),
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
