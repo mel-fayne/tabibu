@@ -14,29 +14,21 @@ import 'dart:convert';
 class DoctorDashboard extends StatefulWidget {
   static const routeName = "/doctordashboard";
 
+  //accepting parameters from previous screen
+  final String fullname;
+  final int userid;
+  DoctorDashboard({@required this.fullname, @required this.userid});
+  //reference it like this: widget.fullname e.t.c
   @override
-  _DoctorDashboardState createState() => _DoctorDashboardState();
+  State<StatefulWidget> createState() {
+    return DoctorDashboardState(this.fullname, this.userid);
+  }
 }
 
-class _DoctorDashboardState extends State<DoctorDashboard> {
-  Map data;
-  List diagnosisData;
-
-  Future getData() async {
-    http.Response response = await http
-        .get("http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php");
-    data = json.decode(response.body);
-    setState(() {
-      diagnosisData = data["   "];
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
+class DoctorDashboardState extends State<DoctorDashboard> {
+  String fullname;
+  int userid;
+  DoctorDashboardState(this.fullname, this.userid);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +64,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             ),
                             Container(
                               padding: const EdgeInsets.only(left: 22),
-                              child: Text('Dr. Jules Rue',
+                              child: Text('Dr.$fullname',
                                   style: TextStyle(
                                       color: kPrimaryGreen,
                                       fontFamily: 'Source Sans',
@@ -145,7 +137,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child: Text('Welcome to Tabibu Dr.{}',
+                    child: Text('Welcome to Tabibu Dr. $fullname',
                         style: TextStyle(
                             fontSize: 26,
                             fontFamily: 'Source Sans',
@@ -250,7 +242,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                                           label:
                                               "Check Updates & Schedule"))))),
                       Container(
-                        padding: EdgeInsets.only(bottom: 60),
+                        padding: EdgeInsets.only(bottom: 20),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,

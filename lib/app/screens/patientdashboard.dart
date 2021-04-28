@@ -8,8 +8,24 @@ import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
-class PatientDashboard extends StatelessWidget {
-  static const routeName = "/patientdashboard";
+class PatientDashboard extends StatefulWidget {
+  static const routeName = "/doctordashboard";
+
+  //accepting parameters from previous screen
+  final String fullname;
+  final int userid;
+  PatientDashboard({@required this.fullname, @required this.userid});
+  //reference it like this: widget.fullname e.t.c
+  @override
+  State<StatefulWidget> createState() {
+    return PatientDashboardState(this.fullname, this.userid);
+  }
+}
+
+class PatientDashboardState extends State<PatientDashboard> {
+  String fullname;
+  int userid;
+  PatientDashboardState(this.fullname, this.userid);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +63,7 @@ class PatientDashboard extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.only(left: 22),
-                              child: Text('John Doe',
+                              child: Text('$fullname',
                                   style: TextStyle(
                                       color: kPrimaryGreen,
                                       fontFamily: 'Source Sans',
@@ -120,7 +136,7 @@ class PatientDashboard extends StatelessWidget {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child: Text('Welcome to Tabibu John Doe',
+                    child: Text('Welcome to Tabibu $fullname',
                         style: TextStyle(
                             fontSize: 26,
                             fontFamily: 'Source Sans',

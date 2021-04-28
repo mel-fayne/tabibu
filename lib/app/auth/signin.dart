@@ -62,10 +62,21 @@ class _SignInState extends State<SignIn> {
       userid = int.parse(data[0]);
       fullname = data[1];
       role = data[2];
+      print(data);
       if (role == 'doctor') {
-        Navigator.of(context).pushNamed(DoctorDashboard.routeName);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  DoctorDashboard(fullname: fullname, userid: userid),
+            ));
       } else {
-        Navigator.of(context).pushNamed(PatientDashboard.routeName);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PatientDashboard(fullname: fullname, userid: userid),
+            ));
       }
     }
   }

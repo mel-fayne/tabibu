@@ -43,8 +43,10 @@ class MyApp extends StatelessWidget {
         SignUp.routeName: (ctx) => SignUp(),
         DoctorDetails.routeName: (ctx) => DoctorDetails(),
         PatientDetails.routeName: (ctx) => PatientDetails(),
-        DoctorDashboard.routeName: (ctx) => DoctorDashboard(),
-        PatientDashboard.routeName: (ctx) => PatientDashboard(),
+        DoctorDashboard.routeName: (ctx) =>
+            DoctorDashboard(fullname: null, userid: null),
+        PatientDashboard.routeName: (ctx) =>
+            PatientDashboard(fullname: null, userid: null),
         MedicalHistory.routeName: (ctx) => MedicalHistory(),
         MyDoctors.routeName: (ctx) => MyDoctors(),
         PatientProfile.routeName: (ctx) => PatientProfile(),
