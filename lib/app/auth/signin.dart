@@ -214,7 +214,7 @@ class _SignInState extends State<SignIn> {
                               ),
                             ))), */
                     Container(
-                        padding: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: 20),
                         child: GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushNamed(SignUp.routeName);

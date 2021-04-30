@@ -56,8 +56,9 @@ class PatientDetailsState extends State<PatientDetails> {
     };
 
     var res = await http.post(url, body: data);
+    var ptn = jsonDecode(res.body);
 
-    if (jsonDecode(res.body) == "account already exists") {
+    if (ptn == "patient user exists") {
       Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "The user account already exists!",
@@ -67,17 +68,9 @@ class PatientDetailsState extends State<PatientDetails> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("account already exists");
+      print("patient user exists");
     } else {
-      if (jsonDecode(res.body) == "true") {
-        print("Yoooo! It worked!");
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  PatientDashboard(fullname: fullname, userid: userid),
-            ));
-      } else {
+      if (ptn == "error") {
         Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
@@ -88,6 +81,15 @@ class PatientDetailsState extends State<PatientDetails> {
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
         print("error");
+      } else {
+        print("Yoooo! It worked!");
+        print(ptn);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PatientDashboard(fullname: fullname, userid: userid),
+            ));
       }
     }
     setState(() {});

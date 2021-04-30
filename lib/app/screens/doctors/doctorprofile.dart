@@ -1,7 +1,5 @@
-import 'package:Tabibu/app/auth/doctordetails.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flushbar/flushbar.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -36,11 +34,13 @@ class DoctorProfileState extends State<DoctorProfile> {
   String days;
   String time;
 
+  bool show = false;
+
   void initState() {
     // TODO: implement initState
     super.initState();
     getUser();
-    //   getDoctor();
+    getDoctor();
   }
 
   Future getUser() async {
@@ -116,8 +116,8 @@ class DoctorProfileState extends State<DoctorProfile> {
                         'User Details',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Source Sans',
+                          fontSize: 18,
+                          fontFamily: 'PT Serif',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -131,10 +131,10 @@ class DoctorProfileState extends State<DoctorProfile> {
                     ],
                   ),
                   Text(
-                    'Name: ...  Email Adress: ....\nResidence County: ...  Mobile Number: ...\nUser ID: ...',
+                    'Name: $fullname \nEmail Adress: $email \nResidence County: $county \nUser ID: $userid \nAccount Type: Doctor',
                     style: TextStyle(
                       color: kFieldTextColor,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontFamily: 'Source Sans',
                       fontWeight: FontWeight.w600,
                     ),
@@ -153,8 +153,8 @@ class DoctorProfileState extends State<DoctorProfile> {
                         'Doctor Details',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Source Sans',
+                          fontSize: 18,
+                          fontFamily: 'Pt Serif',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -168,14 +168,40 @@ class DoctorProfileState extends State<DoctorProfile> {
                     ],
                   ),
                   Text(
-                    'Doctor ID: ...\nBase Hospital: ...\nSpecialty: ...\n Years of Medical Practice: ...\nAbout me: ...\nDoctor Liscence ID: ...\nDays Available: ...\nTime available: ...',
+                    'Doctor ID: $doctorid \nBase Hospital: $hospital\nSpecialty: $specialty\n Years of Medical Practice: $pracyrs\n\nAbout me: \n$about\n\nDoctor Liscence ID: $liscence\nDays Available: $days\nTime available: $time',
                     style: TextStyle(
                       color: kFieldTextColor,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontFamily: 'Source Sans',
                       fontWeight: FontWeight.w600,
                     ),
-                  )
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 100),
+                    child: MaterialButton(
+                      // minWidth: double.infinity,
+                      height: 40,
+                      onPressed: () {
+                        setState(() {
+                          debugPrint("Show more...");
+                          show = true;
+                          getUser();
+                          getDoctor();
+                        });
+                      },
+                      color: kPrimaryGreen,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text("Show more..",
+                          style: TextStyle(
+                              color: kPrimaryYellow,
+                              fontFamily: 'PT Serif',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700)),
+                    ),
+                  ),
                 ],
               ),
             ),

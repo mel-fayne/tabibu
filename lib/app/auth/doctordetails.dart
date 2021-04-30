@@ -75,9 +75,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
       )..show(context);
       print("doctor user exists");
     } else {
-      if (doc == "success") {
-        print("Yoooo! It worked!");
-      } else {
+      if (doc == "error") {
         Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
@@ -88,15 +86,18 @@ class DoctorDetailsState extends State<DoctorDetails> {
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
         print("error");
+      } else {
+        print("Yoooo! It worked!");
+        print(doc);
       }
     }
     setState(() {
-      Navigator.pushReplacement(
+      /* Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) =>
                 DoctorDashboard(fullname: fullname, userid: userid),
-          ));
+          )); */
     });
   }
 
@@ -230,7 +231,6 @@ Widget makeInput(
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,

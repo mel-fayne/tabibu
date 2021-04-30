@@ -2,6 +2,9 @@ import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class NewRecord extends StatefulWidget {
   static const routeName = "/newrecord";
   @override
@@ -11,8 +14,6 @@ class NewRecord extends StatefulWidget {
 }
 
 class NewRecordState extends State<NewRecord> {
-  String _myRole;
-
   TextEditingController doctoridctrl,
       datectrl,
       patientidctrl,
@@ -46,6 +47,57 @@ class NewRecordState extends State<NewRecord> {
     medicinectrl = TextEditingController();
     prescriptionctrl = TextEditingController();
     treatmentinfoctrl = TextEditingController();
+  }
+
+  Future addDiagnosis() async {
+    setState(() {});
+    var url = "http://192.168.0.15/tabibu/api/diagnosis/postdiagnosis.php";
+    var data = {
+      "disease": diseasectrl.text,
+      "description": descriptionctrl.text,
+      "date": datectrl.text,
+      "weight": weightctrl.text,
+      "temp": tempctrl.text,
+      "pulse": pulsectrl.text,
+      "pressure": pressurectrl.text,
+      "symptoms": symptomsctrl.text,
+      "medicine": medicinectrl.text,
+      "prescription": prescriptionctrl.text,
+      "treatmentinfo": treatmentinfoctrl.text,
+      "dr_id": doctoridctrl.text,
+      "pt_id": patientidctrl.text
+    };
+
+    var res = await http.post(url, body: data);
+    var diagnosis = json.decode(res.body);
+
+    if (diagnosis == "error") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "An error occured! Try again later",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("error");
+    } else {
+      print("Yoooo! It worked!");
+      print(diagnosis);
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Record saved successfully",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      Navigator.of(context).pop();
+    }
+
+    setState(() {});
   }
 
   @override
@@ -105,15 +157,18 @@ class NewRecordState extends State<NewRecord> {
                     makeInput(
                       label: "Date *",
                       controller: datectrl,
-                      type: TextInputType.datetime,
                     ),
                     makeInput(
                       label: "Doctor ID *",
                       controller: doctoridctrl,
+                      hint:
+                          "Check your profile for your Tabibu Account DoctorID Number",
                     ),
                     makeInput(
                       label: "Patient ID *",
                       controller: patientidctrl,
+                      hint:
+                          "Enter your patients Tabibu Account PatientID Number",
                     ),
                     makeInput(
                       label: "Disease *",
@@ -183,6 +238,7 @@ class NewRecordState extends State<NewRecord> {
                   onPressed: () {
                     setState(() {
                       debugPrint("Save record button clicked");
+                      addDiagnosis();
                     });
                   },
                   color: kPrimaryGreen,
@@ -205,7 +261,7 @@ class NewRecordState extends State<NewRecord> {
   }
 }
 
-Widget makeInput({label, required: true, controller, type}) {
+Widget makeInput({label, required: true, controller, hint, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
     child: TextField(
@@ -219,10 +275,10 @@ Widget makeInput({label, required: true, controller, type}) {
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,
+          hintText: hint,
           labelStyle: TextStyle(
               fontSize: 14,
               fontFamily: 'Source Sans',
@@ -231,18 +287,4 @@ Widget makeInput({label, required: true, controller, type}) {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }
