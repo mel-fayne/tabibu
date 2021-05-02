@@ -4,6 +4,9 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class NewUpdate extends StatefulWidget {
   static const routeName = "/newupdate";
 
@@ -13,6 +16,7 @@ class NewUpdate extends StatefulWidget {
 
 class _NewUpdateState extends State<NewUpdate> {
   String _myRating;
+  String _medicineintake;
 
   TextEditingController datectrl,
       doctoridctrl,
@@ -24,8 +28,6 @@ class _NewUpdateState extends State<NewUpdate> {
       sideeffectctrl,
       additionalinfoctrl;
 
-  bool processing = false;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -35,9 +37,55 @@ class _NewUpdateState extends State<NewUpdate> {
     feelctrl = new TextEditingController();
     partachectrl = new TextEditingController();
     newsymptomctrl = new TextEditingController();
-    medicineintakectrl = new TextEditingController();
     sideeffectctrl = new TextEditingController();
     additionalinfoctrl = new TextEditingController();
+  }
+
+  Future addUpdate() async {
+    setState(() {});
+    var url = "http://192.168.0.15/tabibu/api/updates/postupdates.php";
+    var data = {
+      "doctorid": doctoridctrl.text,
+      "patientid": patientidctrl.text,
+      "date": datectrl.text,
+      "feel": feelctrl.text,
+      "painrate": _myRating,
+      "partcahe": partachectrl.text,
+      "newsymptom": newsymptomctrl.text,
+      "medicineintake": _medicineintake,
+      "sideeffect": sideeffectctrl.text,
+      "additionalinfo": additionalinfoctrl.text
+    };
+
+    var res = await http.post(url, body: data);
+    var update = json.decode(res.body);
+
+    if (update == "error") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "An error occured! Try again later",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("error");
+    } else {
+      print("Yoooo! It worked!");
+      print(update);
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Update saved successfully",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      Navigator.of(context).pop();
+    }
+    setState(() {});
   }
 
   @override
@@ -102,10 +150,13 @@ class _NewUpdateState extends State<NewUpdate> {
                     makeInput(
                       label: "Doctor ID *",
                       controller: doctoridctrl,
+                      hint:
+                          "Enter the Doctor ID to whom you're sending this update",
                     ),
                     makeInput(
                       label: "Patient ID *",
                       controller: patientidctrl,
+                      hint: "Forgotten your ID? Check your profile page :)",
                     ),
                     Container(
                         padding: EdgeInsets.only(top: 10),
@@ -162,14 +213,34 @@ class _NewUpdateState extends State<NewUpdate> {
                       valueField: 'value',
                     ),
                     makeInput(
-                        label: "Any New Symptoms? *",
+                        label:
+                            "Any New Symptoms? If yes, state these new symptoms.*",
                         controller: newsymptomctrl),
-                    makeInput(
-                      label: "Have you taken the medicine as prescribed? *",
-                      controller: medicineintakectrl,
+                    DropDownFormField(
+                      titleText: 'Have you taken the medicine as prescribed? *',
+                      hintText: 'Be very honest :)',
+                      value: _medicineintake,
+                      onChanged: (value) {
+                        setState(() {
+                          _medicineintake = value;
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "Yes",
+                          "value": "yes",
+                        },
+                        {
+                          "display": "No",
+                          "value": "no",
+                        },
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
                     ),
                     makeInput(
-                      label: "Any Treatment Side Effects? *",
+                      label:
+                          "Any Treatment Side Effects? If yes, state these side effects.*",
                       controller: sideeffectctrl,
                     ),
                     makeInput(
@@ -180,11 +251,16 @@ class _NewUpdateState extends State<NewUpdate> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 90),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 40,
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      debugPrint("Save record button clicked");
+                      addUpdate();
+                    });
+                  },
                   color: kPrimaryGreen,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -206,7 +282,7 @@ class _NewUpdateState extends State<NewUpdate> {
 }
 
 Widget makeInput(
-    {label, obscureText = false, required: true, controller, type}) {
+    {label, hint, obscureText = false, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
     child: TextField(
@@ -221,10 +297,10 @@ Widget makeInput(
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,
+          hintText: hint,
           labelStyle: TextStyle(
               fontSize: 14,
               fontFamily: 'Source Sans',
@@ -233,18 +309,4 @@ Widget makeInput(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
     ),
   );
-}
-
-Widget showFlushbar({message}) {
-  return Builder(builder: (BuildContext context) {
-    return Flushbar(
-      icon: Icon(Icons.error, size: 28, color: Colors.white),
-      message: message,
-      margin: EdgeInsets.fromLTRB(8, kToolbarHeight + 75, 8, 0),
-      borderRadius: 10,
-      backgroundColor: kPrimaryYellow,
-      duration: Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-    )..show(context);
-  });
 }

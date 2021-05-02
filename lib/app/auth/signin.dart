@@ -21,6 +21,8 @@ class _SignInState extends State<SignIn> {
   String userid;
   String fullname;
   String role;
+  String drid;
+  String ptid;
 
   TextEditingController passctrl, emailctrl;
 
@@ -64,19 +66,39 @@ class _SignInState extends State<SignIn> {
       role = data[2];
       print(data);
       if (role == 'doctor') {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  DoctorDashboard(fullname: fullname, userid: userid),
-            ));
+        var docurl = "http://192.168.0.15/tabibu/api/doctors/getdoctors.php";
+        var docres = await http.post(docurl, body: {"userid": userid});
+        var docdata = json.decode(docres.body);
+        if (docdata == "error") {
+          print("sth went wrong!");
+        } else {
+          print("Yoooo! It worked!");
+          drid = docdata[0];
+          print(docdata);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DoctorDashboard(
+                    fullname: fullname, userid: userid, drid: drid),
+              ));
+        }
       } else {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  PatientDashboard(fullname: fullname, userid: userid),
-            ));
+        var pturl = "http://192.168.0.15/tabibu/api/patients/getpatients.php";
+        var ptres = await http.post(pturl, body: {"userid": userid});
+        var ptdata = json.decode(ptres.body);
+        if (ptdata == "error") {
+          print("sth went wrong!");
+        } else {
+          print("Yoooo! It worked!");
+          ptid = ptdata[0];
+          print(ptdata);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PatientDashboard(
+                    fullname: fullname, userid: userid, ptid: ptid),
+              ));
+        }
       }
     }
   }
@@ -133,14 +155,22 @@ class _SignInState extends State<SignIn> {
                             controller: emailctrl,
                             type: TextInputType.emailAddress,
                           ),
-                          makeInput(
-                            label: "Password *",
-                            controller: passctrl,
-                            obscureText: true,
-                          ),
-                          /* TextFormField(
+                          TextFormField(
+                            cursorColor: kPrimaryGreen,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
                             decoration: InputDecoration(
                                 labelText: 'Password *',
+                                labelStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Source Sans',
+                                    fontWeight: FontWeight.w400,
+                                    color: kFieldTextColor),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
                                 suffix: InkWell(
                                   onTap: _togglePasswordView,
                                   child: Icon(
@@ -151,7 +181,7 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 )),
                             obscureText: _isHidden,
-                            // controller: _passwordController,
+                            controller: passctrl,
                             validator: (value) {
                               if (value.isEmpty || value.length < 1) {
                                 return 'Password is too short!';
@@ -159,16 +189,10 @@ class _SignInState extends State<SignIn> {
                               return null;
                             },
                             onSaved: (value) {},
-                          ), */
+                          ),
                         ],
                       ),
                     ),
-                    /*  SizedBox(
-                      height: 20,
-                    ),
-                    if (_is_loading)
-                      CircularProgressIndicator()
-                    else */
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Container(
@@ -195,24 +219,6 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                    /* Container(
-                        padding: EdgeInsets.only(top: 15),
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(ForgotPassword.routeName);
-                            },
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: 'FORGOT PASSWORD ',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Source Sans',
-                                    fontWeight: FontWeight.w700,
-                                    color: kPrimaryGreen),
-                              ),
-                            ))), */
                     Container(
                         padding: EdgeInsets.only(top: 20),
                         child: GestureDetector(
@@ -266,7 +272,6 @@ Widget makeInput(
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,
