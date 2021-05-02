@@ -84,12 +84,12 @@ class PatientDetailsState extends State<PatientDetails> {
       } else {
         print("Yoooo! It worked!");
         print(ptn);
-        Navigator.pushReplacement(
+        /* Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) =>
                   PatientDashboard(fullname: fullname, userid: userid),
-            ));
+            )); */
       }
     }
     setState(() {});

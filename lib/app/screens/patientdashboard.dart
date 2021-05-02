@@ -14,18 +14,21 @@ class PatientDashboard extends StatefulWidget {
   //accepting parameters from previous screen
   final String fullname;
   final String userid;
-  PatientDashboard({@required this.fullname, @required this.userid});
-  //reference it like this: widget.fullname e.t.c
+  final String ptid;
+  PatientDashboard(
+      {@required this.fullname, @required this.userid, @required this.ptid});
   @override
   State<StatefulWidget> createState() {
-    return PatientDashboardState(this.fullname, this.userid);
+    return PatientDashboardState(this.fullname, this.userid, this.ptid);
   }
 }
 
 class PatientDashboardState extends State<PatientDashboard> {
   String fullname;
   String userid;
-  PatientDashboardState(this.fullname, this.userid);
+  String ptid;
+  PatientDashboardState(this.fullname, this.userid, this.ptid);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -196,8 +199,14 @@ class PatientDashboardState extends State<PatientDashboard> {
                                 child: Material(
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              MedicalHistory.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MedicalHistory(
+                                                        ptid: ptid,
+                                                        fullname: fullname),
+                                              ));
                                         },
                                         child: dashcard(
                                             path: MyCustomIcons
