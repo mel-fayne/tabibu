@@ -97,7 +97,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
           MaterialPageRoute(
             builder: (context) =>
                 DoctorDashboard(fullname: fullname, userid: userid),
-          )); */
+          ));  */
     });
   }
 

@@ -13,18 +13,20 @@ class DoctorDashboard extends StatefulWidget {
   //accepting parameters from previous screen
   final String fullname;
   final String userid;
-  DoctorDashboard({@required this.fullname, @required this.userid});
-  //reference it like this: widget.fullname e.t.c
+  final String drid;
+  DoctorDashboard(
+      {@required this.fullname, @required this.userid, @required this.drid});
   @override
   State<StatefulWidget> createState() {
-    return DoctorDashboardState(this.fullname, this.userid);
+    return DoctorDashboardState(this.fullname, this.userid, this.drid);
   }
 }
 
 class DoctorDashboardState extends State<DoctorDashboard> {
   String fullname;
   String userid;
-  DoctorDashboardState(this.fullname, this.userid);
+  String drid;
+  DoctorDashboardState(this.fullname, this.userid, this.drid);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +185,7 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                       Row(children: [
                         Padding(
                             padding:
-                                EdgeInsets.only(top: 10, left: 60, bottom: 20),
+                                EdgeInsets.only(top: 10, left: 40, bottom: 20),
                             child: Card(
                                 elevation: 6,
                                 shape: RoundedRectangleBorder(
@@ -238,7 +240,7 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                           label:
                                               "Check Updates & Schedule"))))),
                       Container(
-                        padding: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.only(bottom: 40),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,

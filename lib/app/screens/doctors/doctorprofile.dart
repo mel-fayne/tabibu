@@ -34,15 +34,6 @@ class DoctorProfileState extends State<DoctorProfile> {
   String days;
   String time;
 
-  bool show = false;
-
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getUser();
-    getDoctor();
-  }
-
   Future getUser() async {
     var url = "http://192.168.0.15/tabibu/api/auth/getuser.php";
     var res = await http.post(url, body: {"userid": userid});
@@ -56,25 +47,23 @@ class DoctorProfileState extends State<DoctorProfile> {
       county = data[2];
       print(data);
     }
-  }
 
-  Future getDoctor() async {
-    var url = "http://192.168.0.15/tabibu/api/doctors/getdoctors.php";
-    var res = await http.post(url, body: {"userid": userid});
-    var data = json.decode(res.body);
-    if (data == "error") {
+    var docurl = "http://192.168.0.15/tabibu/api/doctors/getdoctors.php";
+    var docres = await http.post(docurl, body: {"userid": userid});
+    var docdata = json.decode(docres.body);
+    if (docdata == "error") {
       print("sth went wrong!");
     } else {
       print("Yoooo! It worked!");
-      doctorid = int.parse(data[0]);
-      hospital = data[1];
-      specialty = data[2];
-      pracyrs = data[3];
-      about = data[4];
-      liscence = data[5];
-      days = data[6];
-      time = data[7];
-      print(data);
+      doctorid = int.parse(docdata[0]);
+      hospital = docdata[1];
+      specialty = docdata[2];
+      pracyrs = docdata[3];
+      about = docdata[4];
+      liscence = docdata[5];
+      days = docdata[6];
+      time = docdata[7];
+      print(docdata);
     }
   }
 
@@ -93,67 +82,42 @@ class DoctorProfileState extends State<DoctorProfile> {
           },
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 20, left: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              'My Profile',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'PT Serif',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700),
-            ),
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'My Profile',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'PT Serif',
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Icon(
+                            Icons.person,
+                            color: kPrimaryGreen,
+                            size: 50,
+                          )),
+                    ],
+                  ),
                   Row(
                     children: [
                       Text(
                         'User Details',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 18,
-                          fontFamily: 'PT Serif',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 3),
-                          child: Icon(
-                            Icons.person,
-                            color: kPrimaryGreen,
-                            size: 16,
-                          ))
-                    ],
-                  ),
-                  Text(
-                    'Name: $fullname \nEmail Adress: $email \nResidence County: $county \nUser ID: $userid \nAccount Type: Doctor',
-                    style: TextStyle(
-                      color: kFieldTextColor,
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Doctor Details',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontFamily: 'Pt Serif',
                           fontWeight: FontWeight.w600,
                         ),
@@ -163,44 +127,136 @@ class DoctorProfileState extends State<DoctorProfile> {
                           child: Icon(
                             Icons.medical_services,
                             color: kPrimaryGreen,
-                            size: 16,
+                            size: 24,
                           ))
                     ],
                   ),
-                  Text(
-                    'Doctor ID: $doctorid \nBase Hospital: $hospital\nSpecialty: $specialty\n Years of Medical Practice: $pracyrs\n\nAbout me: \n$about\n\nDoctor Liscence ID: $liscence\nDays Available: $days\nTime available: $time',
-                    style: TextStyle(
-                      color: kFieldTextColor,
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
+                  textProfile(
+                    label: "User ID:",
+                    text: "$userid",
                   ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15, horizontal: 100),
-                    child: MaterialButton(
-                      // minWidth: double.infinity,
-                      height: 40,
-                      onPressed: () {
-                        setState(() {
-                          debugPrint("Show more...");
-                          show = true;
-                          getUser();
-                          getDoctor();
-                        });
-                      },
-                      color: kPrimaryGreen,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Text("Show more..",
-                          style: TextStyle(
-                              color: kPrimaryYellow,
-                              fontFamily: 'PT Serif',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700)),
-                    ),
+                  FutureBuilder(
+                    future: getUser(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(
+                          backgroundColor: kPrimaryGreen,
+                        );
+                      } else {
+                        if (snapshot.hasError)
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        else
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textProfile(
+                                label: "Name:",
+                                text: "$fullname",
+                              ),
+                              textProfile(
+                                label: "Email Adress:",
+                                text: "$email",
+                              ),
+                              textProfile(
+                                label: "Residence County:",
+                                text: "$county",
+                              ),
+                              textProfile(
+                                label: "Account Type:",
+                                text: "Doctor Account",
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Doctor Details',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontFamily: 'Pt Serif',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 3),
+                                          child: Icon(
+                                            Icons.medical_services,
+                                            color: kPrimaryGreen,
+                                            size: 24,
+                                          ))
+                                    ],
+                                  )),
+                              textProfile(
+                                label: "Doctor ID:",
+                                text: "$doctorid",
+                              ),
+                              textProfile(
+                                label: "Base Hospital:",
+                                text: "$hospital",
+                              ),
+                              textProfile(
+                                label: "Specialty:",
+                                text: "$specialty",
+                              ),
+                              textProfile(
+                                label: "Years of Medical Practice:",
+                                text: "$pracyrs",
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 7),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'About me:\n',
+                                          style: TextStyle(
+                                            color: kFieldTextColor,
+                                            fontSize: 14,
+                                            fontFamily: 'PT Serif',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$about',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily: 'PT Serif',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ])),
+                              textProfile(
+                                label: "Doctor Liscence ID:",
+                                text: "$liscence",
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 7),
+                                  child: Text(
+                                    'Availability Stats',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontFamily: 'PT Serif',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )),
+                              textProfile(
+                                label: "Days Available:",
+                                text: "$days",
+                              ),
+                              textProfile(
+                                label: "Time available:",
+                                text: "$time",
+                              ),
+                            ],
+                          );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -208,4 +264,32 @@ class DoctorProfileState extends State<DoctorProfile> {
           ])),
     );
   }
+}
+
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 3.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 14,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
+            ))
+      ],
+    ),
+  );
 }
