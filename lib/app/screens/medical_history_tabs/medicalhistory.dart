@@ -9,17 +9,28 @@ import 'package:flutter/material.dart';
 class MedicalHistory extends StatefulWidget {
   static const routeName = "/medicalhistory";
 
+  //accepting parameters from previous screen
+  final String ptid;
+  final String fullname;
+  MedicalHistory({@required this.ptid, @required this.fullname});
   @override
-  _MedicalHistoryState createState() => _MedicalHistoryState();
+  State<StatefulWidget> createState() {
+    return MedicalHistoryState(this.ptid, this.fullname);
+  }
 }
 
-class _MedicalHistoryState extends State<MedicalHistory> {
+class MedicalHistoryState extends State<MedicalHistory> {
+  String ptid;
+  String fullname;
+  MedicalHistoryState(this.ptid, this.fullname);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
           appBar: AppBar(
+            toolbarHeight: 130,
             backgroundColor: Colors.white,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -29,19 +40,31 @@ class _MedicalHistoryState extends State<MedicalHistory> {
               },
             ),
             title: Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Row(children: [
-                Icon(MyCustomIcons.profile_user,
-                    size: 30, color: kPrimaryGreen),
-                Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text('Patient Name: John Doe\nPatient ID: P002/3',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'PT Serif',
-                        )))
+              padding: EdgeInsets.only(top: 10.0),
+              child: Column(children: [
+                Row(
+                  children: [
+                    Icon(MyCustomIcons.profile_user,
+                        size: 40, color: kPrimaryGreen),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: textProfile(
+                              label: "Patient Name:",
+                              text: "$fullname",
+                            )),
+                        Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: textProfile(
+                              label: "Patient ID:",
+                              text: "$ptid",
+                            ))
+                      ],
+                    ),
+                  ],
+                ),
               ]),
             ),
             bottom: TabBar(
@@ -74,10 +97,10 @@ class _MedicalHistoryState extends State<MedicalHistory> {
           ),
           body: TabBarView(
             children: <Widget>[
-              OverviewTab(),
-              DiagnosisTab(),
-              TreatmentTab(),
-              MyUpdatesTab(),
+              OverviewTab(ptid: ptid),
+              DiagnosisTab(ptid: ptid),
+              TreatmentTab(ptid: ptid),
+              MyUpdatesTab(ptid: ptid),
             ],
           )),
     );
@@ -103,6 +126,34 @@ Widget tabitem({label, path}) {
               path,
               size: 15,
               color: Colors.black,
+            ))
+      ],
+    ),
+  );
+}
+
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 3.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 12,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 5),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
             ))
       ],
     ),

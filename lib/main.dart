@@ -49,11 +49,20 @@ class MyApp extends StatelessWidget {
               fullname: null,
               userid: null,
             ),
-        DoctorDashboard.routeName: (ctx) =>
-            DoctorDashboard(fullname: null, userid: null),
-        PatientDashboard.routeName: (ctx) =>
-            PatientDashboard(fullname: null, userid: null),
-        MedicalHistory.routeName: (ctx) => MedicalHistory(),
+        DoctorDashboard.routeName: (ctx) => DoctorDashboard(
+              fullname: null,
+              userid: null,
+              drid: null,
+            ),
+        PatientDashboard.routeName: (ctx) => PatientDashboard(
+              fullname: null,
+              userid: null,
+              ptid: null,
+            ),
+        MedicalHistory.routeName: (ctx) => MedicalHistory(
+              ptid: null,
+              fullname: null,
+            ),
         MyDoctors.routeName: (ctx) => MyDoctors(),
         PatientProfile.routeName: (ctx) => PatientProfile(
               userid: null,
@@ -62,10 +71,16 @@ class MyApp extends StatelessWidget {
         MyPatients.routeName: (ctx) => MyPatients(),
         NewRecord.routeName: (ctx) => NewRecord(),
         ScheduleList.routeName: (ctx) => ScheduleList(),
-        OverviewTab.routeName: (ctx) => OverviewTab(),
-        DiagnosisTab.routeName: (ctx) => DiagnosisTab(),
-        TreatmentTab.routeName: (ctx) => TreatmentTab(),
-        MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(),
+        OverviewTab.routeName: (ctx) => OverviewTab(
+              ptid: null,
+            ),
+        DiagnosisTab.routeName: (ctx) => DiagnosisTab(
+              ptid: null,
+            ),
+        TreatmentTab.routeName: (ctx) => TreatmentTab(
+              ptid: null,
+            ),
+        MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(ptid: null,),
         //  SingleDiagnosis.routeName: (ctx) => SingleDiagnosis(),
         SingleUpdate.routeName: (ctx) => SingleUpdate(),
         NewUpdate.routeName: (ctx) => NewUpdate(),

@@ -1,163 +1,219 @@
+import 'package:Tabibu/app/models/diagnosis.dart';
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class OverviewTab extends StatefulWidget {
   static const routeName = "/overviewtab";
 
+//accepting parameters from previous screen
+  final String ptid;
+  OverviewTab({@required this.ptid});
   @override
-  _OverviewTabState createState() => _OverviewTabState();
+  State<StatefulWidget> createState() {
+    return OverviewTabState(this.ptid);
+  }
 }
 
-class _OverviewTabState extends State<OverviewTab> {
+class OverviewTabState extends State<OverviewTab> {
+  String ptid;
+  OverviewTabState(this.ptid);
+
+  @override
+  void initState() {
+    super.initState();
+    getDiagnosisList();
+  }
+
+  List<Diagnosis> diagnosisdata = [];
+
+  getDiagnosisList() async {
+    var url = "http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php";
+    var res = await http.post(url,
+        body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
+    var diagnosis = json.decode(res.body);
+    if (diagnosis == "error") {
+      print('Unexpected error occured!');
+    } else {
+      for (var data in diagnosis) {
+        diagnosisdata.add(new Diagnosis(
+          data['disease'],
+          data['description'],
+          data['date'],
+          data['weight'],
+          data['temp'],
+          data['pulse'],
+          data['pressure'],
+          data['symptoms'],
+          data['medicine'],
+          data['prescription'],
+          data['treatmentinfo'],
+          data['recordid'],
+          data['dr_id'],
+          data['pt_id'],
+        ));
+      }
+      setState(() {});
+      diagnosisdata.forEach((someData) => print("Name : ${someData.recordid}"));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: Padding(
             padding: EdgeInsets.only(top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 20),
-                    child: Text(
-                      'Diagnosis:',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'PT Serif',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22),
-                    )),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.healing,
-                      color: Colors.purple,
-                      size: 55,
-                    ),
-                    title: Text('Ailment: ...',
+            child: diagnosisdata.length == 0
+                ? Center(
+                    child: Text('Oops, No record yet!',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Source Sans',
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black)),
-                    subtitle: Text('Treatment: ...',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Source Sans',
-                            fontWeight: FontWeight.w600,
-                            color: kFieldTextColor)),
-                  ),
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 20),
-                    child: Text(
-                      'Assesments:',
-                      style: TextStyle(
-                          color: Colors.black,
                           fontFamily: 'PT Serif',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22),
-                    )),
-                ListTile(
-                  leading: Icon(
-                    Icons.healing,
-                    color: Colors.purple,
-                    size: 55,
-                  ),
-                  title: Text('Diagnosis Date: ...',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Source Sans',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black)),
-                  subtitle: Text('Diagnosis Description: ...',
-                      style: TextStyle(
                           fontSize: 14,
-                          fontFamily: 'Source Sans',
-                          fontWeight: FontWeight.w600,
-                          color: kFieldTextColor)),
-                ),
-              ],
-            )));
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryGreen,
+                        )))
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Text(
+                              'Diagnosis:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'PT Serif',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 22),
+                            )),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: diagnosisdata.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                      color: kPrimaryAccent,
+                                      elevation: 7.0,
+                                      child: ListTile(
+                                          leading: Icon(
+                                            Icons.healing,
+                                            color: kPrimaryYellow,
+                                            size: 45,
+                                          ),
+                                          title: Padding(
+                                            padding: EdgeInsets.only(top: 5),
+                                            child: textProfile(
+                                              label: 'Ailment:',
+                                              text:
+                                                  '${diagnosisdata[index].disease}',
+                                            ),
+                                          ),
+                                          subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Description:',
+                                                  style: TextStyle(
+                                                    color: kFieldTextColor,
+                                                    fontSize: 13,
+                                                    fontFamily: 'PT Serif',
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 5),
+                                                    child: Text(
+                                                      '${diagnosisdata[index].description}',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontFamily: 'PT Serif',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    )),
+                                              ])));
+                                })),
+                        Padding(
+                            padding: EdgeInsets.only(left: 20, top: 20),
+                            child: Text(
+                              'Treatment:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'PT Serif',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 22),
+                            )),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: diagnosisdata.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                      color: Colors.blue[100],
+                                      elevation: 5.0,
+                                      child: ListTile(
+                                        leading: Icon(
+                                          MyCustomIcons.pill,
+                                          color: kPrimaryGreen,
+                                          size: 35,
+                                        ),
+                                        title: Padding(
+                                          padding: EdgeInsets.only(top: 5),
+                                          child: textProfile(
+                                            label: 'Medicine:',
+                                            text:
+                                                '${diagnosisdata[index].medicine}',
+                                          ),
+                                        ),
+                                        subtitle: Padding(
+                                            padding: EdgeInsets.only(top: 5),
+                                            child: textProfile(
+                                              label: 'Prescription:',
+                                              text:
+                                                  '${diagnosisdata[index].prescription}',
+                                            )),
+                                      ));
+                                })),
+                      ])));
   }
 }
-/*
-ListTile(
-                        leading: Icon(
-                          Icons.healing,
-                          color: Colors.purple,
-                          size: 55,
-                        ),
-                        title: Text('Diagnosis: Anxiety',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Source Sans',
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black)),
-                        subtitle: Text('Current Status: Treated',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Source Sans',
-                                fontWeight: FontWeight.w600,
-                                color: kFieldTextColor)),
-                      ),
 
-Container(
-                    width: double.infinity,
-                    //  padding: EdgeInsets.only(left: 10),
-                    child: Column(children: [
-                      Card(
-                        color: kPrimaryYellow,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            child: Text(
-                              "10/03/2021\n We noted an improvement in John's drinking habits.\n He has a more postive outlook and the treatment\n is taking effect as expected.",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Source Sans',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      ),
-                      Card(
-                        color: kPrimaryAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            child: Text(
-                              "23/02/2021\n We noted an improvement in John's drinking habits.\n He has a more postive outlook and the treatment\n is taking effect as expected.",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Source Sans',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      ),
-                      Card(
-                        color: kPrimaryAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            child: Text(
-                              "16/01/2021\n We noted an improvement in John's drinking habits.\n He has a more postive outlook and the treatment\n is taking effect as expected.",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Source Sans',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      ),
-                    ])),
-*/
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 13,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
+            ))
+      ],
+    ),
+  );
+}

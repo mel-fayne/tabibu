@@ -1,89 +1,175 @@
-import 'package:Tabibu/app/screens/doctors/newrecord.dart';
+import 'package:Tabibu/app/models/diagnosis.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/singlediagnosis.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
+
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
 
 class DiagnosisTab extends StatefulWidget {
   static const routeName = "/diagnosistab";
-
+//accepting parameters from previous screen
+  final String ptid;
+  DiagnosisTab({@required this.ptid});
   @override
-  _DiagnosisTabState createState() => _DiagnosisTabState();
+  State<StatefulWidget> createState() {
+    return DiagnosisTabState(this.ptid);
+  }
 }
 
-class _DiagnosisTabState extends State<DiagnosisTab> {
-  Map data;
-  List diagnosisData;
-
-  Future getData() async {
-    http.Response response = await http
-        .get("http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php");
-    data = json.decode(response.body);
-    setState(() {
-      diagnosisData = data["   "];
-    });
-  }
+class DiagnosisTabState extends State<DiagnosisTab> {
+  String ptid;
+  String diagnosisid;
+  DiagnosisTabState(this.ptid);
 
   @override
   void initState() {
     super.initState();
-    getData();
+    getDiagnosisList();
+  }
+
+  List<Diagnosis> diagnosisdata = [];
+
+  getDiagnosisList() async {
+    var url = "http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php";
+    var res = await http.post(url,
+        body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
+    var diagnosis = json.decode(res.body);
+    if (diagnosis == "error") {
+      print('Unexpected error occured!');
+    } else {
+      for (var data in diagnosis) {
+        diagnosisdata.add(new Diagnosis(
+          data['disease'],
+          data['description'],
+          data['date'],
+          data['weight'],
+          data['temp'],
+          data['pulse'],
+          data['pressure'],
+          data['symptoms'],
+          data['medicine'],
+          data['prescription'],
+          data['treatmentinfo'],
+          data['recordid'],
+          data['dr_id'],
+          data['pt_id'],
+        ));
+      }
+      setState(() {});
+      diagnosisdata.forEach((someData) => print("Name : ${someData.recordid}"));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: diagnosisData == null ? 0 : diagnosisData.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: Colors.white,
-            elevation: 2.0,
-            child: ListTile(
-              leading: Icon(
-                MyCustomIcons.health_report,
-                color: kPrimaryGreen,
-                size: 55,
-              ),
-              title: Text("Diagnosis: ...\nTreatment: ...",
+        body: Padding(
+      padding: EdgeInsets.only(top: 20),
+      child: diagnosisdata.length == 0
+          ? Center(
+              child: Text('Oops, No record yet!',
                   style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black)),
-              subtitle: Column(
-                children: [
-                  Text("Description: ...",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Source Sans',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black)),
-                  Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text("Date: ...",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Source Sans',
-                              fontWeight: FontWeight.w600,
-                              color: kFieldTextColor))),
-                ],
-              ),
-              trailing: Icon(
-                Icons.keyboard_arrow_right_outlined,
-                color: kPrimaryGreen,
-                size: 34,
-              ),
-              onTap: () {
-                debugPrint("ListTile Tapped");
-                //  navigateToDetail(this.diagnosisList[position]);
-              },
-            ),
-          );
-        },
-      ),
-    );
+                    fontFamily: 'PT Serif',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: kPrimaryGreen,
+                  )))
+          : Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: diagnosisdata.length,
+                  itemBuilder: (_, index) {
+                    return Card(
+                        color: kPrimaryAccent,
+                        elevation: 7.0,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.healing,
+                            color: kPrimaryYellow,
+                            size: 45,
+                          ),
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: textProfile(
+                              label: 'Ailment:',
+                              text: '${diagnosisdata[index].disease}',
+                            ),
+                          ),
+                          subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Description:',
+                                  style: TextStyle(
+                                    color: kFieldTextColor,
+                                    fontSize: 13,
+                                    fontFamily: 'PT Serif',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  '${diagnosisdata[index].description}',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'PT Serif',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 5),
+                                  child: textProfile(
+                                    label: 'Date:',
+                                    text: '${diagnosisdata[index].date}',
+                                  ),
+                                ),
+                              ]),
+                          trailing: Icon(
+                            Icons.arrow_right_outlined,
+                            color: kPrimaryGreen,
+                            size: 25,
+                          ),
+                          onTap: () {
+                            diagnosisid = diagnosisdata[index].recordid;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SingleDiagnosis(diagid: diagnosisid)));
+                          },
+                        ));
+                  })),
+    ));
   }
+}
+
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 13,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
+            ))
+      ],
+    ),
+  );
 }
