@@ -26,8 +26,8 @@ class PatientProfileState extends State<PatientProfile> {
   String county;
   //patient details
   int patientid;
-  String condtype;
-  String condname;
+  String dob;
+  String preexisting;
   String bloodtype;
   String paymode;
 
@@ -53,8 +53,8 @@ class PatientProfileState extends State<PatientProfile> {
     } else {
       print("Yoooo! It worked!");
       patientid = int.parse(ptdata[0]);
-      condtype = ptdata[1];
-      condname = ptdata[2];
+      dob = ptdata[1];
+      preexisting = ptdata[2];
       bloodtype = ptdata[3];
       paymode = ptdata[4];
       print(ptdata);
@@ -64,6 +64,8 @@ class PatientProfileState extends State<PatientProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         brightness: Brightness.light,
@@ -178,12 +180,12 @@ class PatientProfileState extends State<PatientProfile> {
                                 text: "$patientid",
                               ),
                               textProfile(
-                                label: "Condition Type:",
-                                text: "$condtype",
+                                label: "Date of Birth",
+                                text: "$dob",
                               ),
                               textProfile(
-                                label: "Condition Name:",
-                                text: "$condname",
+                                label: "Any Pre-existing condition:",
+                                text: "$preexisting",
                               ),
                               textProfile(
                                 label: "Blood Type:",

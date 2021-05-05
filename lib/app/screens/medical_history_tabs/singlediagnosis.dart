@@ -189,18 +189,18 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  textProfile(
+                                  /* textProfile(
                                     label: "Patient ID:",
                                     text: "$pt_id",
-                                  ),
+                                  ), */
                                   textProfile(
                                     label: 'Patient Name:',
                                     text: 'Dr. $ptname',
                                   ),
-                                  textProfile(
+                                  /* textProfile(
                                     label: 'Doctor ID:',
                                     text: '$dr_id',
-                                  ),
+                                  ), */
                                   textProfile(
                                     label: 'Doctor Name:',
                                     text: 'Dr. $drname',

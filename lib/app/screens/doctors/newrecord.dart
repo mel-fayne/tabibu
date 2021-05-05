@@ -28,6 +28,8 @@ class NewRecordState extends State<NewRecord> {
       prescriptionctrl,
       treatmentinfoctrl;
 
+  bool processing = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -101,6 +103,8 @@ class NewRecordState extends State<NewRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 56,
@@ -230,26 +234,29 @@ class NewRecordState extends State<NewRecord> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 40,
-                  onPressed: () {
-                    setState(() {
-                      debugPrint("Save record button clicked");
-                      addDiagnosis();
-                    });
-                  },
-                  color: kPrimaryGreen,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text("ADD NEW RECORD",
-                      style: TextStyle(
-                          color: kPrimaryYellow,
-                          fontFamily: 'PT Serif',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700)),
-                ),
+                child: processing
+                    ? CircularProgressIndicator()
+                    : MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40,
+                        onPressed: () {
+                          setState(() {
+                            processing = true;
+                            debugPrint("Save record button clicked");
+                            addDiagnosis();
+                          });
+                        },
+                        color: kPrimaryGreen,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text("ADD NEW RECORD",
+                            style: TextStyle(
+                                color: kPrimaryYellow,
+                                fontFamily: 'PT Serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                      ),
               ),
             ],
           ),

@@ -26,6 +26,8 @@ class _SignInState extends State<SignIn> {
 
   TextEditingController passctrl, emailctrl;
 
+  bool processing = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -200,23 +202,26 @@ class _SignInState extends State<SignIn> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 50,
-                          onPressed: () {
-                            userSignIn();
-                          },
-                          color: kPrimaryGreen,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Text("SIGN IN",
-                              style: TextStyle(
-                                  color: kPrimaryYellow,
-                                  fontFamily: 'PT Serif',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700)),
-                        ),
+                        child: processing
+                            ? CircularProgressIndicator()
+                            : MaterialButton(
+                                minWidth: double.infinity,
+                                height: 50,
+                                onPressed: () {
+                                  processing = true;
+                                  userSignIn();
+                                },
+                                color: kPrimaryGreen,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text("SIGN IN",
+                                    style: TextStyle(
+                                        color: kPrimaryYellow,
+                                        fontFamily: 'PT Serif',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700)),
+                              ),
                       ),
                     ),
                     Container(

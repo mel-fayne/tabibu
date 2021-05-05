@@ -24,6 +24,8 @@ class _SignUpState extends State<SignUp> {
 
   TextEditingController namectrl, emailctrl, countyctrl, passctrl;
 
+  bool processing = false;
+
   Future registerUser() async {
     setState(() {});
     var url = "http://192.168.0.15/tabibu/api/auth/signup.php";
@@ -117,14 +119,13 @@ class _SignUpState extends State<SignUp> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          // height: MediaQuery.of(context).size.height - 70,
           width: double.infinity,
           child: Column(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: EdgeInsets.only(top: 20),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -198,23 +199,26 @@ class _SignUpState extends State<SignUp> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 15),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 40,
-                  onPressed: () {
-                    registerUser();
-                  },
-                  color: kPrimaryGreen,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text("REGISTER",
-                      style: TextStyle(
-                          color: kPrimaryYellow,
-                          fontFamily: 'PT Serif',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700)),
-                ),
+                child: processing
+                    ? CircularProgressIndicator()
+                    : MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40,
+                        onPressed: () {
+                          processing = true;
+                          registerUser();
+                        },
+                        color: kPrimaryGreen,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text("REGISTER",
+                            style: TextStyle(
+                                color: kPrimaryYellow,
+                                fontFamily: 'PT Serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                      ),
               ),
               Container(
                   padding: EdgeInsets.only(top: 10, bottom: 20),

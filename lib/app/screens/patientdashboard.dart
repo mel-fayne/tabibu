@@ -32,6 +32,8 @@ class PatientDashboardState extends State<PatientDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 56,
@@ -250,7 +252,7 @@ class PatientDashboardState extends State<PatientDashboard> {
                                           path: MyCustomIcons.calendar,
                                           label: "Book Appointment"))))),
                       Container(
-                        padding: EdgeInsets.only(bottom: 60),
+                        padding: EdgeInsets.only(bottom: 40),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,

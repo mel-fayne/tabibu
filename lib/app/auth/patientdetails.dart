@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
@@ -23,36 +24,36 @@ class PatientDetails extends StatefulWidget {
 class PatientDetailsState extends State<PatientDetails> {
   String userid;
   String fullname;
+  String ptid;
 
   PatientDetailsState(this.userid, this.fullname);
 
-  String _condtype;
   String _myPayment;
   String _myBloodType;
-  String _myStatus;
 
-  TextEditingController useridctrl, dobctrl, conditionnamectrl;
+  DateTime selectedDate = DateTime.now();
+  String formattedDate;
+
+  TextEditingController preexistingctrl;
+
+  bool processing = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    useridctrl = new TextEditingController();
-    dobctrl = new TextEditingController();
-    conditionnamectrl = new TextEditingController();
+    preexistingctrl = TextEditingController();
   }
 
   Future registerPatient() async {
     setState(() {});
     var url = "http://192.168.0.15/tabibu/api/patients/postpatients.php";
     var data = {
-      "userid": useridctrl.text,
-      "dob": dobctrl.text,
-      "condition_type": _condtype,
-      "condition_name": conditionnamectrl.text,
+      "userid": userid,
+      "dob": formattedDate,
+      "preexisting_cond": preexistingctrl.text,
       "blood_type": _myBloodType,
       "payment_mode": _myPayment,
-      "status": _myStatus
     };
 
     var res = await http.post(url, body: data);
@@ -83,16 +84,32 @@ class PatientDetailsState extends State<PatientDetails> {
         print("error");
       } else {
         print("Yoooo! It worked!");
+        ptid = ptn[0];
         print(ptn);
-        /* Navigator.pushReplacement(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  PatientDashboard(fullname: fullname, userid: userid),
-            )); */
+              builder: (context) => PatientDashboard(
+                  fullname: fullname, userid: userid, ptid: ptid),
+            ));
       }
     }
     setState(() {});
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now().subtract(Duration(days: 36000)),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.year,
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
   }
 
   @override
@@ -141,43 +158,33 @@ class PatientDetailsState extends State<PatientDetails> {
               Form(
                 child: Column(
                   children: <Widget>[
-                    makeInput(
-                      label: "User ID *",
-                      controller: useridctrl,
-                      hint:
-                          "Your user ID is $userid. Fill this id in this field",
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        children: [
+                          RaisedButton(
+                            onPressed: () => _selectDate(context),
+                            child: Text(
+                              'Select your date of birth',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Source Sans',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                            ),
+                            color: kPrimaryAccent,
+                          ),
+                          Text(
+                            "${selectedDate.toLocal()}".split(' ')[0],
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Source Sans',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
-                    makeInput(label: "Date of Birth *", controller: dobctrl),
-                    DropDownFormField(
-                      titleText: 'Type of Condition',
-                      hintText: 'Choose your type of condition',
-                      value: _condtype,
-                      onSaved: (value) {
-                        setState(() {
-                          _condtype = value;
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _condtype = value;
-                        });
-                      },
-                      dataSource: [
-                        {
-                          "display": "Pre-existing",
-                          "value": "pre-existing",
-                        },
-                        {
-                          "display": "Subsequent",
-                          "value": "subsequent",
-                        }
-                      ],
-                      textField: 'display',
-                      valueField: 'value',
-                    ),
-                    makeInput(
-                        label: "Name of Condition *",
-                        controller: conditionnamectrl),
                     DropDownFormField(
                       titleText: 'Blood Type',
                       hintText: 'Choose your blood type',
@@ -213,6 +220,11 @@ class PatientDetailsState extends State<PatientDetails> {
                       textField: 'display',
                       valueField: 'value',
                     ),
+                    makeInput(
+                      label:
+                          'Do you have a pre-existing condition?\nIf yes, state which condition *',
+                      controller: preexistingctrl,
+                    ),
                     DropDownFormField(
                       titleText: 'Mode of Medical Payments',
                       hintText: 'Choose mode of payment',
@@ -244,59 +256,31 @@ class PatientDetailsState extends State<PatientDetails> {
                       textField: 'display',
                       valueField: 'value',
                     ),
-                    DropDownFormField(
-                      titleText: 'Medical Status',
-                      hintText: 'Choose your current medical status:',
-                      value: _myStatus,
-                      onSaved: (value) {
-                        setState(() {
-                          _myStatus = value;
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _myStatus = value;
-                        });
-                      },
-                      dataSource: [
-                        {
-                          "display": "On Treatment",
-                          "value": "treatment",
-                        },
-                        {
-                          "display": "Diagnosed",
-                          "value": "diagnosed",
-                        },
-                        {
-                          "display": "Undiagnosed",
-                          "value": "diagnosed",
-                        }
-                      ],
-                      textField: 'display',
-                      valueField: 'value',
-                    ),
                   ],
                 ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 15),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 40,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(PatientDashboard.routeName);
-                  },
-                  color: kPrimaryGreen,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text("FINISH SETUP",
-                      style: TextStyle(
-                          color: kPrimaryYellow,
-                          fontFamily: 'PT Serif',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700)),
-                ),
+                child: processing
+                    ? CircularProgressIndicator()
+                    : MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40,
+                        onPressed: () {
+                          processing = true;
+                          registerPatient();
+                        },
+                        color: kPrimaryGreen,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text("FINISH SETUP",
+                            style: TextStyle(
+                                color: kPrimaryYellow,
+                                fontFamily: 'PT Serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                      ),
               ),
             ],
           ),
@@ -306,13 +290,11 @@ class PatientDetailsState extends State<PatientDetails> {
   }
 }
 
-Widget makeInput(
-    {label, obscureText = false, hint, required: true, controller, type}) {
+Widget makeInput({label, required: true, controller, hint, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
     child: TextField(
       cursorColor: kPrimaryGreen,
-      obscureText: obscureText,
       controller: controller,
       keyboardType: type,
       style: TextStyle(
@@ -322,7 +304,6 @@ Widget makeInput(
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,

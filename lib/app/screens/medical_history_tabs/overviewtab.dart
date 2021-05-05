@@ -65,8 +65,8 @@ class OverviewTabState extends State<OverviewTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: EdgeInsets.only(top: 20),
+        body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: diagnosisdata.length == 0
                 ? Center(
                     child: Text('Oops, No record yet!',
