@@ -1,11 +1,10 @@
-import 'package:Tabibu/app/models/diagnosis.dart';
+import 'package:Tabibu/app/models/update.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
+import 'package:Tabibu/app/screens/medical_history_tabs/singleupdate.dart';
 import 'package:Tabibu/app/theme/colors.dart';
-import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
 
 class MyUpdatesTab extends StatefulWidget {
@@ -22,100 +21,104 @@ class MyUpdatesTab extends StatefulWidget {
 
 class MyUpdatesTabState extends State<MyUpdatesTab> {
   String ptid;
+  String updateid;
   MyUpdatesTabState(this.ptid);
 
-  // ignore: missing_return
-  Future<List<Diagnosis>> fetchDiagnosis() async {
+  @override
+  void initState() {
+    super.initState();
+    getUpdateList();
+  }
+
+  List<Update> updatedata = [];
+
+  getUpdateList() async {
     var url = "http://192.168.0.15/tabibu/api/updates/getupdates.php";
     var res = await http.post(url, body: {"patientid": ptid});
     var update = json.decode(res.body);
-    if (update == "error") {
+    if (update == "no update") {
       print('Unexpected error occured!');
     } else {
-      List jsonResponse = update;
-   //   return jsonResponse.map((data) => new Diagnosis.fromJson(data)).toList();
+      for (var data in update) {
+        updatedata.add(new Update(
+          data['updateid'],
+          data['patientid'],
+          data['doctorid'],
+          data['date'],
+          data['feel'],
+          data['partache'],
+          data['painrate'],
+          data['newsymptom'],
+          data['sideeffect'],
+          data['medintake'],
+          data['additional'],
+        ));
+      }
+      setState(() {});
+      updatedata.forEach((someData) => print("Name : ${someData.updateid}"));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          padding: EdgeInsets.only(left: 10, top: 10),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'My Medical Updates',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'PT Serif',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22),
-                    ),
-                  ],
-                )),
-            FutureBuilder<List<Diagnosis>>(
-              future: fetchDiagnosis(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<Diagnosis> data = snapshot.data;
-                  return ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          leading: Icon(
-                            MyCustomIcons.health_report,
-                            color: kPrimaryGreen,
-                            size: 55,
-                          ),
-                          title: Text("Date: $data[index].date",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Source Sans',
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black)),
-                          subtitle: Column(
-                            children: [
-                              Text("How you felt: $data[index].feel",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'Source Sans',
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black))
-                            ],
-                          ),
-                          trailing: Icon(
-                            Icons.keyboard_arrow_right_outlined,
-                            color: kPrimaryGreen,
-                            size: 30,
-                          ),
-                          onTap: () {
-                            debugPrint("ListTile Tapped");
-                            /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                SingleDiagnosis(
-                                    this.$data[index]),
-                          )); */
-                          },
-                        );
-                      });
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                // By default show a loading spinner.
-                return CircularProgressIndicator(
-                  backgroundColor: kPrimaryGreen,
-                );
-              },
-            )
-          ])),
+      body: Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: updatedata.length == 0
+            ? Center(
+                child: Text('You have no updates yet!',
+                    style: TextStyle(
+                      fontFamily: 'PT Serif',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: kPrimaryGreen,
+                    )))
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: updatedata.length,
+                    itemBuilder: (_, index) {
+                      return Card(
+                          color: Colors.pink[100],
+                          elevation: 7.0,
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.update,
+                              color: kPrimaryGreen,
+                              size: 45,
+                            ),
+                            title: Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: textProfile(
+                                label: 'Date:',
+                                text: '${updatedata[index].date}',
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: textProfile(
+                                label: 'How you felt:',
+                                text: '${updatedata[index].feel}',
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_right_outlined,
+                              color: kPrimaryGreen,
+                              size: 25,
+                            ),
+                            onTap: () {
+                              updateid = updatedata[index].updateid;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SingleUpdate(updid: updateid)));
+                            },
+                          ));
+                    })),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryGreen,
         elevation: 4,
@@ -130,4 +133,32 @@ class MyUpdatesTabState extends State<MyUpdatesTab> {
       ),
     );
   }
+}
+
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 13,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
+            ))
+      ],
+    ),
+  );
 }

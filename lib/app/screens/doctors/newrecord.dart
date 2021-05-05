@@ -28,8 +28,6 @@ class NewRecordState extends State<NewRecord> {
       prescriptionctrl,
       treatmentinfoctrl;
 
-  bool processing = false;
-
   @override
   void initState() {
     // TODO: implement initState

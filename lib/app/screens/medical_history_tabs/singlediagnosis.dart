@@ -134,7 +134,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 20, left: 20),
+        padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             'More Diagnosis Details',
@@ -156,9 +156,9 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                             child: Text(
                               'Diagnosis Details',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: kPrimaryGreen,
                                 fontSize: 16,
-                                fontFamily: 'Source Sans',
+                                fontFamily: 'PT Serif',
                                 fontWeight: FontWeight.w600,
                               ),
                             )),
@@ -166,7 +166,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                             padding: EdgeInsets.only(left: 5),
                             child: Icon(
                               Icons.local_hospital_rounded,
-                              color: kPrimaryGreen,
+                              color: kPrimaryAccent,
                               size: 20,
                             ))
                       ],
@@ -194,19 +194,23 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                                     text: "$pt_id",
                                   ),
                                   textProfile(
-                                    label: 'Patient Name',
+                                    label: 'Patient Name:',
                                     text: 'Dr. $ptname',
                                   ),
                                   textProfile(
-                                    label: 'Doctor ID',
+                                    label: 'Doctor ID:',
                                     text: '$dr_id',
                                   ),
                                   textProfile(
-                                    label: 'Doctor Name',
+                                    label: 'Doctor Name:',
                                     text: 'Dr. $drname',
                                   ),
                                   textProfile(
-                                    label: 'Date',
+                                    label: 'Hospital:',
+                                    text: '$hospital',
+                                  ),
+                                  textProfile(
+                                    label: 'Date:',
                                     text: '$date',
                                   ),
                                   textProfile(
@@ -237,13 +241,14 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                                         )
                                       ]),
                                   Padding(
-                                      padding: EdgeInsets.only(top: 10),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
                                       child: Row(
                                         children: [
                                           Text(
                                             'Vitals & Symptoms',
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: kPrimaryGreen,
                                               fontSize: 16,
                                               fontFamily: 'Pt Serif',
                                               fontWeight: FontWeight.w600,
@@ -253,7 +258,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                                               padding: EdgeInsets.only(left: 3),
                                               child: Icon(
                                                 MyCustomIcons.list,
-                                                color: kPrimaryGreen,
+                                                color: kPrimaryAccent,
                                                 size: 20,
                                               ))
                                         ],
@@ -298,15 +303,16 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                                         )
                                       ]),
                                   Padding(
-                                      padding: EdgeInsets.only(top: 10),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
                                       child: Row(
                                         children: [
                                           Text(
                                             'Treatment',
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: kPrimaryGreen,
                                               fontSize: 16,
-                                              fontFamily: 'Pt Serif',
+                                              fontFamily: 'PT Serif',
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -314,7 +320,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                                               padding: EdgeInsets.only(left: 3),
                                               child: Icon(
                                                 MyCustomIcons.pill,
-                                                color: kPrimaryGreen,
+                                                color: kPrimaryAccent,
                                                 size: 20,
                                               ))
                                         ],

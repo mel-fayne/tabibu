@@ -35,7 +35,7 @@ class DiagnosisTabState extends State<DiagnosisTab> {
     var res = await http.post(url,
         body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
     var diagnosis = json.decode(res.body);
-    if (diagnosis == "error") {
+    if (diagnosis == "no record") {
       print('Unexpected error occured!');
     } else {
       for (var data in diagnosis) {
@@ -68,7 +68,7 @@ class DiagnosisTabState extends State<DiagnosisTab> {
       padding: EdgeInsets.only(top: 20),
       child: diagnosisdata.length == 0
           ? Center(
-              child: Text('Oops, No record yet!',
+              child: Text('You have no medical record yet!',
                   style: TextStyle(
                     fontFamily: 'PT Serif',
                     fontSize: 14,

@@ -80,9 +80,13 @@ class MyApp extends StatelessWidget {
         TreatmentTab.routeName: (ctx) => TreatmentTab(
               ptid: null,
             ),
-        MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(ptid: null,),
+        MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(
+              ptid: null,
+            ),
         //  SingleDiagnosis.routeName: (ctx) => SingleDiagnosis(),
-        SingleUpdate.routeName: (ctx) => SingleUpdate(),
+        SingleUpdate.routeName: (ctx) => SingleUpdate(
+              updid: null,
+            ),
         NewUpdate.routeName: (ctx) => NewUpdate(),
         SingleDoctor.routeName: (ctx) => SingleDoctor(),
         BookAppointment.routeName: (ctx) => BookAppointment(),
