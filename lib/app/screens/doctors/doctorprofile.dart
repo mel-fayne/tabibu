@@ -1,4 +1,5 @@
 import 'package:Tabibu/app/theme/colors.dart';
+import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -70,6 +71,8 @@ class DoctorProfileState extends State<DoctorProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         brightness: Brightness.light,
@@ -92,45 +95,39 @@ class DoctorProfileState extends State<DoctorProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'My Profile',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'PT Serif',
-                            fontSize: 25,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Icon(
-                            Icons.person,
-                            color: kPrimaryGreen,
-                            size: 50,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'User Details',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Pt Serif',
-                          fontWeight: FontWeight.w600,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Profile',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'PT Serif',
+                              fontSize: 25,
+                              fontWeight: FontWeight.w700),
                         ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 3),
-                          child: Icon(
-                            Icons.medical_services,
-                            color: kPrimaryGreen,
-                            size: 24,
-                          ))
-                    ],
-                  ),
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Text(
+                                  'My User Details',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'Pt Serif',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )),
+                            Padding(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Icon(
+                                  MyCustomIcons.profile_user,
+                                  color: kPrimaryGreen,
+                                  size: 20,
+                                ))
+                          ],
+                        )
+                      ]),
                   textProfile(
                     label: "User ID:",
                     text: "$userid",
@@ -203,7 +200,7 @@ class DoctorProfileState extends State<DoctorProfile> {
                               ),
                               textProfile(
                                 label: "Years of Medical Practice:",
-                                text: "$pracyrs",
+                                text: "$pracyrs years",
                               ),
                               Padding(
                                   padding: EdgeInsets.symmetric(vertical: 7),
@@ -212,10 +209,10 @@ class DoctorProfileState extends State<DoctorProfile> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'About me:\n',
+                                          'About me:',
                                           style: TextStyle(
                                             color: kFieldTextColor,
-                                            fontSize: 14,
+                                            fontSize: 11,
                                             fontFamily: 'PT Serif',
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -224,7 +221,7 @@ class DoctorProfileState extends State<DoctorProfile> {
                                           '$about',
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 16,
+                                            fontSize: 12,
                                             fontFamily: 'PT Serif',
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -274,7 +271,7 @@ Widget textProfile({label, text}) {
         Text(label,
             style: TextStyle(
               color: kFieldTextColor,
-              fontSize: 14,
+              fontSize: 11,
               fontFamily: 'PT Serif',
               fontWeight: FontWeight.w600,
             )),
@@ -284,7 +281,7 @@ Widget textProfile({label, text}) {
               text,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: 'Source Sans',
                 fontWeight: FontWeight.w600,
               ),

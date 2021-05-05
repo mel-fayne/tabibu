@@ -30,6 +30,8 @@ class DoctorDashboardState extends State<DoctorDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 56,

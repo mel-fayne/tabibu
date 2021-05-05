@@ -24,6 +24,8 @@ class DoctorDetailsState extends State<DoctorDetails> {
   String fullname;
   DoctorDetailsState(this.userid, this.fullname);
 
+  String drid;
+
   TextEditingController hospitalctrl,
       specialtyctrl,
       practiceyearsctrl,
@@ -32,6 +34,8 @@ class DoctorDetailsState extends State<DoctorDetails> {
       daysctrl,
       userctrl,
       timectrl;
+
+  bool processing = false;
 
   @override
   void initState() {
@@ -89,16 +93,18 @@ class DoctorDetailsState extends State<DoctorDetails> {
       } else {
         print("Yoooo! It worked!");
         print(doc);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DoctorDashboard(
+                fullname: fullname,
+                userid: userid,
+                drid: drid,
+              ),
+            ));
       }
     }
-    setState(() {
-      /* Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                DoctorDashboard(fullname: fullname, userid: userid),
-          ));  */
-    });
+    setState(() {});
   }
 
   @override
@@ -149,12 +155,6 @@ class DoctorDetailsState extends State<DoctorDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     makeInput(
-                      label: "User ID *",
-                      controller: userctrl,
-                      hint:
-                          "Your user ID is $userid. Fill this id in this field",
-                    ),
-                    makeInput(
                         label: "Base Hospital Location *",
                         controller: hospitalctrl),
                     makeInput(label: "Specialty *", controller: specialtyctrl),
@@ -163,7 +163,8 @@ class DoctorDetailsState extends State<DoctorDetails> {
                         controller: liscencectrl),
                     makeInput(
                         label: "Years of Medical Practise *",
-                        controller: practiceyearsctrl),
+                        controller: practiceyearsctrl,
+                        type: TextInputType.number),
                     makeInput(label: "About Me *", controller: aboutctrl),
                     Padding(
                         padding: EdgeInsets.only(top: 10),
@@ -188,24 +189,27 @@ class DoctorDetailsState extends State<DoctorDetails> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 40,
-                  onPressed: () {
-                    debugPrint("Save button clicked");
-                    registerDoctor();
-                  },
-                  color: kPrimaryGreen,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text("SAVE MY DETAILS",
-                      style: TextStyle(
-                          color: kPrimaryYellow,
-                          fontFamily: 'PT Serif',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700)),
-                ),
+                child: processing
+                    ? CircularProgressIndicator()
+                    : MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40,
+                        onPressed: () {
+                          debugPrint("Save button clicked");
+                          processing = true;
+                          registerDoctor();
+                        },
+                        color: kPrimaryGreen,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text("FINISH SETUP",
+                            style: TextStyle(
+                                color: kPrimaryYellow,
+                                fontFamily: 'PT Serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                      ),
               ),
             ],
           ),
