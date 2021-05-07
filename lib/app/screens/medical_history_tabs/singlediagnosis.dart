@@ -1,6 +1,7 @@
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,6 +36,7 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
   String recordid;
   String dr_id;
   String pt_id;
+  String status;
 
   String drname;
   String ptname;
@@ -69,52 +71,11 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
       treatmentinfo = diagnosis[11];
       dr_id = diagnosis[12];
       pt_id = diagnosis[13];
+      ptname = diagnosis[14];
+      drname = diagnosis[15];
+      hospital = diagnosis[16];
+      status = diagnosis[17];
       print(diagnosis);
-
-      var docurl = "http://192.168.0.15/tabibu/api/doctors/getdocid.php";
-      var docres = await http.post(docurl, body: {"doctorid": dr_id});
-      var docdata = json.decode(docres.body);
-      if (docdata == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! doctor worked!");
-        hospital = docdata[0];
-        docuserid = docdata[1];
-        print(docdata);
-      }
-
-      var url = "http://192.168.0.15/tabibu/api/auth/getuser.php";
-      var res = await http.post(url, body: {"userid": docuserid});
-      var data = json.decode(res.body);
-      if (data == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! doc user worked!");
-        drname = data[0];
-        print(data);
-      }
-
-      var pturl = "http://192.168.0.15/tabibu/api/patients/getptid.php";
-      var ptres = await http.post(pturl, body: {"patient_id": pt_id});
-      var ptdata = json.decode(ptres.body);
-      if (ptdata == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! patient worked!");
-        ptuserid = ptdata[0];
-        print(ptdata);
-      }
-
-      var urlp = "http://192.168.0.15/tabibu/api/auth/getuser.php";
-      var resp = await http.post(urlp, body: {"userid": ptuserid});
-      var datap = json.decode(resp.body);
-      if (datap == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! pt user worked!");
-        ptname = datap[0];
-        print(datap);
-      }
     }
   }
 
@@ -134,43 +95,23 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+        padding: EdgeInsets.only(top: 20, bottom: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            'More Diagnosis Details',
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'PT Serif',
-                fontSize: 25,
-                fontWeight: FontWeight.w700),
-          ),
+          Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                'More Diagnosis Details',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'PT Serif',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700),
+              )),
           Padding(
               padding: EdgeInsets.only(top: 10),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            child: Text(
-                              'Diagnosis Details',
-                              style: TextStyle(
-                                color: kPrimaryGreen,
-                                fontSize: 16,
-                                fontFamily: 'PT Serif',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )),
-                        Padding(
-                            padding: EdgeInsets.only(left: 5),
-                            child: Icon(
-                              Icons.local_hospital_rounded,
-                              color: kPrimaryAccent,
-                              size: 20,
-                            ))
-                      ],
-                    ),
                     FutureBuilder(
                       future: getDiagnosis(),
                       builder: (BuildContext context,
@@ -186,176 +127,220 @@ class SingleDiagnosisState extends State<SingleDiagnosis> {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           else
-                            return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /* textProfile(
-                                    label: "Patient ID:",
-                                    text: "$pt_id",
-                                  ), */
-                                  textProfile(
-                                    label: 'Patient Name:',
-                                    text: 'Dr. $ptname',
-                                  ),
-                                  /* textProfile(
-                                    label: 'Doctor ID:',
-                                    text: '$dr_id',
-                                  ), */
-                                  textProfile(
-                                    label: 'Doctor Name:',
-                                    text: 'Dr. $drname',
-                                  ),
-                                  textProfile(
-                                    label: 'Hospital:',
-                                    text: '$hospital',
-                                  ),
-                                  textProfile(
-                                    label: 'Date:',
-                                    text: '$date',
-                                  ),
-                                  textProfile(
-                                    label: 'Ailment:',
-                                    text: '$disease',
-                                  ),
-                                  Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Description:',
+                            return Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('Status:',
                                           style: TextStyle(
-                                            color: kFieldTextColor,
+                                            color: Colors.black,
                                             fontSize: 13,
                                             fontFamily: 'PT Serif',
                                             fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Text(
-                                          '$description',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: 'Source Sans',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
-                                      ]),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'Vitals & Symptoms',
+                                          )),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            "$status",
                                             style: TextStyle(
                                               color: kPrimaryGreen,
-                                              fontSize: 16,
-                                              fontFamily: 'Pt Serif',
+                                              fontSize: 14,
+                                              fontFamily: 'Source Sans',
                                               fontWeight: FontWeight.w600,
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.only(left: 3),
-                                              child: Icon(
-                                                MyCustomIcons.list,
-                                                color: kPrimaryAccent,
-                                                size: 20,
-                                              ))
-                                        ],
-                                      )),
-                                  textProfile(
-                                    label: 'Temperature:',
-                                    text: '$temp degrees celcius',
+                                          ))
+                                    ],
                                   ),
-                                  textProfile(
-                                    label: 'Blood pressure:',
-                                    text: '$pressure mmHg',
+                                  statusLottie(
+                                    stat: "$status",
                                   ),
-                                  textProfile(
-                                    label: 'Pulse rate:',
-                                    text: '$pulse beats per minute',
-                                  ),
-                                  textProfile(
-                                    label: 'Weight:',
-                                    text: '$weight Kgs',
-                                  ),
-                                  Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Symptoms:',
-                                          style: TextStyle(
-                                            color: kFieldTextColor,
-                                            fontSize: 13,
-                                            fontFamily: 'PT Serif',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Text(
-                                          '$symptoms',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: 'Source Sans',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
-                                      ]),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'Treatment',
+                                  Row(
+                                    children: [
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 15),
+                                          child: Text(
+                                            'Diagnosis Details',
                                             style: TextStyle(
                                               color: kPrimaryGreen,
                                               fontSize: 16,
                                               fontFamily: 'PT Serif',
                                               fontWeight: FontWeight.w600,
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.only(left: 3),
-                                              child: Icon(
-                                                MyCustomIcons.pill,
-                                                color: kPrimaryAccent,
-                                                size: 20,
-                                              ))
-                                        ],
-                                      )),
-                                  textProfile(
-                                    label: 'Medicine:',
-                                    text: '$medicine',
+                                          )),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Icon(
+                                            Icons.local_hospital_rounded,
+                                            color: kPrimaryAccent,
+                                            size: 20,
+                                          ))
+                                    ],
                                   ),
-                                  textProfile(
-                                      label: 'Prescription:',
-                                      text: '$prescription'),
                                   Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'Additional Treatment Information:',
-                                          style: TextStyle(
-                                            color: kFieldTextColor,
-                                            fontSize: 13,
-                                            fontFamily: 'PT Serif',
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        textProfile(
+                                          label: 'Patient Name:',
+                                          text: '$ptname',
                                         ),
-                                        Text(
-                                          '$treatmentinfo',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: 'Source Sans',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
-                                      ]),
-                                ]);
+                                        textProfile(
+                                          label: 'Doctor Name:',
+                                          text: 'Dr. $drname',
+                                        ),
+                                        textProfile(
+                                          label: 'Hospital:',
+                                          text: '$hospital',
+                                        ),
+                                        textProfile(
+                                          label: 'Date:',
+                                          text: '$date',
+                                        ),
+                                        textProfile(
+                                          label: 'Ailment/Condition:',
+                                          text: '$disease',
+                                        ),
+                                        Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Description:',
+                                                style: TextStyle(
+                                                  color: kFieldTextColor,
+                                                  fontSize: 13,
+                                                  fontFamily: 'PT Serif',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                '$description',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontFamily: 'Source Sans',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              )
+                                            ]),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Vitals & Symptoms',
+                                                  style: TextStyle(
+                                                    color: kPrimaryGreen,
+                                                    fontSize: 16,
+                                                    fontFamily: 'Pt Serif',
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 3),
+                                                    child: Icon(
+                                                      MyCustomIcons.list,
+                                                      color: kPrimaryAccent,
+                                                      size: 20,
+                                                    ))
+                                              ],
+                                            )),
+                                        Table(
+                                            defaultColumnWidth:
+                                                FixedColumnWidth(185.0),
+                                            border: TableBorder.all(
+                                                color: Colors.black,
+                                                style: BorderStyle.solid,
+                                                width: 1.5),
+                                            children: [
+                                              TableRow(children: [
+                                                vital(vital: "Temperature"),
+                                                stats(
+                                                  stat: "$temp degrees celcius",
+                                                )
+                                              ]),
+                                              TableRow(children: [
+                                                vital(vital: 'Blood pressure'),
+                                                stats(stat: '$pressure mmHg')
+                                              ]),
+                                              TableRow(children: [
+                                                vital(
+                                                  vital: 'Pulse rate',
+                                                ),
+                                                stats(
+                                                    stat:
+                                                        '$pulse beats per minute'),
+                                              ]),
+                                              TableRow(children: [
+                                                vital(vital: 'Weight'),
+                                                stats(stat: '$weight Kgs')
+                                              ]),
+                                              TableRow(children: [
+                                                vital(vital: 'Symptoms'),
+                                                stats(stat: '$symptoms')
+                                              ]),
+                                            ]),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Treatment',
+                                                  style: TextStyle(
+                                                    color: kPrimaryGreen,
+                                                    fontSize: 16,
+                                                    fontFamily: 'PT Serif',
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 3),
+                                                    child: Icon(
+                                                      MyCustomIcons.pill,
+                                                      color: kPrimaryAccent,
+                                                      size: 20,
+                                                    ))
+                                              ],
+                                            )),
+                                        textProfile(
+                                          label: 'Medicine:',
+                                          text: '$medicine',
+                                        ),
+                                        textProfile(
+                                            label: 'Prescription:',
+                                            text: '$prescription'),
+                                        Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Additional Treatment Information:',
+                                                style: TextStyle(
+                                                  color: kFieldTextColor,
+                                                  fontSize: 13,
+                                                  fontFamily: 'PT Serif',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                '$treatmentinfo',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontFamily: 'Source Sans',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              )
+                                            ]),
+                                      ])
+                                ]));
                         }
                       },
                     )
@@ -392,4 +377,58 @@ Widget textProfile({label, text}) {
       ],
     ),
   );
+}
+
+Widget statusLottie({stat}) {
+  String path;
+  if (stat == "Closed") {
+    path = 'assets/lottie/22921-happy-girlpeaceful.json';
+  } else {
+    path = 'assets/lottie/30995-doctor-and-patient-conversation.json';
+  }
+  return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Lottie.asset(
+            path,
+            repeat: true,
+            reverse: true,
+            animate: true,
+            width: 150,
+            height: 150,
+          )
+        ],
+      ));
+}
+
+Widget vital({vital}) {
+  return Column(children: [
+    Padding(
+      padding: EdgeInsets.all(5),
+      child: Text(vital,
+          style: TextStyle(
+            color: kFieldTextColor,
+            fontSize: 13,
+            fontFamily: 'PT Serif',
+            fontWeight: FontWeight.w600,
+          )),
+    )
+  ]);
+}
+
+Widget stats({stat}) {
+  return Column(children: [
+    Padding(
+      padding: EdgeInsets.all(5),
+      child: Text(stat,
+          style: TextStyle(
+            color: kPrimaryGreen,
+            fontSize: 14,
+            fontFamily: 'Source Sans',
+            fontWeight: FontWeight.w600,
+          )),
+    )
+  ]);
 }

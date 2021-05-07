@@ -41,21 +41,21 @@ class OverviewTabState extends State<OverviewTab> {
     } else {
       for (var data in diagnosis) {
         diagnosisdata.add(new Diagnosis(
-          data['disease'],
-          data['description'],
-          data['date'],
-          data['weight'],
-          data['temp'],
-          data['pulse'],
-          data['pressure'],
-          data['symptoms'],
-          data['medicine'],
-          data['prescription'],
-          data['treatmentinfo'],
-          data['recordid'],
-          data['dr_id'],
-          data['pt_id'],
-        ));
+            data['disease'],
+            data['description'],
+            data['date'],
+            data['weight'],
+            data['temp'],
+            data['pulse'],
+            data['pressure'],
+            data['symptoms'],
+            data['medicine'],
+            data['prescription'],
+            data['treatmentinfo'],
+            data['recordid'],
+            data['dr_id'],
+            data['pt_id'],
+            data['status']));
       }
       setState(() {});
       diagnosisdata.forEach((someData) => print("Name : ${someData.recordid}"));
@@ -109,7 +109,7 @@ class OverviewTabState extends State<OverviewTab> {
                                           title: Padding(
                                             padding: EdgeInsets.only(top: 5),
                                             child: textProfile(
-                                              label: 'Ailment:',
+                                              label: 'Ailment/Condition:',
                                               text:
                                                   '${diagnosisdata[index].disease}',
                                             ),

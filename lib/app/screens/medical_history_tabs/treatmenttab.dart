@@ -39,21 +39,21 @@ class TreatmentTabState extends State<TreatmentTab> {
     } else {
       for (var data in diagnosis) {
         diagnosisdata.add(new Diagnosis(
-          data['disease'],
-          data['description'],
-          data['date'],
-          data['weight'],
-          data['temp'],
-          data['pulse'],
-          data['pressure'],
-          data['symptoms'],
-          data['medicine'],
-          data['prescription'],
-          data['treatmentinfo'],
-          data['recordid'],
-          data['dr_id'],
-          data['pt_id'],
-        ));
+            data['disease'],
+            data['description'],
+            data['date'],
+            data['weight'],
+            data['temp'],
+            data['pulse'],
+            data['pressure'],
+            data['symptoms'],
+            data['medicine'],
+            data['prescription'],
+            data['treatmentinfo'],
+            data['recordid'],
+            data['dr_id'],
+            data['pt_id'],
+            data['status']));
       }
       setState(() {});
       diagnosisdata.forEach((someData) => print("Name : ${someData.recordid}"));
@@ -96,7 +96,7 @@ class TreatmentTabState extends State<TreatmentTab> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   textProfile(
-                                    label: 'Ailment:',
+                                    label: 'Ailment/Condition:',
                                     text: '${diagnosisdata[index].disease}',
                                   ),
                                   textProfile(
@@ -136,8 +136,9 @@ class TreatmentTabState extends State<TreatmentTab> {
                                       )
                                     ]),
                                 textProfile(
-                                  label: 'Date:',
-                                  text: '${diagnosisdata[index].date}',
+                                  label: 'Medication Status:',
+                                  text:
+                                      'Case is ${diagnosisdata[index].status}',
                                 ),
                               ]),
                         ));

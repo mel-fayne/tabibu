@@ -40,21 +40,21 @@ class DiagnosisTabState extends State<DiagnosisTab> {
     } else {
       for (var data in diagnosis) {
         diagnosisdata.add(new Diagnosis(
-          data['disease'],
-          data['description'],
-          data['date'],
-          data['weight'],
-          data['temp'],
-          data['pulse'],
-          data['pressure'],
-          data['symptoms'],
-          data['medicine'],
-          data['prescription'],
-          data['treatmentinfo'],
-          data['recordid'],
-          data['dr_id'],
-          data['pt_id'],
-        ));
+            data['disease'],
+            data['description'],
+            data['date'],
+            data['weight'],
+            data['temp'],
+            data['pulse'],
+            data['pressure'],
+            data['symptoms'],
+            data['medicine'],
+            data['prescription'],
+            data['treatmentinfo'],
+            data['recordid'],
+            data['dr_id'],
+            data['pt_id'],
+            data['status']));
       }
       setState(() {});
       diagnosisdata.forEach((someData) => print("Name : ${someData.recordid}"));
@@ -94,7 +94,7 @@ class DiagnosisTabState extends State<DiagnosisTab> {
                           title: Padding(
                             padding: EdgeInsets.only(top: 5),
                             child: textProfile(
-                              label: 'Ailment:',
+                              label: 'Ailment/Condition:',
                               text: '${diagnosisdata[index].disease}',
                             ),
                           ),
@@ -119,11 +119,15 @@ class DiagnosisTabState extends State<DiagnosisTab> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
+                                textProfile(
+                                  label: 'Date:',
+                                  text: '${diagnosisdata[index].date}',
+                                ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 5),
                                   child: textProfile(
-                                    label: 'Date:',
-                                    text: '${diagnosisdata[index].date}',
+                                    label: 'Status:',
+                                    text: '${diagnosisdata[index].status}',
                                   ),
                                 ),
                               ]),
