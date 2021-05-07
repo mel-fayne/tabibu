@@ -35,6 +35,7 @@ dependencies:
   intl: ^0.15.7
   http: ^0.12.0+2
   dropdown_formfield: ^0.1.3
+  lottie: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,8 @@ flutter:
   assets:
      - assets/images/pulse.png
      - assets/images/splashscreen.jpg
+     - assets/lottie/22921-happy-girlpeaceful.json
+     - assets/lottie/30995-doctor-and-patient-conversation.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
