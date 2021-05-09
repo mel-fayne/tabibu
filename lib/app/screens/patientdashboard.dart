@@ -245,8 +245,12 @@ class PatientDashboardState extends State<PatientDashboard> {
                               child: Material(
                                   child: InkWell(
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(MyDoctors.routeName);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyDoctors(ptid: ptid),
+                                            ));
                                       },
                                       child: dashcard(
                                           path: MyCustomIcons.calendar,
@@ -275,8 +279,12 @@ class PatientDashboardState extends State<PatientDashboard> {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(MyDoctors.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyDoctors(ptid: ptid),
+                                              ));
                                         },
                                         child: navitem(
                                           navlabel: "My Doctors",

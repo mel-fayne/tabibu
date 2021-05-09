@@ -11,10 +11,9 @@ class Diagnosis {
   final String prescription;
   final String treatmentinfo;
   final String recordid;
-  // ignore: non_constant_identifier_names
   final String dr_id;
-  // ignore: non_constant_identifier_names
   final String pt_id;
+  final String status;
 
   Diagnosis(
     this.disease,
@@ -31,5 +30,6 @@ class Diagnosis {
     this.recordid,
     this.dr_id,
     this.pt_id,
+    this.status,
   );
 }

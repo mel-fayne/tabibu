@@ -63,7 +63,9 @@ class MyApp extends StatelessWidget {
               ptid: null,
               fullname: null,
             ),
-        MyDoctors.routeName: (ctx) => MyDoctors(),
+        MyDoctors.routeName: (ctx) => MyDoctors(
+              ptid: null,
+            ),
         PatientProfile.routeName: (ctx) => PatientProfile(
               userid: null,
             ),
@@ -88,8 +90,18 @@ class MyApp extends StatelessWidget {
               updid: null,
             ),
         NewUpdate.routeName: (ctx) => NewUpdate(),
-        SingleDoctor.routeName: (ctx) => SingleDoctor(),
-        BookAppointment.routeName: (ctx) => BookAppointment(),
+        SingleDoctor.routeName: (ctx) => SingleDoctor(
+              docid: null,
+              ptid: null,
+            ),
+        BookAppointment.routeName: (ctx) => BookAppointment(
+              docid: null,
+              name: null,
+              ptid: null,
+              hospital: null,
+              days: null,
+              time: null,
+            ),
         SingleAppointment.routeName: (ctx) => SingleAppointment(),
         Notifications.routeName: (ctx) => Notifications(),
       },
