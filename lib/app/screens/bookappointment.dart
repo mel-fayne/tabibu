@@ -1,48 +1,51 @@
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flushbar/flushbar.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:intl/intl.dart';
 
 class BookAppointment extends StatefulWidget {
   static const routeName = "/bookappointment";
 
+  //accepting parameters from previous screen
+  final String name;
+  final String hospital;
+  final String docid;
+  final String ptid;
+  final String days;
+  final String time;
+  BookAppointment(
+      {@required this.hospital,
+      @required this.name,
+      @required this.docid,
+      @required this.ptid,
+      @required this.days,
+      @required this.time});
   @override
-  _BookAppointmentState createState() => _BookAppointmentState();
+  State<StatefulWidget> createState() {
+    return BookAppointmentState(
+        this.hospital, this.name, this.docid, this.ptid, this.days, this.time);
+  }
 }
 
-Future<TimeOfDay> _selectTime(BuildContext context) async {
-  var inititalTime = TimeOfDay.now();
-  final TimeOfDay picked = await showTimePicker(
-    context: context,
-    initialTime: inititalTime,
-    confirmText: "Book Now",
-    cancelText: "Not Now",
-    // initialEntryMode: TimePickerEntryMode.input,
-  );
-  return picked;
-}
+class BookAppointmentState extends State<BookAppointment> {
+  String name;
+  String hospital;
+  String docid;
+  String ptid;
+  String days;
+  String time;
 
-Future<void> _selectDate(BuildContext context) async {
-  DateTime picked = await showDatePicker(
-      context: context,
-      cancelText: "Not Now",
-      confirmText: "Select Time",
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 90)));
-  /* if (picked != null && picked != selectedDate){
-      final selectedTimeOfDay=await _selectTime(context);
-      if(selectedTimeOfDay !=null){
-        print(selectedTimeOfDay);
-        picked=new DateTime(picked.year,picked.month,picked.day,selectedTimeOfDay.hour,selectedTimeOfDay.minute);
-      } */
-  print(picked);
-  /*  setState(() {
-        selectDateAndCreateRepair(picked);
-      });
-    } */
-}
+  BookAppointmentState(
+      this.hospital, this.name, this.docid, this.ptid, this.days, this.time);
 
-class _BookAppointmentState extends State<BookAppointment> {
+  DateTime selectedDate = DateTime.now();
+  String formattedDate;
+
   TextEditingController reasonctrl;
 
   bool processing = false;
@@ -52,6 +55,64 @@ class _BookAppointmentState extends State<BookAppointment> {
     // TODO: implement initState
     super.initState();
     reasonctrl = new TextEditingController();
+  }
+
+  Future bookAppointment() async {
+    setState(() {});
+    var url =
+        "http://192.168.0.15/tabibu/api/appointments/postappointments.php";
+    var data = {
+      "patientid": ptid,
+      "doctorid": docid,
+      "date": formattedDate,
+      "location": hospital,
+      "reason": reasonctrl.text,
+    };
+
+    var res = await http.post(url, body: data);
+    var appt = jsonDecode(res.body);
+
+    if (appt == "error") {
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "An error occured! Try again later",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      print("error");
+    } else {
+      print("Yoooo! It worked!");
+      Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message:
+            "Your appointment request has been sent! The doctor will send a confirmation with the appointment time.",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
+      Navigator.of(context).pop();
+    }
+    setState(() {});
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 60)),
+      initialDatePickerMode: DatePickerMode.day,
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
+      });
   }
 
   @override
@@ -70,109 +131,74 @@ class _BookAppointmentState extends State<BookAppointment> {
           },
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
           padding: EdgeInsets.only(left: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 30, bottom: 10),
+              padding: EdgeInsets.only(top: 8.0, bottom: 10),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Icon(MyCustomIcons.profile_user,
+                        size: 90, color: kPrimaryGreen),
                     Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text('Dr.Jules Rue',
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text('Dr. $name',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                               fontFamily: 'PT Serif',
                             ))),
-                    Padding(
-                        padding: EdgeInsets.only(left: 20, bottom: 20),
-                        child: Text('Doctor ID: D002/3      Dr.License: DN2385',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'PT Serif',
-                            ))),
-                    Icon(MyCustomIcons.profile_user,
-                        size: 80, color: kPrimaryGreen),
+                    textProfile(label: "Location:", text: "$hospital"),
                   ]),
             ),
             Text(
-              'Select both the time and day of the appointment: ',
+              'Dr. $name is only available on $days at $time.',
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Source Sans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
+                  fontFamily: 'PT Serif',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
             ),
-            Container(
+            Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: Row(
-                  children: [
-                    MaterialButton(
-                      minWidth: 100,
-                      height: 40,
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      color: kPrimaryGreen,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Text("Select Date",
-                          style: TextStyle(
-                              color: kPrimaryYellow,
-                              fontFamily: 'PT Serif',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700)),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Date: ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Source Sans',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),
-                        ))
-                  ],
+                child: Text(
+                  'Select the day of the appointment:',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Source Sans',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600),
                 )),
-            Container(
-                padding: EdgeInsets.only(top: 15, bottom: 25),
-                child: Row(children: [
-                  MaterialButton(
-                    minWidth: 100,
-                    height: 40,
-                    onPressed: () {
-                      _selectTime(context);
-                    },
-                    color: kPrimaryGreen,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text("Select Time",
-                        style: TextStyle(
-                            color: kPrimaryYellow,
-                            fontFamily: 'PT Serif',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700)),
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  RaisedButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text(
+                      'Select the day of the appointment:',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                    color: kPrimaryAccent,
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(left: 15),
-                      child: Text(
-                        'Time: ',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Source Sans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600),
-                      ))
-                ])),
+                  Text(
+                    "${selectedDate.toLocal()}".split(' ')[0],
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
             Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: makeInput(
@@ -181,25 +207,61 @@ class _BookAppointmentState extends State<BookAppointment> {
                 )),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: MaterialButton(
-                minWidth: double.infinity,
-                height: 40,
-                onPressed: () {},
-                color: kPrimaryGreen,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text("BOOK APPOINTMENT",
-                    style: TextStyle(
-                        color: kPrimaryYellow,
-                        fontFamily: 'PT Serif',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700)),
-              ),
+              child: processing
+                  ? CircularProgressIndicator()
+                  : MaterialButton(
+                      minWidth: double.infinity,
+                      height: 40,
+                      onPressed: () {
+                        setState(() {
+                          // processing = true;
+                          debugPrint("Book Appointment button clicked");
+                          bookAppointment();
+                        });
+                      },
+                      color: kPrimaryGreen,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text("BOOK APPOINTMENT",
+                          style: TextStyle(
+                              color: kPrimaryYellow,
+                              fontFamily: 'PT Serif',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700)),
+                    ),
             ),
           ])),
     );
   }
+}
+
+Widget textProfile({label, text}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.0),
+    child: Row(
+      children: [
+        Text(label,
+            style: TextStyle(
+              color: kFieldTextColor,
+              fontSize: 13,
+              fontFamily: 'PT Serif',
+              fontWeight: FontWeight.w600,
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Source Sans',
+                fontWeight: FontWeight.w600,
+              ),
+            ))
+      ],
+    ),
+  );
 }
 
 Widget makeInput({label, required: true, controller}) {
