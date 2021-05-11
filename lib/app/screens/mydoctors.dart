@@ -28,6 +28,7 @@ class MyDoctorsState extends State<MyDoctors> {
   @override
   void initState() {
     super.initState();
+    searchctrl = TextEditingController();
     getMyDoctors();
     getAllDoctors();
   }
@@ -63,7 +64,7 @@ class MyDoctorsState extends State<MyDoctors> {
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var alldoc = json.decode(res.body);
     if (alldoc == "no doctors") {
-      print('no doctorsp!');
+      print('no doctors!');
     } else {
       for (var data in alldoc) {
         alldocdata.add(new Docuser(

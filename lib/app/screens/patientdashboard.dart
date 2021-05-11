@@ -94,16 +94,14 @@ class PatientDashboardState extends State<PatientDashboard> {
                               fontFamily: 'PT Serif',
                               fontSize: 22,
                               fontWeight: FontWeight.w700)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: new Text('About',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'PT Serif',
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700)),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PatientProfile(userid: userid),
+                            ));
+                      },
                     ),
                     ListTile(
                       title: new Text('Sign Out',

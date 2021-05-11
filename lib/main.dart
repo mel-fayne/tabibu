@@ -10,6 +10,7 @@ import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/doctors/schedulelist.dart';
 import 'package:Tabibu/app/screens/doctors/singleappointment.dart';
+import 'package:Tabibu/app/screens/doctors/singlecase.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/diagnosistab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
@@ -70,9 +71,13 @@ class MyApp extends StatelessWidget {
               userid: null,
             ),
         DoctorProfile.routeName: (ctx) => DoctorProfile(userid: null),
-        MyPatients.routeName: (ctx) => MyPatients(),
+        MyPatients.routeName: (ctx) => MyPatients(
+              drid: null,
+            ),
         NewRecord.routeName: (ctx) => NewRecord(),
-        ScheduleList.routeName: (ctx) => ScheduleList(),
+        ScheduleList.routeName: (ctx) => ScheduleList(
+              drid: null,
+            ),
         OverviewTab.routeName: (ctx) => OverviewTab(
               ptid: null,
             ),
@@ -102,8 +107,15 @@ class MyApp extends StatelessWidget {
               days: null,
               time: null,
             ),
-        SingleAppointment.routeName: (ctx) => SingleAppointment(),
+        SingleAppointment.routeName: (ctx) => SingleAppointment(
+              apptid: null,
+              check: null,
+            ),
         Notifications.routeName: (ctx) => Notifications(),
+        SingleCase.routeName: (ctx) => SingleCase(
+              diagid: null,
+              check: null,
+            ),
       },
       home: SignIn(),
     );
