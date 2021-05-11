@@ -3,6 +3,7 @@ import 'package:Tabibu/app/screens/doctors/doctorprofile.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
 import 'package:Tabibu/app/screens/doctors/schedulelist.dart';
+import 'package:Tabibu/app/screens/doctors/updatelist.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
@@ -90,16 +91,14 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                               fontFamily: 'PT Serif',
                               fontSize: 22,
                               fontWeight: FontWeight.w700)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: new Text('About',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'PT Serif',
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700)),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DoctorProfile(userid: userid),
+                            ));
+                      },
                     ),
                     ListTile(
                       title: new Text('Sign Out',
@@ -187,7 +186,7 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                       Row(children: [
                         Padding(
                             padding:
-                                EdgeInsets.only(top: 10, left: 40, bottom: 20),
+                                EdgeInsets.only(top: 10, left: 15, bottom: 20),
                             child: Card(
                                 elevation: 6,
                                 shape: RoundedRectangleBorder(
@@ -197,12 +196,16 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                 child: Material(
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(MyPatients.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyPatients(drid: drid),
+                                              ));
                                         },
                                         child: dashcard(
                                             path: MyCustomIcons.user_list,
-                                            label: "View Patients"))))),
+                                            label: "View Medical Cases"))))),
                         Padding(
                             padding:
                                 EdgeInsets.only(top: 10, left: 20, bottom: 20),
@@ -223,26 +226,55 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                                 Icons.person_add_alt_1_outlined,
                                             label: "Add Medical Record"))))),
                       ]),
-                      Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Card(
-                              elevation: 6,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              color: Colors.white,
-                              child: Material(
-                                  child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(ScheduleList.routeName);
-                                      },
-                                      child: dashcard(
-                                          path: MyCustomIcons.calendar,
-                                          label:
-                                              "Check Updates & Schedule"))))),
+                      Row(
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.only(top: 10, left: 15),
+                              child: Card(
+                                  elevation: 6,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  color: Colors.white,
+                                  child: Material(
+                                      child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ScheduleList(drid: drid),
+                                                ));
+                                          },
+                                          child: dashcard(
+                                              path: MyCustomIcons.calendar,
+                                              label: "Check Appointments"))))),
+                          Padding(
+                              padding: EdgeInsets.only(top: 10, left: 15),
+                              child: Card(
+                                  elevation: 6,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  color: Colors.white,
+                                  child: Material(
+                                      child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateList(drid: drid),
+                                                ));
+                                          },
+                                          child: dashcard(
+                                              path: Icons.refresh,
+                                              label:
+                                                  "Check Patient Updates"))))),
+                        ],
+                      ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 40),
+                        padding: EdgeInsets.only(bottom: 60),
                       ),
                       Container(
                           alignment: FractionalOffset.bottomCenter,
@@ -265,11 +297,15 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                     color: kPrimaryAccent,
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(MyPatients.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyPatients(drid: drid),
+                                              ));
                                         },
                                         child: navitem(
-                                          navlabel: "My Patients",
+                                          navlabel: "Medical Cases",
                                           navpath: MyCustomIcons.user_group,
                                         ))),
                                 Material(

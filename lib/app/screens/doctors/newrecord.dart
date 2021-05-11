@@ -64,6 +64,7 @@ class NewRecordState extends State<NewRecord> {
       "medicine": medicinectrl.text,
       "prescription": prescriptionctrl.text,
       "treatmentinfo": treatmentinfoctrl.text,
+      "status": "On Treatment",
       "dr_id": doctoridctrl.text,
       "pt_id": patientidctrl.text
     };
