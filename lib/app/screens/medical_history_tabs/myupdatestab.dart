@@ -52,6 +52,9 @@ class MyUpdatesTabState extends State<MyUpdatesTab> {
           data['sideeffect'],
           data['medintake'],
           data['additional'],
+          data['status'],
+          data['drname'],
+          data['ptname'],
         ));
       }
       setState(() {});
