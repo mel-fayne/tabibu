@@ -36,9 +36,7 @@ class SingleUpdateState extends State<SingleUpdate> {
 
   String drname;
   String ptname;
-  String hospital;
-  String docuserid;
-  String ptuserid;
+  String status;
 
   @override
   void initState() {
@@ -64,52 +62,10 @@ class SingleUpdateState extends State<SingleUpdate> {
       sideeffect = update[8];
       medintake = update[9];
       additional = update[10];
+      status = update[11];
+      drname = update[13];
+      ptname = update[12];
       print(update);
-
-      var docurl = "http://192.168.0.15/tabibu/api/doctors/getdocid.php";
-      var docres = await http.post(docurl, body: {"doctorid": doctorid});
-      var docdata = json.decode(docres.body);
-      if (docdata == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! doctor worked!");
-        hospital = docdata[0];
-        docuserid = docdata[1];
-        print(docdata);
-      }
-
-      var url = "http://192.168.0.15/tabibu/api/auth/getuser.php";
-      var res = await http.post(url, body: {"userid": docuserid});
-      var data = json.decode(res.body);
-      if (data == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! doc user worked!");
-        drname = data[0];
-        print(data);
-      }
-
-      var pturl = "http://192.168.0.15/tabibu/api/patients/getptid.php";
-      var ptres = await http.post(pturl, body: {"patient_id": patientid});
-      var ptdata = json.decode(ptres.body);
-      if (ptdata == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! patient worked!");
-        ptuserid = ptdata[0];
-        print(ptdata);
-      }
-
-      var urlp = "http://192.168.0.15/tabibu/api/auth/getuser.php";
-      var resp = await http.post(urlp, body: {"userid": ptuserid});
-      var datap = json.decode(resp.body);
-      if (datap == "error") {
-        print("sth went wrong!");
-      } else {
-        print("Yoooo! pt user worked!");
-        ptname = datap[0];
-        print(datap);
-      }
     }
   }
 
@@ -134,7 +90,7 @@ class SingleUpdateState extends State<SingleUpdate> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              'More Diagnosis Details',
+              'More Update Details',
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'PT Serif',
@@ -187,24 +143,12 @@ class SingleUpdateState extends State<SingleUpdate> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     textProfile(
-                                      label: "Patient ID:",
-                                      text: "$patientid",
-                                    ),
-                                    textProfile(
                                       label: 'Patient Name:',
                                       text: '$ptname',
                                     ),
                                     textProfile(
-                                      label: 'Doctor ID:',
-                                      text: '$doctorid',
-                                    ),
-                                    textProfile(
                                       label: 'Doctor Name:',
                                       text: 'Dr. $drname',
-                                    ),
-                                    textProfile(
-                                      label: 'Hospital:',
-                                      text: '$hospital',
                                     ),
                                     textProfile(
                                       label: 'Date:',

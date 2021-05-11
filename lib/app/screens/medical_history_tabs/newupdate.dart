@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NewUpdate extends StatefulWidget {
-  static const routeName = "/newrecord";
+  static const routeName = "/newupdate";
   @override
   State<StatefulWidget> createState() {
     return NewUpdateState();
@@ -56,7 +56,8 @@ class NewUpdateState extends State<NewUpdate> {
       "newsymptom": newsympctrl.text,
       "additional": additionalctrl.text,
       "medintake": medintake,
-      "painrate": painrate
+      "painrate": painrate,
+      "status": "Unseen"
     };
 
     var res = await http.post(url, body: data);
