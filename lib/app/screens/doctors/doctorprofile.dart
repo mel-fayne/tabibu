@@ -86,7 +86,7 @@ class DoctorProfileState extends State<DoctorProfile> {
         ),
       ),
       body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 20, left: 20),
+          padding: EdgeInsets.only(top: 20, left: 15),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(

@@ -57,6 +57,21 @@ class BookAppointmentState extends State<BookAppointment> {
     reasonctrl = new TextEditingController();
   }
 
+  selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 60)),
+      initialDatePickerMode: DatePickerMode.day,
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
+      });
+  }
+
   Future bookAppointment() async {
     setState(() {});
     var url =
@@ -85,34 +100,20 @@ class BookAppointmentState extends State<BookAppointment> {
       print("error");
     } else {
       print("Yoooo! It worked!");
-      Flushbar(
+      print(formattedDate);
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message:
             "Your appointment request has been sent! The doctor will send a confirmation with the appointment time.",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
         borderRadius: 10,
         backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 4),
+        duration: Duration(seconds: 7),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      Navigator.of(context).pop();
+      //
     }
     setState(() {});
-  }
-
-  _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 60)),
-      initialDatePickerMode: DatePickerMode.day,
-    );
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
-      });
   }
 
   @override
@@ -177,7 +178,7 @@ class BookAppointmentState extends State<BookAppointment> {
               child: Column(
                 children: [
                   RaisedButton(
-                    onPressed: () => _selectDate(context),
+                    onPressed: () => selectDate(context),
                     child: Text(
                       'Select the day of the appointment:',
                       style: TextStyle(
@@ -214,7 +215,7 @@ class BookAppointmentState extends State<BookAppointment> {
                       height: 40,
                       onPressed: () {
                         setState(() {
-                          // processing = true;
+                          processing = true;
                           debugPrint("Book Appointment button clicked");
                           bookAppointment();
                         });
