@@ -23,6 +23,7 @@ import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/ptappt.dart';
+import 'package:Tabibu/app/screens/singleappt.dart';
 import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/screens/patientprofile.dart';
@@ -118,6 +119,10 @@ class MyApp extends StatelessWidget {
               time: null,
             ),
         SingleAppointment.routeName: (ctx) => SingleAppointment(
+              apptid: null,
+              check: null,
+            ),
+        SingleAppt.routeName: (ctx) => SingleAppt(
               apptid: null,
               check: null,
             ),

@@ -31,6 +31,9 @@ class UpdateListState extends State<UpdateList> {
     super.initState();
     getUpdates();
     getSeenUpdt();
+    if (unseenno == true && seenno == true) {
+      data = true;
+    }
   }
 
   List<Update> updatedata = [];
@@ -38,6 +41,7 @@ class UpdateListState extends State<UpdateList> {
 
   bool unseenno = false;
   bool seenno = false;
+  bool data = false;
 
   getUpdates() async {
     var url = "http://192.168.0.15/tabibu/api/doctors/getmyupdates.php";
@@ -67,7 +71,8 @@ class UpdateListState extends State<UpdateList> {
         ));
       }
       setState(() {});
-      updatedata.forEach((someData) => print("Update : ${someData.updateid}"));
+      updatedata
+          .forEach((someData) => print("Unseen Update : ${someData.updateid}"));
     }
   }
 
@@ -100,7 +105,7 @@ class UpdateListState extends State<UpdateList> {
       }
       setState(() {});
       seenupdatedata
-          .forEach((someData) => print("Update : ${someData.updateid}"));
+          .forEach((someData) => print("Seen Update : ${someData.updateid}"));
     }
   }
 
@@ -136,25 +141,14 @@ class UpdateListState extends State<UpdateList> {
                           color: Colors.black),
                     ),
                   )),
-              Padding(
-                  padding: EdgeInsets.only(left: 3, top: 20),
-                  child: Text(
-                    'My Unseen Patient Updates',
-                    style: TextStyle(
-                      color: kPrimaryGreen,
-                      fontSize: 18,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
-              unseenno
+              data
                   ? Padding(
                       padding: EdgeInsets.only(top: 10, left: 60),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'You have no unseen patient updates!',
+                            'You have no updates yet!',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'PT Serif',
@@ -171,152 +165,174 @@ class UpdateListState extends State<UpdateList> {
                           )
                         ],
                       ))
-                  : Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: updatedata.length,
-                          itemBuilder: (_, index) {
-                            return Card(
-                                color: kPrimaryAccent,
-                                elevation: 7.0,
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    //  backgroundImage: AssetImage("imagepath"),
-                                    backgroundColor: kPrimaryGreen,
-                                  ),
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Patient Name:',
-                                          text: '${updatedata[index].ptname}',
+                  : Column(children: [
+                      unseenno
+                          ? Container(padding: EdgeInsets.only(top: 10))
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 3, top: 20),
+                                      child: Text(
+                                        'My Unseen Patient Updates',
+                                        style: TextStyle(
+                                          color: kPrimaryGreen,
+                                          fontSize: 18,
+                                          fontFamily: 'Source Sans',
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        textProfile(
-                                          label: 'Update Date:',
-                                          text: '${updatedata[index].date}',
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: updatedata.length,
+                                          itemBuilder: (_, index) {
+                                            return Card(
+                                                color: kPrimaryAccent,
+                                                elevation: 7.0,
+                                                child: ListTile(
+                                                  leading: CircleAvatar(
+                                                    //  backgroundImage: AssetImage("imagepath"),
+                                                    backgroundColor:
+                                                        kPrimaryGreen,
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 5),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Patient Name:',
+                                                          text:
+                                                              '${updatedata[index].drname}',
+                                                        ),
+                                                        textProfile(
+                                                          label: 'Update Date:',
+                                                          text:
+                                                              '${updatedata[index].date}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  subtitle: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 5),
+                                                    child: textProfile(
+                                                      label: "Update Status:",
+                                                      text:
+                                                          '${updatedata[index].status}',
+                                                    ),
+                                                  ),
+                                                  trailing: Icon(
+                                                    Icons.arrow_right_outlined,
+                                                    color: kPrimaryGreen,
+                                                    size: 25,
+                                                  ),
+                                                  onTap: () {
+                                                    updtid = updatedata[index]
+                                                        .updateid;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SinglePtUpdate(
+                                                                    check:
+                                                                        "Unseen",
+                                                                    updid:
+                                                                        updtid)));
+                                                  },
+                                                ));
+                                          })),
+                                ]),
+                      seenno
+                          ? Container(padding: EdgeInsets.only(top: 10))
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 3, top: 5),
+                                      child: Text(
+                                        'Seen Updates',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontFamily: 'Source Sans',
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: textProfile(
-                                      label: "Update Status:",
-                                      text: '${updatedata[index].status}',
-                                    ),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_right_outlined,
-                                    color: kPrimaryGreen,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    updtid = updatedata[index].updateid;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SinglePtUpdate(
-                                                    check: "Unseen",
-                                                    updid: updtid)));
-                                  },
-                                ));
-                          })),
-              Padding(
-                  padding: EdgeInsets.only(left: 3, top: 5),
-                  child: Text(
-                    'Seen Updates',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
-              seenno
-                  ? Padding(
-                      padding: EdgeInsets.only(top: 10, left: 60),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'You have no unseen patient updates!',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'PT Serif',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15),
-                          ),
-                          Lottie.asset(
-                            'assets/lottie/22921-happy-girlpeaceful.json',
-                            repeat: true,
-                            reverse: true,
-                            animate: true,
-                            width: 150,
-                            height: 150,
-                          )
-                        ],
-                      ))
-                  : Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: seenupdatedata.length,
-                          itemBuilder: (_, index) {
-                            return Card(
-                                color: Colors.blue[100],
-                                elevation: 7.0,
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    //  backgroundImage: AssetImage("imagepath"),
-                                    backgroundColor: kPrimaryGreen,
-                                  ),
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Patient Name:',
-                                          text:
-                                              '${seenupdatedata[index].ptname}',
-                                        ),
-                                        textProfile(
-                                          label: 'Update date:',
-                                          text: '${seenupdatedata[index].date}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: textProfile(
-                                      label: 'Update Status:',
-                                      text: '${seenupdatedata[index].status}',
-                                    ),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_right_outlined,
-                                    color: kPrimaryGreen,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    updtid = seenupdatedata[index].updateid;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SinglePtUpdate(
-                                                    check: "Seen",
-                                                    updid: updtid)));
-                                  },
-                                ));
-                          })),
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: seenupdatedata.length,
+                                          itemBuilder: (_, index) {
+                                            return Card(
+                                                color: Colors.blue[100],
+                                                elevation: 7.0,
+                                                child: ListTile(
+                                                  leading: CircleAvatar(
+                                                    //  backgroundImage: AssetImage("imagepath"),
+                                                    backgroundColor:
+                                                        kPrimaryGreen,
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 5),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Patient Name:',
+                                                          text:
+                                                              '${seenupdatedata[index].drname}',
+                                                        ),
+                                                        textProfile(
+                                                          label: 'Update date:',
+                                                          text:
+                                                              '${seenupdatedata[index].date}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  subtitle: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 5),
+                                                    child: textProfile(
+                                                      label: 'Update Status:',
+                                                      text:
+                                                          '${seenupdatedata[index].status}',
+                                                    ),
+                                                  ),
+                                                  trailing: Icon(
+                                                    Icons.arrow_right_outlined,
+                                                    color: kPrimaryGreen,
+                                                    size: 25,
+                                                  ),
+                                                  onTap: () {
+                                                    updtid =
+                                                        seenupdatedata[index]
+                                                            .updateid;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SinglePtUpdate(
+                                                                    check:
+                                                                        "Seen",
+                                                                    updid:
+                                                                        updtid)));
+                                                  },
+                                                ));
+                                          })),
+                                ])
+                    ]),
             ])));
   }
 }

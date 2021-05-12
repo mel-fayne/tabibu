@@ -160,6 +160,7 @@ class NewUpdateState extends State<NewUpdate> {
                     makeInput(
                       label: "Doctor ID",
                       controller: docidctrl,
+                      type: TextInputType.number,
                       hint:
                           "Enter the Doctor ID of the the doctor the update is being sent to",
                     ),
@@ -290,11 +291,11 @@ class NewUpdateState extends State<NewUpdate> {
                         height: 40,
                         onPressed: () {
                           setState(() {
-                            if (_formKey.currentState.validate()) {
-                              debugPrint("Save record button clicked");
-                              processing = true;
-                              addUpdate();
-                            }
+                            //  if (_formKey.currentState.validate()) {
+                            debugPrint("Save record button clicked");
+                            processing = true;
+                            addUpdate();
+                            //}
                           });
                         },
                         color: kPrimaryGreen,
