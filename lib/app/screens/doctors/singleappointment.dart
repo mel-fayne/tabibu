@@ -49,6 +49,9 @@ class SingleAppointmentState extends State<SingleAppointment> {
     super.initState();
     getAppt();
     print(check);
+    if (check == "Done" || check == "Confirmed") {
+      statcheck = true;
+    }
   }
 
   Future getAppt() async {
@@ -66,9 +69,6 @@ class SingleAppointmentState extends State<SingleAppointment> {
       drname = appt[8];
       ptname = appt[9];
       print(appt);
-      if (check == "Done") {
-        statcheck = true;
-      }
     }
   }
 
@@ -243,10 +243,6 @@ class SingleAppointmentState extends State<SingleAppointment> {
                               label: 'Patient Name:',
                               text: '$ptname',
                             ),
-                            /* textProfile(
-                              label: 'Doctor Name:',
-                              text: 'Dr. $drname',
-                            ), */
                             textProfile(
                               label: 'Appointment Date:',
                               text: '$date',
@@ -254,24 +250,40 @@ class SingleAppointmentState extends State<SingleAppointment> {
                             textProfile(
                               label: 'Appointment Reason:',
                               text: '$reason',
-                            )
+                            ),
+                            statcheck
+                                ? textProfile(
+                                    label: 'Appointment Time:',
+                                    text: '$time',
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Text(
+                                      'Appointment Time yet to be confirmed!',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'PT Serif',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                           ]);
                   }
                 },
               )
             ]),
             Container(
-                padding: EdgeInsets.only(top: 50, left: 50),
+                padding: EdgeInsets.only(top: 50, left: 25),
                 child: check == "Unconfirmed"
                     ? Container(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           MaterialButton(
+                            padding: EdgeInsets.all(15),
                             height: 40,
                             onPressed: () {
                               setState(() {
-                                // processing = true;
+                                processing = true;
                                 debugPrint("set time button clicked");
                                 Navigator.push(
                                     context,
@@ -304,10 +316,11 @@ class SingleAppointmentState extends State<SingleAppointment> {
                             ),
                           ),
                           MaterialButton(
+                            padding: EdgeInsets.all(15),
                             height: 40,
                             onPressed: () {
                               setState(() {
-                                // processing = true;
+                                processing = true;
                                 debugPrint("reschedule button clicked");
                                 Navigator.push(
                                     context,
@@ -321,7 +334,7 @@ class SingleAppointmentState extends State<SingleAppointment> {
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
-                            child: Text("Confirm Appointment",
+                            child: Text("Reschedule Appointment",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'PT Serif',
@@ -332,22 +345,22 @@ class SingleAppointmentState extends State<SingleAppointment> {
                       ))
                     : check == "Confirmed"
                         ? MaterialButton(
-                            minWidth: double.infinity,
+                            padding: EdgeInsets.all(15),
                             height: 40,
                             onPressed: () {
                               setState(() {
-                                // processing = true;
+                                processing = true;
                                 debugPrint("mark done button clicked");
                                 markDone();
                               });
                             },
-                            color: kPrimaryAccent,
+                            color: kPrimaryGreen,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
                             child: Text("Mark Appointment As Done",
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: kPrimaryYellow,
                                     fontFamily: 'PT Serif',
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700)),

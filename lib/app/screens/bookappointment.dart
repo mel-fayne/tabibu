@@ -208,14 +208,6 @@ class BookAppointmentState extends State<BookAppointment> {
                   label: "Reason for Appointment",
                   controller: reasonctrl,
                 )),
-            Text(
-              "By clicking the book appointment button, you agree to allow Dr.$name to view your previous medical reports and add to your medical history",
-              style: TextStyle(
-                  color: kFieldTextColor,
-                  fontFamily: 'PT Serif',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600),
-            ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               child: processing
@@ -225,11 +217,11 @@ class BookAppointmentState extends State<BookAppointment> {
                       height: 40,
                       onPressed: () {
                         setState(() {
-                          if (_formKey.currentState.validate()) {
-                            processing = true;
-                            debugPrint("Book Appointment button clicked");
-                            bookAppointment();
-                          }
+                          //   if (_formKey.currentState.validate()) {
+                          processing = true;
+                          debugPrint("Book Appointment button clicked");
+                          bookAppointment();
+                          // }
                         });
                       },
                       color: kPrimaryGreen,
@@ -244,6 +236,18 @@ class BookAppointmentState extends State<BookAppointment> {
                               fontWeight: FontWeight.w700)),
                     ),
             ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "By clicking the book appointment button, you agree to allow Dr.$name to view your previous medical reports and add to your medical history",
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: kFieldTextColor,
+                    fontFamily: 'PT Serif',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600),
+              ),
+            )
           ])),
     );
   }
