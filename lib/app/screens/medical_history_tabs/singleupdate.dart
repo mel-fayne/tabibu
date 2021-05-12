@@ -4,21 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class SingleUpdate extends StatefulWidget {
   static const routeName = "/singleupdate";
 
 //accepting parameters from previous screen
   final String updid;
-  SingleUpdate({@required this.updid});
+  final String check;
+  SingleUpdate({@required this.updid, @required this.check});
   @override
   State<StatefulWidget> createState() {
-    return SingleUpdateState(this.updid);
+    return SingleUpdateState(this.updid, this.check);
   }
 }
 
 class SingleUpdateState extends State<SingleUpdate> {
   String updid;
-  SingleUpdateState(this.updid);
+  String check;
+  SingleUpdateState(this.updid, this.check);
 
   String updateid;
   String patientid;
@@ -42,6 +46,7 @@ class SingleUpdateState extends State<SingleUpdate> {
   void initState() {
     super.initState();
     getUpdate();
+    print(check);
   }
 
   Future getUpdate() async {
@@ -142,9 +147,32 @@ class SingleUpdateState extends State<SingleUpdate> {
                               return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    textProfile(
-                                      label: 'Patient Name:',
-                                      text: '$ptname',
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('Status:',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 13,
+                                              fontFamily: 'PT Serif',
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 3),
+                                            child: Text(
+                                              "$status",
+                                              style: TextStyle(
+                                                color: kPrimaryGreen,
+                                                fontSize: 14,
+                                                fontFamily: 'Source Sans',
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )),
+                                        statusLottie(
+                                          stat: "$status",
+                                        ),
+                                      ],
                                     ),
                                     textProfile(
                                       label: 'Doctor Name:',
@@ -300,5 +328,27 @@ Widget textProfile({label, text}) {
             ))
       ],
     ),
+  );
+}
+
+Widget statusLottie({stat}) {
+  String path;
+  if (stat == "Seen") {
+    path = 'assets/lottie/22921-happy-girlpeaceful.json';
+  } else {
+    path = 'assets/lottie/30995-doctor-and-patient-conversation.json';
+  }
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Lottie.asset(
+        path,
+        repeat: true,
+        reverse: true,
+        animate: true,
+        width: 150,
+        height: 150,
+      )
+    ],
   );
 }

@@ -8,20 +8,22 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 
 class SinglePtUpdate extends StatefulWidget {
-  static const routeName = "/singleupdate";
+  static const routeName = "/singleptupdate";
 
 //accepting parameters from previous screen
   final String updid;
-  SinglePtUpdate({@required this.updid});
+  final String check;
+  SinglePtUpdate({@required this.updid, @required this.check});
   @override
   State<StatefulWidget> createState() {
-    return SinglePtUpdateState(this.updid);
+    return SinglePtUpdateState(this.updid, this.check);
   }
 }
 
 class SinglePtUpdateState extends State<SinglePtUpdate> {
   String updid;
-  SinglePtUpdateState(this.updid);
+  String check;
+  SinglePtUpdateState(this.updid, this.check);
 
   String updateid;
   String patientid;
@@ -45,6 +47,7 @@ class SinglePtUpdateState extends State<SinglePtUpdate> {
   void initState() {
     super.initState();
     getUpdate();
+    print(check);
   }
 
   Future getUpdate() async {
@@ -80,7 +83,7 @@ class SinglePtUpdateState extends State<SinglePtUpdate> {
       print('Unexpected error occured!');
     } else {
       print("Seen!");
-      Flushbar(
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "Update successfully marked as seen!",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -195,10 +198,6 @@ class SinglePtUpdateState extends State<SinglePtUpdate> {
                                     textProfile(
                                       label: 'Patient Name:',
                                       text: '$ptname',
-                                    ),
-                                    textProfile(
-                                      label: 'Doctor Name:',
-                                      text: 'Dr. $drname',
                                     ),
                                     textProfile(
                                       label: 'Date:',
@@ -322,8 +321,10 @@ class SinglePtUpdateState extends State<SinglePtUpdate> {
                     ])),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: status == "Closed"
-                  ? Container()
+              child: check == "Seen"
+                  ? Container(
+                      padding: EdgeInsets.only(top: 10),
+                    )
                   : MaterialButton(
                       minWidth: double.infinity,
                       height: 40,

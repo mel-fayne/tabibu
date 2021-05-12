@@ -1,6 +1,4 @@
-import 'package:Tabibu/app/models/appointment.dart';
 import 'package:Tabibu/app/models/update.dart';
-import 'package:Tabibu/app/screens/doctors/singlecase.dart';
 import 'package:Tabibu/app/screens/doctors/singleptupdate.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +137,7 @@ class UpdateListState extends State<UpdateList> {
                     ),
                   )),
               Padding(
-                  padding: EdgeInsets.only(left: 3, top: 5),
+                  padding: EdgeInsets.only(left: 3, top: 20),
                   child: Text(
                     'My Unseen Patient Updates',
                     style: TextStyle(
@@ -222,7 +220,9 @@ class UpdateListState extends State<UpdateList> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SinglePtUpdate(updid: updtid)));
+                                                SinglePtUpdate(
+                                                    check: "Unseen",
+                                                    updid: updtid)));
                                   },
                                 ));
                           })),
@@ -311,7 +311,9 @@ class UpdateListState extends State<UpdateList> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SinglePtUpdate(updid: updtid)));
+                                                SinglePtUpdate(
+                                                    check: "Seen",
+                                                    updid: updtid)));
                                   },
                                 ));
                           })),
