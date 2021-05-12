@@ -39,11 +39,17 @@ class DoctorDashboardState extends State<DoctorDashboard> {
           backgroundColor: kPrimaryAccent,
           actions: [
             new IconButton(
-              icon: Icon(Icons.circle_notifications),
+              icon: Icon(Icons.calendar_today),
               color: kPrimaryGreen,
               padding: EdgeInsets.only(top: 14, right: 24.49),
-              iconSize: 30,
-              onPressed: () {},
+              iconSize: 27,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScheduleList(drid: drid),
+                    ));
+              },
             ),
           ],
         ),

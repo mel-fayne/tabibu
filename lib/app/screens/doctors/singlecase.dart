@@ -1,3 +1,4 @@
+import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flushbar/flushbar.dart';
@@ -154,6 +155,30 @@ class SingleCaseState extends State<SingleCase> {
                             return Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 child: Column(children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: RaisedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MedicalHistory(
+                                                      ptid: pt_id,
+                                                      fullname: ptname),
+                                            ));
+                                      },
+                                      child: Text(
+                                        "View $ptname 's Medical History",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'Source Sans',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black),
+                                      ),
+                                      color: kPrimaryAccent,
+                                    ),
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

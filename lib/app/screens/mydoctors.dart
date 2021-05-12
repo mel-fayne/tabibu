@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class MyDoctors extends StatefulWidget {
   static const routeName = "/mydoctors";
 
@@ -36,12 +38,15 @@ class MyDoctorsState extends State<MyDoctors> {
   List<Docuser> mydocdata = [];
   List<Docuser> alldocdata = [];
 
+  bool mydrs = false;
+
   getMyDoctors() async {
     var url = "http://192.168.0.15/tabibu/api/patients/getmydoctors.php";
     var res = await http.post(url,
         body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
     var mydoc = json.decode(res.body);
     if (mydoc == "no doctors on app") {
+      mydrs = true;
       print('no doctors on app!');
     } else {
       for (var data in mydoc) {
@@ -148,11 +153,30 @@ class MyDoctorsState extends State<MyDoctors> {
                   fontWeight: FontWeight.w600,
                 ),
               )),
-          mydocdata.length == 0
-              ? Center(
-                  child: CircularProgressIndicator(
-                  backgroundColor: kPrimaryGreen,
-                ))
+          mydrs
+              ? Padding(
+                  padding: EdgeInsets.only(top: 10, left: 60),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'You have no unseen updates!',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'PT Serif',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15),
+                      ),
+                      Lottie.asset(
+                        'assets/lottie/22921-happy-girlpeaceful.json',
+                        repeat: true,
+                        reverse: true,
+                        animate: true,
+                        width: 150,
+                        height: 150,
+                      )
+                    ],
+                  ))
               : Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   child: ListView.builder(
