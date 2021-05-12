@@ -153,7 +153,7 @@ class SingleCaseState extends State<SingleCase> {
                                 child: Text('Error: ${snapshot.error}'));
                           else
                             return Padding(
-                                padding: EdgeInsets.only(left: 20),
+                                padding: EdgeInsets.only(left: 10),
                                 child: Column(children: [
                                   Padding(
                                     padding: EdgeInsets.only(top: 10),

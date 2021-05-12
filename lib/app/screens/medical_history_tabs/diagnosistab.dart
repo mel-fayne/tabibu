@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class DiagnosisTab extends StatefulWidget {
   static const routeName = "/diagnosistab";
 //accepting parameters from previous screen
@@ -29,6 +31,7 @@ class DiagnosisTabState extends State<DiagnosisTab> {
   }
 
   List<Diagnosis> diagnosisdata = [];
+  bool diagnosisno = false;
 
   getDiagnosisList() async {
     var url = "http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php";
@@ -36,7 +39,8 @@ class DiagnosisTabState extends State<DiagnosisTab> {
         body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
     var diagnosis = json.decode(res.body);
     if (diagnosis == "no record") {
-      print('Unexpected error occured!');
+      diagnosisno = true;
+      print('no record!');
     } else {
       for (var data in diagnosis) {
         diagnosisdata.add(new Diagnosis(
@@ -66,86 +70,106 @@ class DiagnosisTabState extends State<DiagnosisTab> {
     return Scaffold(
         body: Padding(
       padding: EdgeInsets.only(top: 20),
-      child: diagnosisdata.length == 0
-          ? Center(
-              child: Text('You have no medical record yet!',
-                  style: TextStyle(
-                    fontFamily: 'PT Serif',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: kPrimaryGreen,
-                  )))
-          : Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: diagnosisdata.length,
-                  itemBuilder: (_, index) {
-                    return Card(
-                        color: kPrimaryAccent,
-                        elevation: 7.0,
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.healing,
-                            color: kPrimaryYellow,
-                            size: 45,
-                          ),
-                          title: Padding(
-                            padding: EdgeInsets.only(top: 5),
-                            child: textProfile(
-                              label: 'Ailment/Condition:',
-                              text: '${diagnosisdata[index].disease}',
-                            ),
-                          ),
-                          subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Description:',
-                                  style: TextStyle(
-                                    color: kFieldTextColor,
-                                    fontSize: 13,
-                                    fontFamily: 'PT Serif',
-                                    fontWeight: FontWeight.w600,
-                                  ),
+      child: diagnosisno
+          ? Padding(
+              padding: EdgeInsets.only(top: 10, left: 60),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'You have no Medical Cases!',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'PT Serif',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                  Lottie.asset(
+                    'assets/lottie/22921-happy-girlpeaceful.json',
+                    repeat: true,
+                    reverse: true,
+                    animate: true,
+                    width: 150,
+                    height: 150,
+                  )
+                ],
+              ))
+          : diagnosisdata.length == 0
+              ? Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: kPrimaryGreen,
+                ))
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: diagnosisdata.length,
+                      itemBuilder: (_, index) {
+                        return Card(
+                            color: kPrimaryAccent,
+                            elevation: 7.0,
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.healing,
+                                color: kPrimaryYellow,
+                                size: 45,
+                              ),
+                              title: Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: textProfile(
+                                  label: 'Ailment/Condition:',
+                                  text: '${diagnosisdata[index].disease}',
                                 ),
-                                Text(
-                                  '${diagnosisdata[index].description}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: 'PT Serif',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                textProfile(
-                                  label: 'Date:',
-                                  text: '${diagnosisdata[index].date}',
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 5),
-                                  child: textProfile(
-                                    label: 'Status:',
-                                    text: '${diagnosisdata[index].status}',
-                                  ),
-                                ),
-                              ]),
-                          trailing: Icon(
-                            Icons.arrow_right_outlined,
-                            color: kPrimaryGreen,
-                            size: 25,
-                          ),
-                          onTap: () {
-                            diagnosisid = diagnosisdata[index].recordid;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SingleDiagnosis(diagid: diagnosisid)));
-                          },
-                        ));
-                  })),
+                              ),
+                              subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Description:',
+                                      style: TextStyle(
+                                        color: kFieldTextColor,
+                                        fontSize: 13,
+                                        fontFamily: 'PT Serif',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${diagnosisdata[index].description}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontFamily: 'PT Serif',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    textProfile(
+                                      label: 'Date:',
+                                      text: '${diagnosisdata[index].date}',
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 5),
+                                      child: textProfile(
+                                        label: 'Status:',
+                                        text: '${diagnosisdata[index].status}',
+                                      ),
+                                    ),
+                                  ]),
+                              trailing: Icon(
+                                Icons.arrow_right_outlined,
+                                color: kPrimaryGreen,
+                                size: 25,
+                              ),
+                              onTap: () {
+                                diagnosisid = diagnosisdata[index].recordid;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SingleDiagnosis(
+                                            diagid: diagnosisid)));
+                              },
+                            ));
+                      })),
     ));
   }
 }

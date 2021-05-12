@@ -239,11 +239,11 @@ class NewRecordState extends State<NewRecord> {
                         height: 40,
                         onPressed: () {
                           setState(() {
-                            if (_formKey.currentState.validate()) {
-                              processing = true;
-                              debugPrint("Save record button clicked");
-                              addDiagnosis();
-                            }
+                            //  if (_formKey.currentState.validate()) {
+                            processing = true;
+                            debugPrint("Save record button clicked");
+                            addDiagnosis();
+                            //}
                           });
                         },
                         color: kPrimaryGreen,

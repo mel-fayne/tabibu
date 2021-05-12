@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class TreatmentTab extends StatefulWidget {
   static const routeName = "/treatmenttab";
 //accepting parameters from previous screen
@@ -28,13 +30,15 @@ class TreatmentTabState extends State<TreatmentTab> {
   }
 
   List<Diagnosis> diagnosisdata = [];
+  bool treatmentno = false;
 
   getDiagnosisList() async {
     var url = "http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php";
     var res = await http.post(url,
         body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
     var diagnosis = json.decode(res.body);
-    if (diagnosis == "error") {
+    if (diagnosis == "no record") {
+      treatmentno = true;
       print('Unexpected error occured!');
     } else {
       for (var data in diagnosis) {
@@ -65,84 +69,106 @@ class TreatmentTabState extends State<TreatmentTab> {
     return Scaffold(
         body: Padding(
       padding: EdgeInsets.only(top: 20),
-      child: diagnosisdata.length == 0
-          ? Center(
-              child: Text('Oops, No record yet!',
-                  style: TextStyle(
-                    fontFamily: 'PT Serif',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: kPrimaryGreen,
-                  )))
-          : Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: diagnosisdata.length,
-                  itemBuilder: (_, index) {
-                    return Card(
-                        color: Colors.blue[100],
-                        elevation: 7.0,
-                        child: ListTile(
-                          leading: Icon(
-                            MyCustomIcons.pill,
-                            color: kPrimaryGreen,
-                            size: 35,
-                          ),
-                          title: Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  textProfile(
-                                    label: 'Ailment/Condition:',
-                                    text: '${diagnosisdata[index].disease}',
-                                  ),
-                                  textProfile(
-                                    label: 'Medicine:',
-                                    text: '${diagnosisdata[index].medicine}',
-                                  ),
-                                  textProfile(
-                                      label: 'Prescription:',
-                                      text:
-                                          '${diagnosisdata[index].prescription}'),
-                                ],
-                              )),
-                          subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
+      child: treatmentno
+          ? Padding(
+              padding: EdgeInsets.only(top: 10, left: 60),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'You have no Prescribed Treatments!',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'PT Serif',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15),
+                  ),
+                  Lottie.asset(
+                    'assets/lottie/22921-happy-girlpeaceful.json',
+                    repeat: true,
+                    reverse: true,
+                    animate: true,
+                    width: 150,
+                    height: 150,
+                  )
+                ],
+              ))
+          : diagnosisdata.length == 0
+              ? Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: kPrimaryGreen,
+                ))
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: diagnosisdata.length,
+                      itemBuilder: (_, index) {
+                        return Card(
+                            color: Colors.blue[100],
+                            elevation: 7.0,
+                            child: ListTile(
+                              leading: Icon(
+                                MyCustomIcons.pill,
+                                color: kPrimaryGreen,
+                                size: 35,
+                              ),
+                              title: Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Additional Treatment Information:',
-                                        style: TextStyle(
-                                          color: kFieldTextColor,
-                                          fontSize: 13,
-                                          fontFamily: 'PT Serif',
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      textProfile(
+                                        label: 'Ailment/Condition:',
+                                        text: '${diagnosisdata[index].disease}',
                                       ),
-                                      Text(
-                                        '${diagnosisdata[index].treatmentinfo}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontFamily: 'Source Sans',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    ]),
-                                textProfile(
-                                  label: 'Medication Status:',
-                                  text:
-                                      'Case is ${diagnosisdata[index].status}',
-                                ),
-                              ]),
-                        ));
-                  })),
+                                      textProfile(
+                                        label: 'Medicine:',
+                                        text:
+                                            '${diagnosisdata[index].medicine}',
+                                      ),
+                                      textProfile(
+                                          label: 'Prescription:',
+                                          text:
+                                              '${diagnosisdata[index].prescription}'),
+                                    ],
+                                  )),
+                              subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Additional Treatment Information:',
+                                            style: TextStyle(
+                                              color: kFieldTextColor,
+                                              fontSize: 13,
+                                              fontFamily: 'PT Serif',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${diagnosisdata[index].treatmentinfo}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: 'Source Sans',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        ]),
+                                    textProfile(
+                                      label: 'Medication Status:',
+                                      text:
+                                          'Case is ${diagnosisdata[index].status}',
+                                    ),
+                                  ]),
+                            ));
+                      })),
     ));
   }
 }

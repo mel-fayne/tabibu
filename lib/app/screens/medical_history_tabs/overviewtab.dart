@@ -7,6 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:lottie/lottie.dart';
+
 class OverviewTab extends StatefulWidget {
   static const routeName = "/overviewtab";
 
@@ -30,14 +32,16 @@ class OverviewTabState extends State<OverviewTab> {
   }
 
   List<Diagnosis> diagnosisdata = [];
+  bool overviewno = false;
 
   getDiagnosisList() async {
     var url = "http://192.168.0.15/tabibu/api/diagnosis/getdiagnosis.php";
     var res = await http.post(url,
         body: {"pt_id": ptid}, headers: {"Accept": "application/json"});
     var diagnosis = json.decode(res.body);
-    if (diagnosis == "error") {
-      print('Unexpected error occured!');
+    if (diagnosis == "no record") {
+      overviewno = true;
+      print('no record!');
     } else {
       for (var data in diagnosis) {
         diagnosisdata.add(new Diagnosis(
@@ -67,126 +71,151 @@ class OverviewTabState extends State<OverviewTab> {
     return Scaffold(
         body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 20),
-            child: diagnosisdata.length == 0
-                ? Center(
-                    child: Text('Oops, No record yet!',
-                        style: TextStyle(
-                          fontFamily: 'PT Serif',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: kPrimaryGreen,
-                        )))
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                        Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text(
-                              'Diagnosis:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'PT Serif',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22),
-                            )),
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: diagnosisdata.length,
-                                itemBuilder: (_, index) {
-                                  return Card(
-                                      color: kPrimaryAccent,
-                                      elevation: 7.0,
-                                      child: ListTile(
-                                          leading: Icon(
-                                            Icons.healing,
-                                            color: kPrimaryYellow,
-                                            size: 45,
-                                          ),
-                                          title: Padding(
-                                            padding: EdgeInsets.only(top: 5),
-                                            child: textProfile(
-                                              label: 'Ailment/Condition:',
-                                              text:
-                                                  '${diagnosisdata[index].disease}',
-                                            ),
-                                          ),
-                                          subtitle: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Description:',
-                                                  style: TextStyle(
-                                                    color: kFieldTextColor,
-                                                    fontSize: 13,
-                                                    fontFamily: 'PT Serif',
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+            child: overviewno
+                ? Padding(
+                    padding: EdgeInsets.only(top: 10, left: 60),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'You have no Medical Cases Yet!',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'PT Serif',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15),
+                        ),
+                        Lottie.asset(
+                          'assets/lottie/22921-happy-girlpeaceful.json',
+                          repeat: true,
+                          reverse: true,
+                          animate: true,
+                          width: 150,
+                          height: 150,
+                        )
+                      ],
+                    ))
+                : diagnosisdata.length == 0
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        backgroundColor: kPrimaryGreen,
+                      ))
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  'Diagnosis:',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'PT Serif',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 22),
+                                )),
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: diagnosisdata.length,
+                                    itemBuilder: (_, index) {
+                                      return Card(
+                                          color: kPrimaryAccent,
+                                          elevation: 7.0,
+                                          child: ListTile(
+                                              leading: Icon(
+                                                Icons.healing,
+                                                color: kPrimaryYellow,
+                                                size: 45,
+                                              ),
+                                              title: Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 5),
+                                                child: textProfile(
+                                                  label: 'Ailment/Condition:',
+                                                  text:
+                                                      '${diagnosisdata[index].disease}',
                                                 ),
-                                                Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 5),
-                                                    child: Text(
-                                                      '${diagnosisdata[index].description}',
+                                              ),
+                                              subtitle: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Description:',
                                                       style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14,
+                                                        color: kFieldTextColor,
+                                                        fontSize: 13,
                                                         fontFamily: 'PT Serif',
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       ),
-                                                    )),
-                                              ])));
-                                })),
-                        Padding(
-                            padding: EdgeInsets.only(left: 20, top: 20),
-                            child: Text(
-                              'Treatment:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'PT Serif',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22),
-                            )),
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: diagnosisdata.length,
-                                itemBuilder: (_, index) {
-                                  return Card(
-                                      color: Colors.blue[100],
-                                      elevation: 5.0,
-                                      child: ListTile(
-                                        leading: Icon(
-                                          MyCustomIcons.pill,
-                                          color: kPrimaryGreen,
-                                          size: 35,
-                                        ),
-                                        title: Padding(
-                                          padding: EdgeInsets.only(top: 5),
-                                          child: textProfile(
-                                            label: 'Medicine:',
-                                            text:
-                                                '${diagnosisdata[index].medicine}',
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                            padding: EdgeInsets.only(top: 5),
-                                            child: textProfile(
-                                              label: 'Prescription:',
-                                              text:
-                                                  '${diagnosisdata[index].prescription}',
-                                            )),
-                                      ));
-                                })),
-                      ])));
+                                                    ),
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                bottom: 5),
+                                                        child: Text(
+                                                          '${diagnosisdata[index].description}',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                'PT Serif',
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        )),
+                                                  ])));
+                                    })),
+                            Padding(
+                                padding: EdgeInsets.only(left: 20, top: 20),
+                                child: Text(
+                                  'Treatment:',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'PT Serif',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 22),
+                                )),
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: diagnosisdata.length,
+                                    itemBuilder: (_, index) {
+                                      return Card(
+                                          color: Colors.blue[100],
+                                          elevation: 5.0,
+                                          child: ListTile(
+                                            leading: Icon(
+                                              MyCustomIcons.pill,
+                                              color: kPrimaryGreen,
+                                              size: 35,
+                                            ),
+                                            title: Padding(
+                                              padding: EdgeInsets.only(top: 5),
+                                              child: textProfile(
+                                                label: 'Medicine:',
+                                                text:
+                                                    '${diagnosisdata[index].medicine}',
+                                              ),
+                                            ),
+                                            subtitle: Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 5),
+                                                child: textProfile(
+                                                  label: 'Prescription:',
+                                                  text:
+                                                      '${diagnosisdata[index].prescription}',
+                                                )),
+                                          ));
+                                    })),
+                          ])));
   }
 }
 
