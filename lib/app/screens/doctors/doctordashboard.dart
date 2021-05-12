@@ -224,8 +224,12 @@ class DoctorDashboardState extends State<DoctorDashboard> {
                                 child: Material(
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(NewRecord.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewRecord(drid: drid),
+                                              ));
                                         },
                                         child: dashcard(
                                             path:

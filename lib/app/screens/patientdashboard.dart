@@ -228,8 +228,12 @@ class PatientDashboardState extends State<PatientDashboard> {
                                 child: Material(
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed(NewUpdate.routeName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewUpdate(ptid: ptid),
+                                              ));
                                         },
                                         child: dashcard(
                                             path: MyCustomIcons.email,

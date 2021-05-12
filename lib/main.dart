@@ -22,7 +22,6 @@ import 'package:Tabibu/app/screens/medical_history_tabs/singleupdate.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
-import 'package:Tabibu/app/screens/notifications.dart';
 import 'package:Tabibu/app/screens/ptappt.dart';
 import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
@@ -78,7 +77,9 @@ class MyApp extends StatelessWidget {
         MyPatients.routeName: (ctx) => MyPatients(
               drid: null,
             ),
-        NewRecord.routeName: (ctx) => NewRecord(),
+        NewRecord.routeName: (ctx) => NewRecord(
+              drid: null,
+            ),
         ScheduleList.routeName: (ctx) => ScheduleList(
               drid: null,
             ),
@@ -101,7 +102,9 @@ class MyApp extends StatelessWidget {
               updid: null,
               check: null,
             ),
-        NewUpdate.routeName: (ctx) => NewUpdate(),
+        NewUpdate.routeName: (ctx) => NewUpdate(
+              ptid: null,
+            ),
         SingleDoctor.routeName: (ctx) => SingleDoctor(
               docid: null,
               ptid: null,
@@ -130,7 +133,6 @@ class MyApp extends StatelessWidget {
               apptid: null,
               check: null,
             ),
-        Notifications.routeName: (ctx) => Notifications(),
         SingleCase.routeName: (ctx) => SingleCase(
               diagid: null,
               check: null,

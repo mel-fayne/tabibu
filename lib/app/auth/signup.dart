@@ -22,11 +22,16 @@ class _SignUpState extends State<SignUp> {
   String userid;
   String fullname;
 
-  TextEditingController namectrl, emailctrl, countyctrl, passctrl;
+  TextEditingController namectrl,
+      emailctrl,
+      countyctrl,
+      passctrl,
+      confirmpassctrl;
 
   final _formKey = GlobalKey<FormState>();
 
   bool processing = false;
+  bool _isHidden = true;
 
   Future registerUser() async {
     setState(() {});
@@ -90,6 +95,12 @@ class _SignUpState extends State<SignUp> {
     setState(() {});
   }
 
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -99,6 +110,7 @@ class _SignUpState extends State<SignUp> {
     //  mobilectrl = new TextEditingController();
     countyctrl = new TextEditingController();
     passctrl = new TextEditingController();
+    confirmpassctrl = new TextEditingController();
   }
 
   @override
@@ -164,6 +176,76 @@ class _SignUpState extends State<SignUp> {
                       label: "Password",
                       controller: passctrl,
                       obscureText: true,
+                    ),
+                    TextFormField(
+                      cursorColor: kPrimaryGreen,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Source Sans',
+                              fontWeight: FontWeight.w400,
+                              color: kFieldTextColor),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          suffix: InkWell(
+                            onTap: _togglePasswordView,
+                            child: Icon(
+                              _isHidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: kFieldTextColor,
+                            ),
+                          )),
+                      obscureText: _isHidden,
+                      controller: passctrl,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Password';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {},
+                    ),
+                    TextFormField(
+                      cursorColor: kPrimaryGreen,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          labelText: 'Confirm your Password',
+                          labelStyle: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Source Sans',
+                              fontWeight: FontWeight.w400,
+                              color: kFieldTextColor),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          suffix: InkWell(
+                            onTap: _togglePasswordView,
+                            child: Icon(
+                              _isHidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: kFieldTextColor,
+                            ),
+                          )),
+                      obscureText: _isHidden,
+                      controller: confirmpassctrl,
+                      validator: (val) {
+                        if (val.isEmpty) return 'Please confirm your Password';
+                        if (val != confirmpassctrl.text)
+                          return 'Passwords do not match!';
+                        return null;
+                      },
+                      onSaved: (value) {},
                     ),
                     makeInput(
                         required: true,

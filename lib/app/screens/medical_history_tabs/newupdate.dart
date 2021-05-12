@@ -6,21 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class NewUpdate extends StatefulWidget {
   static const routeName = "/newupdate";
+
+  final String ptid;
+  NewUpdate({@required this.ptid});
   @override
   State<StatefulWidget> createState() {
-    return NewUpdateState();
+    return NewUpdateState(this.ptid);
   }
 }
 
 class NewUpdateState extends State<NewUpdate> {
+  String ptid;
+  NewUpdateState(this.ptid);
+
   String painrate;
   String medintake;
 
-  TextEditingController datectrl,
-      docidctrl,
-      ptidctrl,
+  TextEditingController docidctrl,
       feelctrl,
       partctrl,
       newsympctrl,
@@ -29,13 +35,13 @@ class NewUpdateState extends State<NewUpdate> {
 
   bool processing = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     docidctrl = TextEditingController();
-    datectrl = TextEditingController();
-    ptidctrl = TextEditingController();
     sidectrl = TextEditingController();
     feelctrl = TextEditingController();
     partctrl = TextEditingController();
@@ -43,13 +49,17 @@ class NewUpdateState extends State<NewUpdate> {
     additionalctrl = TextEditingController();
   }
 
+  DateTime selectedDate = DateTime.now();
+  String formattedDate;
+
   Future addUpdate() async {
+    formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
     setState(() {});
     var url = "http://192.168.0.15/tabibu/api/updates/postupdates.php";
     var data = {
-      "patientid": ptidctrl.text,
+      "patientid": ptid,
       "doctorid": docidctrl.text,
-      "date": datectrl.text,
+      "date": formattedDate,
       "sideeffect": sidectrl.text,
       "feel": feelctrl.text,
       "partache": partctrl.text,
@@ -64,7 +74,8 @@ class NewUpdateState extends State<NewUpdate> {
     var update = json.decode(res.body);
 
     if (update == "error") {
-      Flushbar(
+      print("error");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "An error occured! Try again later",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -73,11 +84,11 @@ class NewUpdateState extends State<NewUpdate> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("error");
     } else {
       print("Yoooo! It worked!");
       print(update);
-      Flushbar(
+      Navigator.of(context).pop();
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "Update sent successfully",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -86,7 +97,6 @@ class NewUpdateState extends State<NewUpdate> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      Navigator.of(context).pop();
     }
 
     setState(() {});
@@ -148,19 +158,10 @@ class NewUpdateState extends State<NewUpdate> {
                       ),
                     ),
                     makeInput(
-                      label: "Date *",
-                      controller: datectrl,
-                    ),
-                    makeInput(
-                      label: "Doctor ID *",
+                      label: "Doctor ID",
                       controller: docidctrl,
                       hint:
                           "Enter the Doctor ID of the the doctor the update is being sent to",
-                    ),
-                    makeInput(
-                      label: "Patient ID *",
-                      controller: ptidctrl,
-                      hint: "Enter your Tabibu Account Patient ID",
                     ),
                     Text(
                       'Medical Update Details:',
@@ -172,17 +173,23 @@ class NewUpdateState extends State<NewUpdate> {
                       ),
                     ),
                     makeInput(
-                      label: "How have you been feeling? *",
+                      label: "How have you been feeling?",
                       controller: feelctrl,
                     ),
                     makeInput(
                       label:
-                          "Any part of your body aching? If yes, which part?*",
+                          "Any part of your body aching? If yes, which part?",
                       controller: partctrl,
                     ),
                     DropDownFormField(
-                      titleText: 'Rate the amount of pain you feel *',
+                      titleText: 'Rate the amount of pain you feel',
                       hintText: 'Choose between zero and five',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please answer this question';
+                        }
+                        return null;
+                      },
                       value: painrate,
                       onSaved: (value) {
                         setState(() {
@@ -225,13 +232,19 @@ class NewUpdateState extends State<NewUpdate> {
                     ),
                     makeInput(
                       label:
-                          "Any new symptoms? If yes, state these new symptoms *",
+                          "Any new symptoms? If yes, state these new symptoms",
                       controller: newsympctrl,
                     ),
                     DropDownFormField(
                       titleText:
-                          'Have you taken all your medicine as prescribed? *',
+                          'Have you taken all your medicine as prescribed?',
                       hintText: 'Be very honest :)',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please answer this question';
+                        }
+                        return null;
+                      },
                       value: medintake,
                       onSaved: (value) {
                         setState(() {
@@ -258,11 +271,11 @@ class NewUpdateState extends State<NewUpdate> {
                     ),
                     makeInput(
                       label:
-                          "Any treatment Side Effects? If yes, state these side effects*",
+                          "Any treatment Side Effects? If yes, state these side effects",
                       controller: sidectrl,
                     ),
                     makeInput(
-                      label: "Additional Information *",
+                      label: "Additional Information",
                       controller: additionalctrl,
                     ),
                   ],
@@ -277,9 +290,11 @@ class NewUpdateState extends State<NewUpdate> {
                         height: 40,
                         onPressed: () {
                           setState(() {
-                            debugPrint("Save record button clicked");
-                            processing = true;
-                            addUpdate();
+                            if (_formKey.currentState.validate()) {
+                              debugPrint("Save record button clicked");
+                              processing = true;
+                              addUpdate();
+                            }
                           });
                         },
                         color: kPrimaryGreen,
@@ -305,10 +320,16 @@ class NewUpdateState extends State<NewUpdate> {
 Widget makeInput({label, required: true, controller, hint, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       controller: controller,
       keyboardType: type,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please answer this question';
+        }
+        return null;
+      },
       style: TextStyle(
           fontSize: 14,
           fontFamily: 'Source Sans',

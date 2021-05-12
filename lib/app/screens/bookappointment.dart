@@ -48,6 +48,8 @@ class BookAppointmentState extends State<BookAppointment> {
 
   TextEditingController reasonctrl;
 
+  final _formKey = GlobalKey<FormState>();
+
   bool processing = false;
 
   @override
@@ -88,7 +90,8 @@ class BookAppointmentState extends State<BookAppointment> {
     var appt = jsonDecode(res.body);
 
     if (appt == "error") {
-      Flushbar(
+      print("error");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "An error occured! Try again later",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -97,7 +100,6 @@ class BookAppointmentState extends State<BookAppointment> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("error");
     } else {
       print("Yoooo! It worked!");
       print(formattedDate);
@@ -203,7 +205,7 @@ class BookAppointmentState extends State<BookAppointment> {
             Padding(
                 padding: EdgeInsets.only(right: 20, bottom: 10),
                 child: makeInput(
-                  label: "Reason for Appointment *",
+                  label: "Reason for Appointment",
                   controller: reasonctrl,
                 )),
             Text(
@@ -223,9 +225,11 @@ class BookAppointmentState extends State<BookAppointment> {
                       height: 40,
                       onPressed: () {
                         setState(() {
-                          processing = true;
-                          debugPrint("Book Appointment button clicked");
-                          bookAppointment();
+                          if (_formKey.currentState.validate()) {
+                            processing = true;
+                            debugPrint("Book Appointment button clicked");
+                            bookAppointment();
+                          }
                         });
                       },
                       color: kPrimaryGreen,
@@ -276,9 +280,15 @@ Widget textProfile({label, text}) {
 Widget makeInput({label, required: true, controller}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
       style: TextStyle(
           fontSize: 14,
           fontFamily: 'Source Sans',
@@ -286,7 +296,6 @@ Widget makeInput({label, required: true, controller}) {
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,
