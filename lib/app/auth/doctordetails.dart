@@ -34,7 +34,6 @@ class DoctorDetailsState extends State<DoctorDetails> {
       aboutctrl,
       liscencectrl,
       daysctrl,
-      userctrl,
       timectrl;
 
   bool processing = false;
@@ -49,11 +48,12 @@ class DoctorDetailsState extends State<DoctorDetails> {
     aboutctrl = new TextEditingController();
     liscencectrl = new TextEditingController();
     daysctrl = new TextEditingController();
-    userctrl = new TextEditingController();
     timectrl = new TextEditingController();
+    print(userid);
   }
 
   Future registerDoctor() async {
+    setState(() {});
     var url = "http://192.168.0.15/tabibu/api/doctors/postdoctors.php";
     var data = {
       "hospital": hospitalctrl.text,
@@ -196,11 +196,11 @@ class DoctorDetailsState extends State<DoctorDetails> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            debugPrint("Save button clicked");
-                            processing = true;
-                            registerDoctor();
-                          }
+                          //  if (_formKey.currentState.validate()) {
+                          //  debugPrint("Save button clicked");
+                          processing = true;
+                          registerDoctor();
+                          // }
                         },
                         color: kPrimaryGreen,
                         elevation: 0,

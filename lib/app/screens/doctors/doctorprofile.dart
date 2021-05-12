@@ -128,10 +128,6 @@ class DoctorProfileState extends State<DoctorProfile> {
                           ],
                         )
                       ]),
-                  textProfile(
-                    label: "User ID:",
-                    text: "$userid",
-                  ),
                   FutureBuilder(
                     future: getUser(),
                     builder: (BuildContext context,

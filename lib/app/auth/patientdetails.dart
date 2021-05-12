@@ -281,10 +281,10 @@ class PatientDetailsState extends State<PatientDetails> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            processing = true;
-                            registerPatient();
-                          }
+                          // if (_formKey.currentState.validate()) {
+                          processing = true;
+                          registerPatient();
+                          //}
                         },
                         color: kPrimaryGreen,
                         elevation: 0,

@@ -172,11 +172,6 @@ class _SignUpState extends State<SignUp> {
                       label: "Residence County",
                       controller: countyctrl,
                     ),
-                    makeInput(
-                      label: "Password",
-                      controller: passctrl,
-                      obscureText: true,
-                    ),
                     TextFormField(
                       cursorColor: kPrimaryGreen,
                       style: TextStyle(
@@ -212,45 +207,44 @@ class _SignUpState extends State<SignUp> {
                       },
                       onSaved: (value) {},
                     ),
-                    TextFormField(
-                      cursorColor: kPrimaryGreen,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Source Sans',
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                          labelText: 'Confirm your Password',
-                          labelStyle: TextStyle(
+                    Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: TextFormField(
+                          cursorColor: kPrimaryGreen,
+                          style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Source Sans',
                               fontWeight: FontWeight.w400,
-                              color: kFieldTextColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          suffix: InkWell(
-                            onTap: _togglePasswordView,
-                            child: Icon(
-                              _isHidden
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: kFieldTextColor,
-                            ),
-                          )),
-                      obscureText: _isHidden,
-                      controller: confirmpassctrl,
-                      validator: (val) {
-                        if (val.isEmpty) return 'Please confirm your Password';
-                        if (val != confirmpassctrl.text)
-                          return 'Passwords do not match!';
-                        return null;
-                      },
-                      onSaved: (value) {},
-                    ),
-                    makeInput(
-                        required: true,
-                        label: "Confirm Password",
-                        obscureText: true),
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                              labelText: 'Confirm your Password',
+                              labelStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Source Sans',
+                                  fontWeight: FontWeight.w400,
+                                  color: kFieldTextColor),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              suffix: InkWell(
+                                onTap: _togglePasswordView,
+                                child: Icon(
+                                  _isHidden
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: kFieldTextColor,
+                                ),
+                              )),
+                          obscureText: _isHidden,
+                          controller: confirmpassctrl,
+                          validator: (val) {
+                            if (val.isEmpty)
+                              return 'Please confirm your Password';
+                            if (val != confirmpassctrl.text)
+                              return 'Passwords do not match!';
+                            return null;
+                          },
+                          onSaved: (value) {},
+                        )),
                     DropDownFormField(
                       titleText: 'Role',
                       validator: (value) {
@@ -295,10 +289,10 @@ class _SignUpState extends State<SignUp> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            processing = true;
-                            registerUser();
-                          }
+                          //  if (_formKey.currentState.validate()) {
+                          //    processing = true;
+                          registerUser();
+                          //  }
                         },
                         color: kPrimaryGreen,
                         elevation: 0,
