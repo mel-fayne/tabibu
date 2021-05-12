@@ -24,6 +24,8 @@ class _SignUpState extends State<SignUp> {
 
   TextEditingController namectrl, emailctrl, countyctrl, passctrl;
 
+  final _formKey = GlobalKey<FormState>();
+
   bool processing = false;
 
   Future registerUser() async {
@@ -41,7 +43,8 @@ class _SignUpState extends State<SignUp> {
     var user = json.decode(res.body);
 
     if (user == "account already exists") {
-      Flushbar(
+      print("account already exists");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "The user account already exists!",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -50,10 +53,10 @@ class _SignUpState extends State<SignUp> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("account already exists");
     } else {
       if (user == "error") {
-        Flushbar(
+        print("error");
+        return Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
           margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -62,7 +65,6 @@ class _SignUpState extends State<SignUp> {
           duration: Duration(seconds: 4),
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
-        print("error");
       } else {
         print("Yoooo! It worked!");
         userid = user[0];
@@ -146,20 +148,20 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: <Widget>[
                     makeInput(
-                      label: "Full Name *",
+                      label: "Full Name",
                       controller: namectrl,
                     ),
                     makeInput(
-                      label: "Email Address *",
+                      label: "Email Address",
                       controller: emailctrl,
                       type: TextInputType.emailAddress,
                     ),
                     makeInput(
-                      label: "Residence County *",
+                      label: "Residence County",
                       controller: countyctrl,
                     ),
                     makeInput(
-                      label: "Password *",
+                      label: "Password",
                       controller: passctrl,
                       obscureText: true,
                     ),
@@ -169,6 +171,12 @@ class _SignUpState extends State<SignUp> {
                         obscureText: true),
                     DropDownFormField(
                       titleText: 'Role',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Role';
+                        }
+                        return null;
+                      },
                       hintText: 'Please choose your category',
                       value: _myRole,
                       onSaved: (value) {
@@ -205,8 +213,10 @@ class _SignUpState extends State<SignUp> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          processing = true;
-                          registerUser();
+                          if (_formKey.currentState.validate()) {
+                            processing = true;
+                            registerUser();
+                          }
                         },
                         color: kPrimaryGreen,
                         elevation: 0,
@@ -258,11 +268,17 @@ Widget makeInput(
     {label, obscureText = false, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       obscureText: obscureText,
       controller: controller,
       keyboardType: type,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
       style: TextStyle(
           fontSize: 14,
           fontFamily: 'Source Sans',
@@ -270,7 +286,6 @@ Widget makeInput(
           color: Colors.black),
       onChanged: (value) {
         debugPrint('something changed in this feld');
-        //  diagnosis.patientid = patientidController.text as int;
       },
       decoration: InputDecoration(
           labelText: label,

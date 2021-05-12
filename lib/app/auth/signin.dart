@@ -28,6 +28,8 @@ class _SignInState extends State<SignIn> {
 
   bool processing = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,7 +44,8 @@ class _SignInState extends State<SignIn> {
         .post(url, body: {"email": emailctrl.text, "pass": passctrl.text});
     var data = json.decode(res.body);
     if (data == "error") {
-      Flushbar(
+      print("wrong password");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "Please confirm your credentials!",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -51,18 +54,8 @@ class _SignInState extends State<SignIn> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("wrong password");
     } else {
       print("Yoooo! It worked!");
-      Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Succesful sign in! Welcome to Tabibu",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 4),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
       userid = data[0];
       fullname = data[1];
       role = data[2];
@@ -102,6 +95,15 @@ class _SignInState extends State<SignIn> {
               ));
         }
       }
+      return Flushbar(
+        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
+        message: "Succesful sign in! Welcome to Tabibu",
+        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
+        borderRadius: 10,
+        backgroundColor: kPrimaryGreen,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      )..show(context);
     }
   }
 
@@ -150,50 +152,53 @@ class _SignInState extends State<SignIn> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Column(
-                        children: <Widget>[
-                          makeInput(
-                            label: "Email Address *",
-                            controller: emailctrl,
-                            type: TextInputType.emailAddress,
-                          ),
-                          TextFormField(
-                            cursorColor: kPrimaryGreen,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Source Sans',
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                                labelText: 'Password *',
-                                labelStyle: TextStyle(
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              makeInput(
+                                label: "Email Address",
+                                controller: emailctrl,
+                                type: TextInputType.emailAddress,
+                              ),
+                              TextFormField(
+                                cursorColor: kPrimaryGreen,
+                                style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'Source Sans',
                                     fontWeight: FontWeight.w400,
-                                    color: kFieldTextColor),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                suffix: InkWell(
-                                  onTap: _togglePasswordView,
-                                  child: Icon(
-                                    _isHidden
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: kFieldTextColor,
-                                  ),
-                                )),
-                            obscureText: _isHidden,
-                            controller: passctrl,
-                            validator: (value) {
-                              if (value.isEmpty || value.length < 1) {
-                                return 'Password is too short!';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
-                          ),
-                        ],
-                      ),
+                                    color: Colors.black),
+                                decoration: InputDecoration(
+                                    labelText: 'Password *',
+                                    labelStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Source Sans',
+                                        fontWeight: FontWeight.w400,
+                                        color: kFieldTextColor),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                    suffix: InkWell(
+                                      onTap: _togglePasswordView,
+                                      child: Icon(
+                                        _isHidden
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: kFieldTextColor,
+                                      ),
+                                    )),
+                                obscureText: _isHidden,
+                                controller: passctrl,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your Password';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                            ],
+                          )),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
@@ -208,8 +213,10 @@ class _SignInState extends State<SignIn> {
                                 minWidth: double.infinity,
                                 height: 50,
                                 onPressed: () {
-                                  processing = true;
-                                  userSignIn();
+                                  if (_formKey.currentState.validate()) {
+                                    processing = true;
+                                    userSignIn();
+                                  }
                                 },
                                 color: kPrimaryGreen,
                                 elevation: 0,
@@ -265,11 +272,17 @@ Widget makeInput(
     {label, obscureText = false, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       obscureText: obscureText,
       controller: controller,
       keyboardType: type,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
       style: TextStyle(
           fontSize: 14,
           fontFamily: 'Source Sans',

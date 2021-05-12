@@ -26,6 +26,8 @@ class DoctorDetailsState extends State<DoctorDetails> {
 
   String drid;
 
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController hospitalctrl,
       specialtyctrl,
       practiceyearsctrl,
@@ -68,7 +70,8 @@ class DoctorDetailsState extends State<DoctorDetails> {
     var doc = jsonDecode(res.body);
 
     if (doc == "doctor user exists") {
-      Flushbar(
+      print("doctor user exists");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "The doctor account exists! Check your user id field",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -77,10 +80,10 @@ class DoctorDetailsState extends State<DoctorDetails> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("doctor user exists");
     } else {
       if (doc == "error") {
-        Flushbar(
+        print("error");
+        return Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
           margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -89,7 +92,6 @@ class DoctorDetailsState extends State<DoctorDetails> {
           duration: Duration(seconds: 4),
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
-        print("error");
       } else {
         print("Yoooo! It worked!");
         print(doc);
@@ -155,17 +157,16 @@ class DoctorDetailsState extends State<DoctorDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     makeInput(
-                        label: "Base Hospital Location *",
+                        label: "Base Hospital Location",
                         controller: hospitalctrl),
                     makeInput(label: "Specialty *", controller: specialtyctrl),
                     makeInput(
-                        label: "Doctor Liscence ID *",
-                        controller: liscencectrl),
+                        label: "Doctor Liscence ID", controller: liscencectrl),
                     makeInput(
-                        label: "Years of Medical Practise *",
+                        label: "Years of Medical Practise",
                         controller: practiceyearsctrl,
                         type: TextInputType.number),
-                    makeInput(label: "About Me *", controller: aboutctrl),
+                    makeInput(label: "About Me", controller: aboutctrl),
                     Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
@@ -177,11 +178,11 @@ class DoctorDetailsState extends State<DoctorDetails> {
                               color: Colors.black),
                         )),
                     makeInput(
-                        label: "Days of the week when available: *",
+                        label: "Days of the week when available:",
                         hint: "E,g. Monday to Friday or Monday & Wednesday",
                         controller: daysctrl),
                     makeInput(
-                        label: "Appointment Times *",
+                        label: "Appointment Times",
                         hint: "E.g. 8am to 12noon or 10:30am to 2pm",
                         controller: timectrl),
                   ],
@@ -195,9 +196,11 @@ class DoctorDetailsState extends State<DoctorDetails> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          debugPrint("Save button clicked");
-                          processing = true;
-                          registerDoctor();
+                          if (_formKey.currentState.validate()) {
+                            debugPrint("Save button clicked");
+                            processing = true;
+                            registerDoctor();
+                          }
                         },
                         color: kPrimaryGreen,
                         elevation: 0,
@@ -223,10 +226,16 @@ Widget makeInput(
     {label, hint, obscureText = false, required: true, controller, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       obscureText: obscureText,
       controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
       keyboardType: type,
       style: TextStyle(
           fontSize: 14,

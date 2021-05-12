@@ -38,6 +38,8 @@ class PatientDetailsState extends State<PatientDetails> {
 
   bool processing = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,7 +62,8 @@ class PatientDetailsState extends State<PatientDetails> {
     var ptn = jsonDecode(res.body);
 
     if (ptn == "patient user exists") {
-      Flushbar(
+      print("patient user exists");
+      return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
         message: "The user account already exists!",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -69,10 +72,10 @@ class PatientDetailsState extends State<PatientDetails> {
         duration: Duration(seconds: 4),
         flushbarPosition: FlushbarPosition.TOP,
       )..show(context);
-      print("patient user exists");
     } else {
       if (ptn == "error") {
-        Flushbar(
+        print("error");
+        return Flushbar(
           icon: Icon(Icons.error, size: 28, color: Colors.yellow),
           message: "An error occured! Try again later",
           margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
@@ -81,7 +84,6 @@ class PatientDetailsState extends State<PatientDetails> {
           duration: Duration(seconds: 4),
           flushbarPosition: FlushbarPosition.TOP,
         )..show(context);
-        print("error");
       } else {
         print("Yoooo! It worked!");
         ptid = ptn[0];
@@ -187,6 +189,12 @@ class PatientDetailsState extends State<PatientDetails> {
                     ),
                     DropDownFormField(
                       titleText: 'Blood Type',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Blood Type';
+                        }
+                        return null;
+                      },
                       hintText: 'Choose your blood type',
                       value: _myBloodType,
                       onSaved: (value) {
@@ -222,11 +230,17 @@ class PatientDetailsState extends State<PatientDetails> {
                     ),
                     makeInput(
                       label:
-                          'Do you have a pre-existing condition?\nIf yes, state which condition *',
+                          'Do you have a pre-existing condition?\nIf yes, state which condition',
                       controller: preexistingctrl,
                     ),
                     DropDownFormField(
                       titleText: 'Mode of Medical Payments',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Mode of Payment';
+                        }
+                        return null;
+                      },
                       hintText: 'Choose mode of payment',
                       value: _myPayment,
                       onSaved: (value) {
@@ -267,8 +281,10 @@ class PatientDetailsState extends State<PatientDetails> {
                         minWidth: double.infinity,
                         height: 40,
                         onPressed: () {
-                          processing = true;
-                          registerPatient();
+                          if (_formKey.currentState.validate()) {
+                            processing = true;
+                            registerPatient();
+                          }
                         },
                         color: kPrimaryGreen,
                         elevation: 0,
@@ -293,10 +309,16 @@ class PatientDetailsState extends State<PatientDetails> {
 Widget makeInput({label, required: true, controller, hint, type}) {
   return Padding(
     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-    child: TextField(
+    child: TextFormField(
       cursorColor: kPrimaryGreen,
       controller: controller,
       keyboardType: type,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
       style: TextStyle(
           fontSize: 14,
           fontFamily: 'Source Sans',
