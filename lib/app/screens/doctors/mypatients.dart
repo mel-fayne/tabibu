@@ -32,6 +32,9 @@ class MyPatientsState extends State<MyPatients> {
     super.initState();
     getOpen();
     getClosed();
+    if (openno == true && closedno == true) {
+      data = true;
+    }
   }
 
   List<Patientuser> opendata = [];
@@ -39,6 +42,7 @@ class MyPatientsState extends State<MyPatients> {
 
   bool openno = false;
   bool closedno = false;
+  bool data = false;
 
   getOpen() async {
     var url = "http://192.168.0.15/tabibu/api/doctors/getopencases.php";
@@ -109,25 +113,14 @@ class MyPatientsState extends State<MyPatients> {
                           color: Colors.black),
                     ),
                   )),
-              Padding(
-                  padding: EdgeInsets.only(left: 3, top: 5),
-                  child: Text(
-                    'My Open Medical Cases',
-                    style: TextStyle(
-                      color: kPrimaryGreen,
-                      fontSize: 18,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
-              openno
+              data
                   ? Padding(
                       padding: EdgeInsets.only(top: 10, left: 60),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'You have no open medical cases!',
+                            'You have no patients yet!',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'PT Serif',
@@ -144,167 +137,198 @@ class MyPatientsState extends State<MyPatients> {
                           )
                         ],
                       ))
-                  : Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: opendata.length,
-                          itemBuilder: (_, index) {
-                            return Card(
-                                color: kPrimaryAccent,
-                                elevation: 7.0,
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    //  backgroundImage: AssetImage("imagepath"),
-                                    backgroundColor: kPrimaryGreen,
-                                  ),
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Patient Name:',
-                                          text: '${opendata[index].name}',
+                  : Column(children: [
+                      openno
+                          ? Container(padding: EdgeInsets.only(top: 10))
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 3, top: 5),
+                                      child: Text(
+                                        'My Open Medical Cases',
+                                        style: TextStyle(
+                                          color: kPrimaryGreen,
+                                          fontSize: 18,
+                                          fontFamily: 'Source Sans',
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        textProfile(
-                                          label: 'Ailment/Condition:',
-                                          text: '${opendata[index].disease}',
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: opendata.length,
+                                          itemBuilder: (_, index) {
+                                            return Card(
+                                                color: kPrimaryAccent,
+                                                elevation: 7.0,
+                                                child: ListTile(
+                                                  leading: CircleAvatar(
+                                                    //  backgroundImage: AssetImage("imagepath"),
+                                                    backgroundColor:
+                                                        kPrimaryGreen,
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 3),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Patient Name:',
+                                                          text:
+                                                              '${opendata[index].name}',
+                                                        ),
+                                                        textProfile(
+                                                          label:
+                                                              'Ailment/Condition:',
+                                                          text:
+                                                              '${opendata[index].disease}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  subtitle: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 3),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Diagnosis Date:',
+                                                          text:
+                                                              '${opendata[index].date}',
+                                                        ),
+                                                        textProfile(
+                                                          label: 'Case Status:',
+                                                          text:
+                                                              '${opendata[index].status}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  trailing: Icon(
+                                                    Icons.arrow_right_outlined,
+                                                    color: kPrimaryGreen,
+                                                    size: 25,
+                                                  ),
+                                                  onTap: () {
+                                                    diagid = opendata[index]
+                                                        .recordid;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    SingleCase(
+                                                                      diagid:
+                                                                          diagid,
+                                                                      check:
+                                                                          "On Treatment",
+                                                                    )));
+                                                  },
+                                                ));
+                                          })),
+                                ]),
+                      closedno
+                          ? Container(padding: EdgeInsets.only(top: 10))
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 3, top: 5),
+                                      child: Text(
+                                        'Closed Cases',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontFamily: 'Source Sans',
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Diagnosis Date:',
-                                          text: '${opendata[index].date}',
-                                        ),
-                                        textProfile(
-                                          label: 'Case Status:',
-                                          text: '${opendata[index].status}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_right_outlined,
-                                    color: kPrimaryGreen,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    diagid = opendata[index].recordid;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SingleCase(
-                                                  diagid: diagid,
-                                                  check: "On Treatment",
-                                                )));
-                                  },
-                                ));
-                          })),
-              Padding(
-                  padding: EdgeInsets.only(left: 3, top: 5),
-                  child: Text(
-                    'Closed Cases',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
-              closedno
-                  ? Padding(
-                      padding: EdgeInsets.only(top: 10, left: 60),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'You have no closed cases!',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'PT Serif',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15),
-                          ),
-                          Lottie.asset(
-                            'assets/lottie/22921-happy-girlpeaceful.json',
-                            repeat: true,
-                            reverse: true,
-                            animate: true,
-                            width: 150,
-                            height: 150,
-                          )
-                        ],
-                      ))
-                  : Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: closeddata.length,
-                          itemBuilder: (_, index) {
-                            return Card(
-                                color: Colors.blue[100],
-                                elevation: 7.0,
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    //  backgroundImage: AssetImage("imagepath"),
-                                    backgroundColor: kPrimaryGreen,
-                                  ),
-                                  title: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Patient Name:',
-                                          text: '${closeddata[index].name}',
-                                        ),
-                                        textProfile(
-                                          label: 'Ailment/Condition:',
-                                          text: '${closeddata[index].disease}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: Column(
-                                      children: [
-                                        textProfile(
-                                          label: 'Diagnosis Date:',
-                                          text: '${closeddata[index].date}',
-                                        ),
-                                        textProfile(
-                                          label: 'Case Status:',
-                                          text: '${closeddata[index].status}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_right_outlined,
-                                    color: kPrimaryGreen,
-                                    size: 25,
-                                  ),
-                                  onTap: () {
-                                    diagid = closeddata[index].recordid;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SingleCase(
-                                                  diagid: diagid,
-                                                  check: "Closed",
-                                                )));
-                                  },
-                                ));
-                          })),
+                                      )),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount: closeddata.length,
+                                          itemBuilder: (_, index) {
+                                            return Card(
+                                                color: Colors.blue[100],
+                                                elevation: 7.0,
+                                                child: ListTile(
+                                                  leading: CircleAvatar(
+                                                    //  backgroundImage: AssetImage("imagepath"),
+                                                    backgroundColor:
+                                                        kPrimaryGreen,
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 3),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Patient Name:',
+                                                          text:
+                                                              '${closeddata[index].name}',
+                                                        ),
+                                                        textProfile(
+                                                          label:
+                                                              'Ailment/Condition:',
+                                                          text:
+                                                              '${closeddata[index].disease}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  subtitle: Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 3),
+                                                    child: Column(
+                                                      children: [
+                                                        textProfile(
+                                                          label:
+                                                              'Diagnosis Date:',
+                                                          text:
+                                                              '${closeddata[index].date}',
+                                                        ),
+                                                        textProfile(
+                                                          label: 'Case Status:',
+                                                          text:
+                                                              '${closeddata[index].status}',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  trailing: Icon(
+                                                    Icons.arrow_right_outlined,
+                                                    color: kPrimaryGreen,
+                                                    size: 25,
+                                                  ),
+                                                  onTap: () {
+                                                    diagid = closeddata[index]
+                                                        .recordid;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    SingleCase(
+                                                                      diagid:
+                                                                          diagid,
+                                                                      check:
+                                                                          "Closed",
+                                                                    )));
+                                                  },
+                                                ));
+                                          })),
+                                ])
+                    ])
             ])));
   }
 }

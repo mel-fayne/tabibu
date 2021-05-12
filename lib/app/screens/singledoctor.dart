@@ -37,6 +37,7 @@ class SingleDoctorState extends State<SingleDoctor> {
   void initState() {
     super.initState();
     getDoctor();
+    print(docid);
   }
 
   Future getDoctor() async {
@@ -111,6 +112,9 @@ class SingleDoctorState extends State<SingleDoctor> {
                                           textProfile(
                                               label: 'Name:',
                                               text: 'Dr. $name'),
+                                          textProfile(
+                                              label: 'Doctor ID:',
+                                              text: '$docid'),
                                           textProfile(
                                               label: 'Base Hospital:',
                                               text: '$hospital'),

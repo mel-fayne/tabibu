@@ -25,12 +25,10 @@ class MyDoctorsState extends State<MyDoctors> {
   String ptid;
   String drid;
   MyDoctorsState(this.ptid);
-  TextEditingController searchctrl;
 
   @override
   void initState() {
     super.initState();
-    searchctrl = TextEditingController();
     getMyDoctors();
     getAllDoctors();
   }
@@ -119,30 +117,6 @@ class MyDoctorsState extends State<MyDoctors> {
                 ),
               )),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-            child: TextField(
-              cursorColor: kPrimaryGreen,
-              controller: searchctrl,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Source Sans',
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              onChanged: (value) {
-                debugPrint('something changed in this feld');
-              },
-              decoration: InputDecoration(
-                  labelText: "Search Doctors",
-                  labelStyle: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Source Sans',
-                      fontWeight: FontWeight.w400,
-                      color: kFieldTextColor),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0))),
-            ),
-          ),
-          Padding(
               padding: EdgeInsets.only(left: 3, top: 5),
               child: Text(
                 'My Doctors',
@@ -160,7 +134,7 @@ class MyDoctorsState extends State<MyDoctors> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'You have no unseen updates!',
+                        'You have no Doctors yet!',
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'PT Serif',
@@ -207,9 +181,17 @@ class MyDoctorsState extends State<MyDoctors> {
                                   ],
                                 ),
                               ),
-                              subtitle: textProfile(
-                                label: 'Specialty:',
-                                text: '${mydocdata[index].specialty}',
+                              subtitle: Column(
+                                children: [
+                                  textProfile(
+                                    label: 'Specialty:',
+                                    text: '${mydocdata[index].specialty}',
+                                  ),
+                                  textProfile(
+                                    label: 'Doctor ID:',
+                                    text: '${mydocdata[index].dr_id}',
+                                  ),
+                                ],
                               ),
                               trailing: Icon(
                                 Icons.arrow_right_outlined,
@@ -229,68 +211,71 @@ class MyDoctorsState extends State<MyDoctors> {
           Padding(
               padding: EdgeInsets.only(left: 3, top: 5),
               child: Text(
-                'All Doctors Available ...',
+                'Available Doctors',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: kPrimaryGreen,
                   fontSize: 18,
                   fontFamily: 'Source Sans',
                   fontWeight: FontWeight.w600,
                 ),
               )),
-          alldocdata.length == 0
-              ? Center(
-                  child: CircularProgressIndicator(
-                  backgroundColor: kPrimaryGreen,
-                ))
-              : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: alldocdata.length,
-                      itemBuilder: (_, index) {
-                        return Card(
-                            color: Colors.blue[100],
-                            elevation: 7.0,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                //  backgroundImage: AssetImage("imagepath"),
-                                backgroundColor: kPrimaryGreen,
-                              ),
-                              title: Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Column(
-                                  children: [
-                                    textProfile(
-                                      label: 'Name:',
-                                      text: '${alldocdata[index].name}',
-                                    ),
-                                    textProfile(
-                                      label: 'Hospital:',
-                                      text: '${alldocdata[index].hospital}',
-                                    ),
-                                  ],
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: alldocdata.length,
+                  itemBuilder: (_, index) {
+                    return Card(
+                        color: Colors.blue[100],
+                        elevation: 7.0,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            //  backgroundImage: AssetImage("imagepath"),
+                            backgroundColor: kPrimaryGreen,
+                          ),
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Column(
+                              children: [
+                                textProfile(
+                                  label: 'Name:',
+                                  text: '${alldocdata[index].name}',
                                 ),
-                              ),
-                              subtitle: textProfile(
+                                textProfile(
+                                  label: 'Hospital:',
+                                  text: '${alldocdata[index].hospital}',
+                                ),
+                              ],
+                            ),
+                          ),
+                          subtitle: Column(
+                            children: [
+                              textProfile(
                                 label: 'Specialty:',
                                 text: '${alldocdata[index].specialty}',
                               ),
-                              trailing: Icon(
-                                Icons.arrow_right_outlined,
-                                color: kPrimaryGreen,
-                                size: 25,
+                              textProfile(
+                                label: 'Doctor ID:',
+                                text: '${alldocdata[index].doctorid}',
                               ),
-                              onTap: () {
-                                drid = alldocdata[index].doctorid;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SingleDoctor(
-                                            docid: drid, ptid: ptid)));
-                              },
-                            ));
-                      })),
+                            ],
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_right_outlined,
+                            color: kPrimaryGreen,
+                            size: 25,
+                          ),
+                          onTap: () {
+                            drid = alldocdata[index].doctorid;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SingleDoctor(docid: drid, ptid: ptid)));
+                          },
+                        ));
+                  })),
         ]),
       ),
     );
