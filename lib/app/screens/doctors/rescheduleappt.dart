@@ -1,5 +1,3 @@
-import 'package:Tabibu/app/screens/doctors/rescheduleappt.dart';
-import 'package:Tabibu/app/screens/doctors/setappttime.dart';
 import 'package:intl/intl.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
@@ -10,24 +8,24 @@ import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SingleAppointment extends StatefulWidget {
-  static const routeName = "/singleappointment";
+class RescheduleAppt extends StatefulWidget {
+  static const routeName = "/rescheduleappt";
 
   //accepting parameters from previous screen
   final String apptid;
   final String check;
 
-  SingleAppointment({@required this.apptid, @required this.check});
+  RescheduleAppt({@required this.apptid, @required this.check});
   @override
   State<StatefulWidget> createState() {
-    return SingleAppointmentState(this.apptid, this.check);
+    return RescheduleApptState(this.apptid, this.check);
   }
 }
 
-class SingleAppointmentState extends State<SingleAppointment> {
+class RescheduleApptState extends State<RescheduleAppt> {
   String apptid;
   String check;
-  SingleAppointmentState(this.apptid, this.check);
+  RescheduleApptState(this.apptid, this.check);
 
   String date;
   String time;
@@ -72,33 +70,13 @@ class SingleAppointmentState extends State<SingleAppointment> {
     }
   }
 
-  markDone() async {
-    var url = "http://192.168.0.15/tabibu/api/appointments/doneappt.php";
-    var res = await http.post(url, body: {"apptid": apptid});
-    var done = json.decode(res.body);
-    if (done == "error") {
-      print('Unexpected error occured!');
-    } else {
-      print("Done!");
-      return Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Appointment marked as done!",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 4),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
-    }
-  }
-
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime.now().subtract(Duration(days: 36000)),
-      lastDate: DateTime.now(),
-      initialDatePickerMode: DatePickerMode.year,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 60)),
+      initialDatePickerMode: DatePickerMode.day,
     );
     if (picked != null && picked != selectedDate)
       setState(() {
@@ -126,27 +104,6 @@ class SingleAppointmentState extends State<SingleAppointment> {
       });
   }
 
-  sendTime() async {
-    var url = "http://192.168.0.15/tabibu/api/appointments/sendtime.php";
-    var res =
-        await http.post(url, body: {"apptid": apptid, "time": formattedTime});
-    var timeconf = json.decode(res.body);
-    if (timeconf == "error") {
-      print('Unexpected error occured!');
-    } else {
-      print("Time Confirmed!");
-      return Flushbar(
-        icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Appointment succesfully Confirmed!",
-        margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
-        borderRadius: 10,
-        backgroundColor: kPrimaryGreen,
-        duration: Duration(seconds: 4),
-        flushbarPosition: FlushbarPosition.TOP,
-      )..show(context);
-    }
-  }
-
   rescheduleDate() async {
     var url = "http://192.168.0.15/tabibu/api/appointments/reschedule.php";
     var res = await http.post(url,
@@ -155,10 +112,10 @@ class SingleAppointmentState extends State<SingleAppointment> {
     if (reschconf == "error") {
       print('Unexpected error occured!');
     } else {
-      print("Time Confirmed!");
+      print("Appt rescheduled!");
       return Flushbar(
         icon: Icon(Icons.error, size: 28, color: Colors.yellow),
-        message: "Appointment succesfully Confirmed!",
+        message: "Appointment succesfully Rescheduled!",
         margin: EdgeInsets.fromLTRB(8, kToolbarHeight, 8, 0),
         borderRadius: 10,
         backgroundColor: kPrimaryGreen,
@@ -189,7 +146,7 @@ class SingleAppointmentState extends State<SingleAppointment> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              'More Appointment Details',
+              'Reschedule Appointment Date',
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'PT Serif',
@@ -243,10 +200,6 @@ class SingleAppointmentState extends State<SingleAppointment> {
                               label: 'Patient Name:',
                               text: '$ptname',
                             ),
-                            /* textProfile(
-                              label: 'Doctor Name:',
-                              text: 'Dr. $drname',
-                            ), */
                             textProfile(
                               label: 'Appointment Date:',
                               text: '$date',
@@ -254,6 +207,10 @@ class SingleAppointmentState extends State<SingleAppointment> {
                             textProfile(
                               label: 'Appointment Reason:',
                               text: '$reason',
+                            ),
+                            textProfile(
+                              label: 'Appointment Time:',
+                              text: '$time',
                             )
                           ]);
                   }
@@ -261,100 +218,72 @@ class SingleAppointmentState extends State<SingleAppointment> {
               )
             ]),
             Container(
-                padding: EdgeInsets.only(top: 50, left: 50),
-                child: check == "Unconfirmed"
-                    ? Container(
-                        child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                            height: 40,
-                            onPressed: () {
-                              setState(() {
-                                // processing = true;
-                                debugPrint("set time button clicked");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SetApptTime(
-                                            check: "Unconfirmed",
-                                            apptid: apptid)));
-                              });
-                            },
-                            color: kPrimaryAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Set Appointment Time",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text(
-                              'or',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'PT Serif',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          MaterialButton(
-                            height: 40,
-                            onPressed: () {
-                              setState(() {
-                                // processing = true;
-                                debugPrint("reschedule button clicked");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RescheduleAppt(
-                                            check: "Unconfirmed",
-                                            apptid: apptid)));
-                              });
-                            },
-                            color: kPrimaryAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Confirm Appointment",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)),
-                          ),
-                        ],
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                child: Column(children: [
+                  RaisedButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text(
+                      'Select Appointment Date',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                    color: kPrimaryAccent,
+                  ),
+                  Text(
+                    "${selectedDate.toLocal()}".split(' ')[0],
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                  RaisedButton(
+                    onPressed: () => _selectTime(context),
+                    child: Text(
+                      'Select Appointment Time',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Source Sans',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                    color: kPrimaryAccent,
+                  ),
+                  Text(
+                    "$selectedTime".split(' ')[0],
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Source Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40,
+                        onPressed: () {
+                          setState(() {
+                            processing = true;
+                            debugPrint("reschedule button clicked");
+                            rescheduleDate();
+                          });
+                        },
+                        color: kPrimaryGreen,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text("Confirm Appointment",
+                            style: TextStyle(
+                                color: kPrimaryYellow,
+                                fontFamily: 'PT Serif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
                       ))
-                    : check == "Confirmed"
-                        ? MaterialButton(
-                            minWidth: double.infinity,
-                            height: 40,
-                            onPressed: () {
-                              setState(() {
-                                // processing = true;
-                                debugPrint("mark done button clicked");
-                                markDone();
-                              });
-                            },
-                            color: kPrimaryAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text("Mark Appointment As Done",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'PT Serif',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)),
-                          )
-                        : Container(
-                            padding: EdgeInsets.only(top: 15),
-                          ))
+                ])),
           ])),
     );
   }

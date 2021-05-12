@@ -237,7 +237,7 @@ class ScheduleListState extends State<ScheduleList> {
                                     size: 25,
                                   ),
                                   onTap: () {
-                                    apptid = unconfdata[index].apptid;
+                                    apptid = unconfdata[index].date;
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -309,25 +309,30 @@ class ScheduleListState extends State<ScheduleList> {
                                         ),
                                         textProfile(
                                           label: 'Appointment Date:',
-                                          text: '${confdata[index].date}',
+                                          text: '${confdata[index].patientid}',
                                         ),
                                       ],
                                     ),
                                   ),
                                   subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: textProfile(
-                                      label: "Appointment Status:",
-                                      text: '${confdata[index].status}',
-                                    ),
-                                  ),
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Column(children: [
+                                        textProfile(
+                                          label: "Appointment Status:",
+                                          text: '${confdata[index].drname}',
+                                        ),
+                                        textProfile(
+                                          label: 'Appointment Time:',
+                                          text: '${donedata[index].reason}',
+                                        ),
+                                      ])),
                                   trailing: Icon(
                                     Icons.arrow_right_outlined,
                                     color: kPrimaryGreen,
                                     size: 25,
                                   ),
                                   onTap: () {
-                                    apptid = confdata[index].apptid;
+                                    apptid = confdata[index].date;
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -399,25 +404,30 @@ class ScheduleListState extends State<ScheduleList> {
                                         ),
                                         textProfile(
                                           label: 'Appointment date:',
-                                          text: '${donedata[index].date}',
+                                          text: '${donedata[index].patientid}',
                                         ),
                                       ],
                                     ),
                                   ),
                                   subtitle: Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: textProfile(
-                                      label: 'Appointment Status:',
-                                      text: '${donedata[index].status}',
-                                    ),
-                                  ),
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Column(children: [
+                                        textProfile(
+                                          label: 'Appointment Status:',
+                                          text: '${donedata[index].drname}',
+                                        ),
+                                        textProfile(
+                                          label: 'Appointment Time:',
+                                          text: '${donedata[index].reason}',
+                                        ),
+                                      ])),
                                   trailing: Icon(
                                     Icons.arrow_right_outlined,
                                     color: kPrimaryGreen,
                                     size: 25,
                                   ),
                                   onTap: () {
-                                    apptid = donedata[index].apptid;
+                                    apptid = donedata[index].date;
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

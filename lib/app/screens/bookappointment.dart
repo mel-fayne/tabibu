@@ -201,11 +201,19 @@ class BookAppointmentState extends State<BookAppointment> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(right: 20),
+                padding: EdgeInsets.only(right: 20, bottom: 10),
                 child: makeInput(
                   label: "Reason for Appointment *",
                   controller: reasonctrl,
                 )),
+            Text(
+              "By clicking the book appointment button, you agree to allow Dr.$name to view your previous medical reports and add to your medical history",
+              style: TextStyle(
+                  color: kFieldTextColor,
+                  fontFamily: 'PT Serif',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600),
+            ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               child: processing
