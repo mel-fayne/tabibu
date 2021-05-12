@@ -2,8 +2,8 @@ import 'package:Tabibu/app/auth/signin.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
-import 'package:Tabibu/app/screens/notifications.dart';
 import 'package:Tabibu/app/screens/patientprofile.dart';
+import 'package:Tabibu/app/screens/ptappt.dart';
 import 'package:Tabibu/app/theme/colors.dart';
 import 'package:Tabibu/app/theme/my_custom_icons_icons.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +40,16 @@ class PatientDashboardState extends State<PatientDashboard> {
           backgroundColor: kPrimaryAccent,
           actions: [
             new IconButton(
-              icon: Icon(Icons.circle_notifications),
+              icon: Icon(Icons.calendar_today),
               color: kPrimaryGreen,
               padding: EdgeInsets.only(top: 14, right: 24.49),
-              iconSize: 30,
+              iconSize: 27,
               onPressed: () {
-                Navigator.of(context).pushNamed(Notifications.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PtScheduleList(ptid: ptid),
+                    ));
               },
             ),
           ],

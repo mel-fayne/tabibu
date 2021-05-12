@@ -8,9 +8,12 @@ import 'package:Tabibu/app/screens/doctors/doctordashboard.dart';
 import 'package:Tabibu/app/screens/doctors/doctorprofile.dart';
 import 'package:Tabibu/app/screens/doctors/mypatients.dart';
 import 'package:Tabibu/app/screens/doctors/newrecord.dart';
+import 'package:Tabibu/app/screens/doctors/rescheduleappt.dart';
 import 'package:Tabibu/app/screens/doctors/schedulelist.dart';
+import 'package:Tabibu/app/screens/doctors/setappttime.dart';
 import 'package:Tabibu/app/screens/doctors/singleappointment.dart';
 import 'package:Tabibu/app/screens/doctors/singlecase.dart';
+import 'package:Tabibu/app/screens/doctors/singleptupdate.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/diagnosistab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/medicalhistory.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/newupdate.dart';
@@ -20,6 +23,7 @@ import 'package:Tabibu/app/screens/medical_history_tabs/treatmenttab.dart';
 import 'package:Tabibu/app/screens/medical_history_tabs/myupdatestab.dart';
 import 'package:Tabibu/app/screens/mydoctors.dart';
 import 'package:Tabibu/app/screens/notifications.dart';
+import 'package:Tabibu/app/screens/ptappt.dart';
 import 'package:Tabibu/app/screens/singledoctor.dart';
 import 'package:Tabibu/app/screens/patientdashboard.dart';
 import 'package:Tabibu/app/screens/patientprofile.dart';
@@ -78,6 +82,9 @@ class MyApp extends StatelessWidget {
         ScheduleList.routeName: (ctx) => ScheduleList(
               drid: null,
             ),
+        PtScheduleList.routeName: (ctx) => PtScheduleList(
+              ptid: null,
+            ),
         OverviewTab.routeName: (ctx) => OverviewTab(
               ptid: null,
             ),
@@ -90,9 +97,9 @@ class MyApp extends StatelessWidget {
         MyUpdatesTab.routeName: (ctx) => MyUpdatesTab(
               ptid: null,
             ),
-        //  SingleDiagnosis.routeName: (ctx) => SingleDiagnosis(),
         SingleUpdate.routeName: (ctx) => SingleUpdate(
               updid: null,
+              check: null,
             ),
         NewUpdate.routeName: (ctx) => NewUpdate(),
         SingleDoctor.routeName: (ctx) => SingleDoctor(
@@ -108,6 +115,18 @@ class MyApp extends StatelessWidget {
               time: null,
             ),
         SingleAppointment.routeName: (ctx) => SingleAppointment(
+              apptid: null,
+              check: null,
+            ),
+        SinglePtUpdate.routeName: (ctx) => SinglePtUpdate(
+              updid: null,
+              check: null,
+            ),
+        SetApptTime.routeName: (ctx) => SetApptTime(
+              apptid: null,
+              check: null,
+            ),
+        RescheduleAppt.routeName: (ctx) => RescheduleAppt(
               apptid: null,
               check: null,
             ),
